@@ -1,3 +1,3 @@
-rtc.o: C:/butano-master/butano/hw/3rd_party/agbabi/src/rtc.c \
- C:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h
-C:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h:
+rtc.o: /home/Commodore/butano/butano/hw/3rd_party/agbabi/src/rtc.c \
+ /home/Commodore/butano/butano/hw/3rd_party/agbabi/src/../include/agbabi.h
+/home/Commodore/butano/butano/hw/3rd_party/agbabi/src/../include/agbabi.h:
