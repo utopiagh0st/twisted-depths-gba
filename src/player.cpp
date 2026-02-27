@@ -41,5 +41,5 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 }
 
 void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
-    Player::update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
+    update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
 }

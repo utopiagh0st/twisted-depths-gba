@@ -2,7 +2,7 @@
 //classes
 #include "player.h"
 //utilities and structures
-#include "bn_unordered_map.h"
+
 //music and sounds
 #include "bn_music_items.h"
 #include "bn_sound_items.h"
@@ -11,42 +11,47 @@
 //sprites, txt and bg
 #include "bn_sprite_ptr.h"
 #include "bn_regular_bg_ptr.h"
-#include "bn_bg_palette_ptr.h"
-
-#include "bn_sprite_text_generator.h"
-#include "bn_vector.h"
-
-#include "common_variable_8x8_sprite_font.h"
-#include "bn_string_view.h"
 
 //sprites themselves
-#include "bn_sprite_items_bluhemoji.h"
-#include "bn_sprite_items_textbox_side.h"
-#include "bn_sprite_items_textbox_mid.h"
 //bgs
 #include "bn_regular_bg_items_floor_bg.h"
 #include "bn_regular_bg_items_walls_bg.h"
 
 Game::Game() :
-    _player(0,0,CharacterName::diabolus),
-    _floor_bg(bn::regular_bg_items::floor_bg.create_bg(0, 0)),
-    _walls_bg(bn::regular_bg_items::walls_bg.create_bg(0, 0))
+    _state(State::Title)    //starts with title state
 {
-    bn::music_items::castlevania2.play(0.1);
-    _walls_bg.set_priority(1);
-    _floor_bg.set_priority(2);//priority(0 is higher)
-
-    _bounds[0] = -50; //up
-    _bounds[1] = 48; //down
-    _bounds[2] = -66; //left
-    _bounds[3] = 66; //right
+    _bounds[0] = -50;   //up
+    _bounds[1] = 48;    //down
+    _bounds[2] = -66;   //left
+    _bounds[3] = 66;    //right
 }
 
-int Game::getBound(int n) {
-    return _bounds[n];
+void Game::update_title() { //use this one as a template of a state change
+    if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
+        _player.emplace(0, 0, CharacterName::diabolus);   //replaces the empty player
+
+        _floor_bg.emplace(bn::regular_bg_items::floor_bg.create_bg(0, 0));  //bg emplacement
+        _walls_bg.emplace(bn::regular_bg_items::walls_bg.create_bg(0, 0));
+        _walls_bg->set_priority(1);
+        _floor_bg->set_priority(2);  //priority (0 is the highest)
+
+        bn::music_items::silence.play(1);    //banger starts
+
+        _state = State::Playing;    //change of state
+    }
 }
 
-void Game::update()
-{
-    _player.update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);
+void Game::update_playing() {
+    _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+}
+
+void Game::update() {   //main update loop
+    switch (_state) {   //switch to use different update thingys
+        case State::Title:
+            update_title();
+            break;
+        case State::Playing:
+            update_playing();
+            break;
+    }
 }

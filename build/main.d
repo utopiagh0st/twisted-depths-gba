@@ -34,7 +34,8 @@ main.o: C:/butano-master/games/twisted-depths-gba/src/main.cpp \
  C:/butano-master/butano/include/bn_point.h \
  C:/butano-master/butano/include/bn_fixed_point_fwd.h \
  C:/butano-master/butano/include/bn_regular_bg_ptr.h \
- C:/butano-master/games/twisted-depths-gba/src/player.h
+ C:/butano-master/games/twisted-depths-gba/src/player.h \
+ C:/butano-master/butano/include/bn_optional.h
 C:/butano-master/butano/include/bn_core.h:
 C:/butano-master/butano/include/bn_span.h:
 C:/butano-master/butano/include/bn_array.h:
@@ -71,3 +72,4 @@ C:/butano-master/butano/include/bn_point.h:
 C:/butano-master/butano/include/bn_fixed_point_fwd.h:
 C:/butano-master/butano/include/bn_regular_bg_ptr.h:
 C:/butano-master/games/twisted-depths-gba/src/player.h:
+C:/butano-master/butano/include/bn_optional.h:
