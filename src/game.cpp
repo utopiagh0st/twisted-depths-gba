@@ -30,7 +30,7 @@ Game::Game() :
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
-        _player.emplace(0, 0, CharacterName::diabolus);   //replaces the empty player
+        _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
 
         _enemy.emplace(EnemyType::LimeCat, 20,20);
 
@@ -58,6 +58,7 @@ void Game::update_playing() {
         _state = State::Pause;  //pause button just stops running the game logic
     }
     _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    _enemy->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3], _player->get_position());
 }
 
 void Game::update() {   //main update loop
