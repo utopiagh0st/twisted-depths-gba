@@ -40,10 +40,6 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     if(bn::keypad::left_held())  input.set_x(-1);
     if(bn::keypad::right_held()) input.set_x(1);
 
-    if(input.x() != 0 && input.y() != 0) {
-        input *= bn::fixed(0.70710678); //diagonal correction with precalculated sqrt(2) so the gba doesn't cry
-    }
-
     if(input != bn::fixed_point(0, 0)) {    //acceleration if there's input
         _velocity += input * _acceleration;
 
@@ -56,27 +52,14 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
         _velocity *= (bn::fixed(1) - _friction);    //friction when there isn't
     }
 
-    if(_velocity.x() > _max_speed) {  //makin sure nothing goes off the rails
-        _velocity.set_x(_max_speed);
-    }
-    if(_velocity.x() < -_max_speed) {
-        _velocity.set_x(-_max_speed);
-    }
-    if(_velocity.y() > _max_speed) {
-        _velocity.set_y(_max_speed);
-    }
-    if(_velocity.y() < -_max_speed) {
-        _velocity.set_y(-_max_speed);
-    }
-
     _position += _velocity; //movin
 
-    if (_position.y() < top_bound) {    //makin sure nothing goes off the rails but literally
+    if (_position.y() <top_bound) {    //makin sure nothing goes off the rails but literally
         _position.set_y(top_bound);
     } else if (_position.y() > bottom_bound) {
         _position.set_y(bottom_bound);
     }
-    if (_position.x() < left_bound) {
+    if (_position.x() <left_bound) {
         _position.set_x(left_bound);
     } else if (_position.x() > right_bound) {
         _position.set_x(right_bound);

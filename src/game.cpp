@@ -1,9 +1,10 @@
-#include "game.h"
 //classes
+#include "game.h"
 #include "player.h"
 #include "enemy.h"
 //utilities and structures
-
+#include "bn_vector.h"
+#include "bn_random.h"
 //music and sounds
 #include "bn_music.h"
 #include "bn_music_items.h"
@@ -13,7 +14,6 @@
 //sprites, txt and bg
 #include "bn_sprite_ptr.h"
 #include "bn_regular_bg_ptr.h"
-
 //sprites themselves
 //bgs
 #include "bn_regular_bg_items_floor_bg.h"
@@ -31,8 +31,6 @@ Game::Game() :
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
-
-        _enemy.emplace(EnemyType::LimeCat, 20,20);
 
         _floor_bg.emplace(bn::regular_bg_items::floor_bg.create_bg(0, 0));  //bg emplacement
         _walls_bg.emplace(bn::regular_bg_items::walls_bg.create_bg(0, 0));
@@ -53,12 +51,17 @@ void Game::update_pause() {
 }
 
 void Game::update_playing() {
+    if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
+        _enemies.push_back(Enemy(EnemyType::LimeCat, random.get_int(-66,66), random.get_int(-50,48)));
+    }
     if (bn::keypad::start_pressed()) {
         bn::music::pause();
         _state = State::Pause;  //pause button just stops running the game logic
     }
+    for (Enemy& enemy : _enemies) {
+        enemy.update(_bounds[0], _bounds[1], _bounds[2], _bounds[3], _player->get_position());
+    }
     _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
-    _enemy->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3], _player->get_position());
 }
 
 void Game::update() {   //main update loop
@@ -73,4 +76,5 @@ void Game::update() {   //main update loop
             update_pause();
             break;
     }
+    random.update();
 }

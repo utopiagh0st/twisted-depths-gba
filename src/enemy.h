@@ -3,6 +3,7 @@
 
 #include "bn_sprite_ptr.h"
 #include "bn_fixed_point.h"
+#include "bn_fixed.h"
 
 enum class EnemyType
 {
@@ -17,8 +18,15 @@ private:
     EnemyType _type;
     bn::sprite_ptr _sprite;
     bn::fixed_point _position;
-    int _direction;
-    int _speed;
+    bn::fixed_point _velocity;
+    bn::fixed_point _target;
+    bn::fixed _friction;
+    bn::fixed _acceleration;
+    bn::fixed _max_speed;
+    int _cooldown;
+    int _step;
+    void move_towards(bn::fixed_point final_pos);
+    void deaccelerate();
 };
 
 #endif
