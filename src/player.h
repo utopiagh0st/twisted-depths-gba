@@ -2,6 +2,8 @@
 #define PLAYER_H
 
 #include "bn_sprite_ptr.h"
+#include "bn_sprite_animate_actions.h"
+
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 
@@ -19,6 +21,8 @@ public:
     void update(int top_bound, int bottom_bound, int left_bound, int right_bound);  //passing bounds to avoid circle relationships
 private:
     bn::sprite_ptr _sprite;
+    bn::optional<bn::sprite_animate_action<4>> walk_anim;
+
     bn::fixed_point _position;
     bn::fixed _friction;
     bn::fixed _acceleration;

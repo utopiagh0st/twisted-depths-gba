@@ -17,7 +17,7 @@ Enemy::Enemy(EnemyType type, int x, int y) :
 {
     _position = bn::fixed_point(x,y);
     _velocity = bn::fixed_point(0,0);
-    _friction = bn::fixed(0.05);
+    _friction = bn::fixed(0.5);
     _acceleration = bn::fixed(0.2);
     _max_speed = bn::fixed(3);
     _cooldown = 0;
@@ -34,17 +34,20 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
         case 0:
             _target = player_pos;
             _step++;
+        break;
         case 1:
             move_towards(_target);
+        break;
         case 2:
             deaccelerate();
             if (_velocity == bn::fixed_point(0,0)) {
-                _cooldown = 0;
+                _cooldown = 120;
                 _step++;
             }
+        break;
         case 3:
             _cooldown--;
-            if (!_cooldown) {
+            if (_cooldown <= 0) {
                 _step = 0;
             }
         break;
@@ -54,19 +57,23 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
     }
 }
 
-void Enemy::move_towards(bn::fixed_point final_pos) {
+void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns true
     bn::fixed_point direction = final_pos - _position;
 
     bn::fixed length_sq = direction.x() * direction.x() + direction.y() * direction.y();
-
-    if(length_sq > 1) {
+    if(length_sq > _max_speed + 1) {
         bn::fixed length = bn::sqrt(length_sq);
         direction /= length;
         _velocity += direction * _acceleration;
     } else {
-        _step++;
+    //    _step++;
     }
 
+    bn::fixed speed_sq = _velocity.x()*_velocity.x() + _velocity.y()*_velocity.y();
+    if (speed_sq > _max_speed*_max_speed) {
+        _velocity = (_velocity / bn::sqrt(speed_sq)) * _max_speed;
+    }
+    
     _position += _velocity;
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
 }
