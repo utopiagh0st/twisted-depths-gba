@@ -43,7 +43,7 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
  /home/Commodore/butano/butano/include/bn_fixed.h \
  /home/Commodore/butano/butano/include/bn_fixed_point.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h \
- /home/Commodore/butano/games/twisted-depths-gba/src/environment.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/hud.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_ptr.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_item.h \
  /home/Commodore/butano/butano/include/bn_bg_palette_item.h \
@@ -53,6 +53,7 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h \
  /home/Commodore/butano/butano/include/bn_optional.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/environment.h \
  /home/Commodore/butano/butano/include/bn_vector.h \
  /home/Commodore/butano/butano/include/bn_random.h \
  /home/Commodore/butano/butano/include/bn_math.h \
@@ -113,7 +114,7 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
 /home/Commodore/butano/butano/include/bn_fixed.h:
 /home/Commodore/butano/butano/include/bn_fixed_point.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h:
-/home/Commodore/butano/games/twisted-depths-gba/src/environment.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/hud.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_ptr.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_item.h:
 /home/Commodore/butano/butano/include/bn_bg_palette_item.h:
@@ -123,6 +124,7 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
 /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/environment.h:
 /home/Commodore/butano/butano/include/bn_vector.h:
 /home/Commodore/butano/butano/include/bn_random.h:
 /home/Commodore/butano/butano/include/bn_math.h:

@@ -1,7 +1,6 @@
-environment.o: \
- /home/Commodore/butano/games/twisted-depths-gba/src/environment.cpp \
- /home/Commodore/butano/games/twisted-depths-gba/src/environment.h \
- /home/Commodore/butano/butano/include/bn_regular_bg_ptr.h \
+hud.o: /home/Commodore/butano/games/twisted-depths-gba/src/hud.cpp \
+ /home/Commodore/butano/games/twisted-depths-gba/src/hud.h \
+ /home/Commodore/butano/butano/include/bn_sprite_ptr.h \
  /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/butano/include/bn_assert.h \
  /home/Commodore/butano/butano/include/bn_config_assert.h \
@@ -25,6 +24,7 @@ environment.o: \
  /home/Commodore/butano/butano/include/bn_compare.h \
  /home/Commodore/butano/butano/include/bn_point.h \
  /home/Commodore/butano/butano/include/bn_fixed_point_fwd.h \
+ /home/Commodore/butano/butano/include/bn_regular_bg_ptr.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_item.h \
  /home/Commodore/butano/butano/include/bn_bg_palette_item.h \
  /home/Commodore/butano/butano/include/bn_span.h \
@@ -40,9 +40,16 @@ environment.o: \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h \
  /home/Commodore/butano/butano/include/bn_tile.h \
- /home/Commodore/butano/butano/include/bn_optional.h
-/home/Commodore/butano/games/twisted-depths-gba/src/environment.h:
-/home/Commodore/butano/butano/include/bn_regular_bg_ptr.h:
+ /home/Commodore/butano/butano/include/bn_optional.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hp_zipper.h \
+ /home/Commodore/butano/butano/include/bn_sprite_item.h \
+ /home/Commodore/butano/butano/include/bn_sprite_shape_size.h \
+ /home/Commodore/butano/butano/include/bn_sprite_tiles_item.h \
+ /home/Commodore/butano/butano/include/bn_sprite_palette_item.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hp_closed.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hp_open.h
+/home/Commodore/butano/games/twisted-depths-gba/src/hud.h:
+/home/Commodore/butano/butano/include/bn_sprite_ptr.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/butano/include/bn_assert.h:
 /home/Commodore/butano/butano/include/bn_config_assert.h:
@@ -66,6 +73,7 @@ environment.o: \
 /home/Commodore/butano/butano/include/bn_compare.h:
 /home/Commodore/butano/butano/include/bn_point.h:
 /home/Commodore/butano/butano/include/bn_fixed_point_fwd.h:
+/home/Commodore/butano/butano/include/bn_regular_bg_ptr.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_item.h:
 /home/Commodore/butano/butano/include/bn_bg_palette_item.h:
 /home/Commodore/butano/butano/include/bn_span.h:
@@ -82,3 +90,10 @@ environment.o: \
 /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h:
 /home/Commodore/butano/butano/include/bn_tile.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hp_zipper.h:
+/home/Commodore/butano/butano/include/bn_sprite_item.h:
+/home/Commodore/butano/butano/include/bn_sprite_shape_size.h:
+/home/Commodore/butano/butano/include/bn_sprite_tiles_item.h:
+/home/Commodore/butano/butano/include/bn_sprite_palette_item.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hp_closed.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hp_open.h:

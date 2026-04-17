@@ -1,6 +1,7 @@
 //classes
 #include "game.h"
 #include "environment.h"
+#include "hud.h"
 #include "player.h"
 #include "enemy.h"
 //utilities and structures
@@ -12,9 +13,6 @@
 #include "bn_sound_items.h"
 //input
 #include "bn_keypad.h"
-//sprites, txt and bg
-#include "bn_sprite_ptr.h"
-#include "bn_regular_bg_ptr.h"
 //sprites themselves
 //bgs
 #include "bn_regular_bg_items_floor_bg.h"
@@ -32,13 +30,14 @@ Game::Game() :
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
-        _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
-
         _environment.emplace(
             bn::regular_bg_items::floor_bg,
             bn::regular_bg_items::walls_bg,
             bn::regular_bg_items::border_blue
         );
+
+        _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
+        _hud.emplace(true);
 
         bn::music_items::castlevania2.play(1);    //banger starts
 
@@ -54,7 +53,11 @@ void Game::update_pause() {
 }
 
 void Game::update_playing() {
+    //Player
     _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    //HUD
+    _hud->update(_player.get_hp(), _player.max_hp());
+    //Inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
         _enemies.push_back(Enemy(EnemyType::LimeCat, random.get_int(-66,66), random.get_int(-50,48)));
     }

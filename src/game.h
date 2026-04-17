@@ -4,14 +4,13 @@
 //classes
 #include "player.h"
 #include "enemy.h"
+#include "hud.h"
 #include "environment.h"
 //utilities and structures
 #include "bn_optional.h"
 #include "bn_vector.h"
 #include "bn_random.h"
 //sprites, txt and bg
-#include "bn_sprite_ptr.h"
-#include "bn_regular_bg_ptr.h"
 
 class Game {
 public:
@@ -28,6 +27,7 @@ private:
 
     bn::random random;
 
+    bn::optional<Hud> _hud;
     bn::optional<Player> _player;
     bn::optional<Environment> _environment;
     static constexpr int MAX_ENEMIES = 64;

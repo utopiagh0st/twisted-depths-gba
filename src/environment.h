@@ -1,7 +1,6 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-#include "bn_sprite_ptr.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
 #include "bn_optional.h"

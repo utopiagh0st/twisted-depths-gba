@@ -21,6 +21,9 @@ static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) 
 Player::Player(CharacterName name, int x, int y) :
     _sprite(create_character_sprite(name, x, y))
 {
+    _hp_max = 10;
+    _hp = 0;
+
     _position = bn::fixed_point(x,y);
     _friction = bn::fixed(0.2);
     _acceleration = bn::fixed(0.2);
@@ -30,13 +33,33 @@ Player::Player(CharacterName name, int x, int y) :
     _sprite.set_bg_priority(1); //sprite priority
 }
 
+
+//Getters and Setters
+int Player::get_hp() {
+    return _hp;
+}
+int Player::get_hp_max() {
+    return _hp_max;
+}
 bn::fixed_point Player::get_position() {
     return _position;
 }
 
+
+//Functions
 void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound) { //player movement
     bool moving = false;    //turn this to false before input check
-    bn::fixed_point input(0, 0);    
+    bn::fixed_point input(0, 0);
+
+    //TODO: remove these _hp related instructions after debugging the hp bar!!!!
+    if(bn::keypad::up_held())    _hp++;
+    if(bn::keypad::down_held())    _hp--;
+    if(_hp < 0) {
+        _hp = 0;
+    } else if (_hp > _hp_max) {
+        _hp = _hp_max;
+    }
+
     if(bn::keypad::up_held())    input.set_y(-1);
     if(bn::keypad::down_held())  input.set_y(1);
     if(bn::keypad::left_held())  input.set_x(-1);

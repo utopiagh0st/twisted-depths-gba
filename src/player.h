@@ -18,11 +18,15 @@ class Player {
 public:
     Player(CharacterName name, int x, int y);
     bn::fixed_point get_position();
+    int get_hp();
+    int get_hp_max();
     void update(int top_bound, int bottom_bound, int left_bound, int right_bound);  //passing bounds to avoid circle relationships
 private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_animate_action<4>> walk_anim;
 
+    int _hp;
+    int _hp_max;
     bn::fixed_point _position;
     bn::fixed _friction;
     bn::fixed _acceleration;
