@@ -27,7 +27,7 @@ Player::Player(CharacterName name, int x, int y) :
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
 
-    _sprite.set_bg_priority(0); //sprite priority
+    _sprite.set_bg_priority(1); //sprite priority
 }
 
 bn::fixed_point Player::get_position() {
@@ -35,9 +35,8 @@ bn::fixed_point Player::get_position() {
 }
 
 void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound) { //player movement
-    bool moving = false;
-    bn::fixed_point input(0, 0);
-
+    bool moving = false;    //turn this to false before input check
+    bn::fixed_point input(0, 0);    
     if(bn::keypad::up_held())    input.set_y(-1);
     if(bn::keypad::down_held())  input.set_y(1);
     if(bn::keypad::left_held())  input.set_x(-1);

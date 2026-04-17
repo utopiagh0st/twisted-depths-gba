@@ -1,5 +1,6 @@
 //classes
 #include "game.h"
+#include "environment.h"
 #include "player.h"
 #include "enemy.h"
 //utilities and structures
@@ -18,6 +19,7 @@
 //bgs
 #include "bn_regular_bg_items_floor_bg.h"
 #include "bn_regular_bg_items_walls_bg.h"
+#include "bn_regular_bg_items_border_blue.h"
 
 Game::Game() :
     _state(State::Title)    //starts with title state
@@ -32,10 +34,11 @@ void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
 
-        _floor_bg.emplace(bn::regular_bg_items::floor_bg.create_bg(0, 0));  //bg emplacement
-        _walls_bg.emplace(bn::regular_bg_items::walls_bg.create_bg(0, 0));
-        _walls_bg->set_priority(1);
-        _floor_bg->set_priority(2);  //priority (0 is the highest)
+        _environment.emplace(
+            bn::regular_bg_items::floor_bg,
+            bn::regular_bg_items::walls_bg,
+            bn::regular_bg_items::border_blue
+        );
 
         bn::music_items::castlevania2.play(1);    //banger starts
 
@@ -51,6 +54,7 @@ void Game::update_pause() {
 }
 
 void Game::update_playing() {
+    _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
         _enemies.push_back(Enemy(EnemyType::LimeCat, random.get_int(-66,66), random.get_int(-50,48)));
     }
@@ -61,7 +65,6 @@ void Game::update_playing() {
     for (Enemy& enemy : _enemies) {
         enemy.update(_bounds[0], _bounds[1], _bounds[2], _bounds[3], _player->get_position());
     }
-    _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
 }
 
 void Game::update() {   //main update loop

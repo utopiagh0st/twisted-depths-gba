@@ -24,7 +24,7 @@ Enemy::Enemy(EnemyType type, int x, int y) :
     _step = 0;
 
     _type = type;
-    _sprite.set_bg_priority(0);
+    _sprite.set_bg_priority(1);
 }
 
 void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos) {

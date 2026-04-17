@@ -4,6 +4,7 @@
 //classes
 #include "player.h"
 #include "enemy.h"
+#include "environment.h"
 //utilities and structures
 #include "bn_optional.h"
 #include "bn_vector.h"
@@ -28,6 +29,7 @@ private:
     bn::random random;
 
     bn::optional<Player> _player;
+    bn::optional<Environment> _environment;
     static constexpr int MAX_ENEMIES = 64;
     bn::vector<Enemy, MAX_ENEMIES> _enemies;
 
