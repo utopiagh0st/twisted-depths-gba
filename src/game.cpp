@@ -56,7 +56,7 @@ void Game::update_playing() {
     //Player
     _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     //HUD
-    _hud->update(_player.get_hp(), _player.max_hp());
+    _hud->update(_player->get_hp(), _player->get_hp_max());
     //Inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
         _enemies.push_back(Enemy(EnemyType::LimeCat, random.get_int(-66,66), random.get_int(-50,48)));
