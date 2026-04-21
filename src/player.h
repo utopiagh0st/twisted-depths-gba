@@ -22,6 +22,7 @@ public:
     int get_hp_max();
     bn::rect get_hitbox();
     void take_damage(int damage);
+    void apply_knockback(bn::fixed_point kb_position; bn::fixed_point kb_velocity);
     void update(int top_bound, int bottom_bound, int left_bound, int right_bound);  //passing bounds to avoid circle relationships
 private:
     bn::sprite_ptr _sprite;

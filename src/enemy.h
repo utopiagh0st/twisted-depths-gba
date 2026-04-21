@@ -15,8 +15,14 @@ class Enemy {
 public:
     Enemy(EnemyType type, int x, int y);
     bn::rect get_hitbox();
+    bn::fixed_point get_position();
+    bn::fixed_point get_velocity();
+    bn::fixed get_distance(bn::fixed_point final_pos);
     void update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos);
 private:
+    //debug
+    bn::sprite_ptr _spr_hitbox;
+
     EnemyType _type;
     bn::sprite_ptr _sprite;
     bn::fixed_point _position;
@@ -27,6 +33,8 @@ private:
     bn::fixed _max_speed;
     int _cooldown;
     int _step;
+    //Functions
+    bool bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd);
     void move_towards(bn::fixed_point final_pos);
     void deaccelerate();
 };

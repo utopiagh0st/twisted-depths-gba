@@ -71,6 +71,7 @@ void Game::update_playing() {
         // Colission checks
         if (_player->get_hitbox().intersects(enemy.get_hitbox())) {
             _player->take_damage(1);
+            _player->apply_knockback(enemy.get_position(), enemy.get_velocity());
         }
     }
 }

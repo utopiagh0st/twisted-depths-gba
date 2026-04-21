@@ -4,6 +4,8 @@
 #include "bn_math.h"
 #include "bn_rect.h"
 
+#include "bn_sprite_items_hitbox.h"
+
 static bn::sprite_ptr create_character_sprite(EnemyType type, int x, int y) { //Character sprite selector
     switch(type) {
         case EnemyType::LimeCat:
@@ -14,13 +16,14 @@ static bn::sprite_ptr create_character_sprite(EnemyType type, int x, int y) { //
 }
 
 Enemy::Enemy(EnemyType type, int x, int y) :
-    _sprite(create_character_sprite(type,x,y))
+    _sprite(create_character_sprite(type,x,y)),
+    _spr_hitbox(bn::sprite_items::hitbox.create_sprite(x,y))
 {
     _position = bn::fixed_point(x,y);
     _velocity = bn::fixed_point(0,0);
-    _friction = bn::fixed(0.5);
-    _acceleration = bn::fixed(0.2);
-    _max_speed = bn::fixed(3);
+    _friction = bn::fixed(0.07);
+    _acceleration = bn::fixed(0.3);
+    _max_speed = bn::fixed(5);
     _cooldown = 0;
     _step = 0;
 
@@ -28,12 +31,18 @@ Enemy::Enemy(EnemyType type, int x, int y) :
     _sprite.set_bg_priority(1);
 }
 
+bn::fixed_point Enemy::get_position() {
+    return _position;
+}
+bn::fixed_point Enemy::get_velocity() {
+    return _velocity;
+}
 bn::rect Enemy::get_hitbox() {
     return bn::rect(
-    int(_position.x()),
-    int(_position.y()),
-    16,   // width
-    16    // height
+    int(_position.x()-1),
+    int(_position.y()+1),
+    8,   // width
+    9    // height
     );
 }
 
@@ -46,12 +55,20 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
             _step++;
         break;
         case 1:
-            move_towards(_target);
+            if (get_distance(_target) > _max_speed) {
+                move_towards(_target);
+                if (bnd_collide(top_bnd, bottom_bnd, left_bnd, right_bnd)) {
+                    _step++;
+                }
+            } else {
+                _step++;
+            }
         break;
         case 2:
             deaccelerate();
+            bnd_collide(top_bnd, bottom_bnd, left_bnd, right_bnd);
             if (_velocity == bn::fixed_point(0,0)) {
-                _cooldown = 120;
+                _cooldown = 100;
                 _step++;
             }
         break;
@@ -65,18 +82,42 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
     default:
         break;
     }
+
+    bn::rect hitbox = get_hitbox();
+    _spr_hitbox.set_position(hitbox.x(), hitbox.y());
+    _spr_hitbox.set_bg_priority(0);
+}
+
+bool Enemy::bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
+    bool collided = false;
+    if (_position.y() < top_bnd) {
+        _position.set_y(top_bnd);
+        collided = true;
+    } else if (_position.y() > bottom_bnd) {
+        _position.set_y(bottom_bnd);
+        collided = true;
+    }
+    if (_position.x() < left_bnd) {
+        _position.set_x(left_bnd);
+        collided = true;
+    } else if (_position.x() > right_bnd) {
+        _position.set_x(right_bnd);
+        collided = true;
+    }
+    return collided;
+}
+
+bn::fixed Enemy::get_distance(bn::fixed_point final_pos) {
+    bn::fixed_point direction = final_pos - _position;
+    return bn::sqrt(direction.x() * direction.x() + direction.y() * direction.y());
 }
 
 void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns true
     bn::fixed_point direction = final_pos - _position;
-
-    bn::fixed length_sq = direction.x() * direction.x() + direction.y() * direction.y();
-    if(length_sq > _max_speed + 1) {
-        bn::fixed length = bn::sqrt(length_sq);
+    bn::fixed length = get_distance(final_pos);
+    if(length > _max_speed + 1) {
         direction /= length;
         _velocity += direction * _acceleration;
-    } else {
-    //    _step++;
     }
 
     bn::fixed speed_sq = _velocity.x()*_velocity.x() + _velocity.y()*_velocity.y();

@@ -7,6 +7,7 @@
 #include "bn_array.h"
 #include "bn_rect.h" //hitboxes
 
+#include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_player_fran.h"
 #include "bn_sprite_animate_actions.h"
 
@@ -49,8 +50,8 @@ bn::rect Player::get_hitbox() {
     return bn::rect(
     int(_position.x()),
     int(_position.y()),
-    16,   // width
-    16    // height
+    6,   // width
+    13    // height
     );
 }
 
@@ -63,12 +64,28 @@ void Player::take_damage(int damage) {
     }
 }
 
+void Player::apply_knockback(bn::fixed_point kb_velocity)
+{
+    bn::fixed speed = bn::sqrt(kb_velocity.x() * kb_velocity.x() + kb_velocity.y() * kb_velocity.y());
+
+    if (speed > 0) {
+        bn::fixed_point direction = enemy_velocity / speed;
+
+        // optional upward bias
+        //direction.set_y(direction.y() - 0.3);
+
+        bn::fixed strength = bn::min(speed * 1.5, bn::fixed(6));
+
+        _knockback_velocity = direction * strength;
+    }
+}
+
 void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound) { //player movement
     bool moving = false;    //turn this to false before input check
     bn::fixed_point input(0, 0);
 
     //TODO: remove these _hp related instructions after debugging the hp bar!!!!
-    //if(bn::keypad::up_held())    _hp++;
+    if(bn::keypad::b_pressed() && _hp < _hp_max)    _hp++;
     //if(bn::keypad::down_held())    _hp--;
     //if(_hp < 0) {
     //    _hp = 0;
