@@ -4,6 +4,7 @@
 #include "bn_sprite_ptr.h"
 #include "bn_fixed_point.h"
 #include "bn_fixed.h"
+#include "bn_rect.h"
 
 enum class EnemyType
 {
@@ -13,6 +14,7 @@ enum class EnemyType
 class Enemy {
 public:
     Enemy(EnemyType type, int x, int y);
+    bn::rect get_hitbox();
     void update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos);
 private:
     EnemyType _type;

@@ -6,7 +6,7 @@
 
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
-
+#include "bn_rect.h"
 
 enum class CharacterName {
     diabolus,
@@ -20,6 +20,8 @@ public:
     bn::fixed_point get_position();
     int get_hp();
     int get_hp_max();
+    bn::rect get_hitbox();
+    void take_damage(int damage);
     void update(int top_bound, int bottom_bound, int left_bound, int right_bound);  //passing bounds to avoid circle relationships
 private:
     bn::sprite_ptr _sprite;

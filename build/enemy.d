@@ -26,6 +26,8 @@ enemy.o: C:/butano-master/games/twisted-depths-gba/src/enemy.cpp \
  C:/butano-master/butano/include/bn_fixed_point_fwd.h \
  C:/butano-master/butano/include/bn_fixed_point.h \
  C:/butano-master/butano/include/bn_fixed.h \
+ C:/butano-master/butano/include/bn_rect.h \
+ C:/butano-master/butano/include/bn_size.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_enemy.h \
  C:/butano-master/butano/include/bn_sprite_item.h \
  C:/butano-master/butano/include/bn_sprite_shape_size.h \
@@ -71,6 +73,8 @@ C:/butano-master/butano/include/bn_point.h:
 C:/butano-master/butano/include/bn_fixed_point_fwd.h:
 C:/butano-master/butano/include/bn_fixed_point.h:
 C:/butano-master/butano/include/bn_fixed.h:
+C:/butano-master/butano/include/bn_rect.h:
+C:/butano-master/butano/include/bn_size.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_enemy.h:
 C:/butano-master/butano/include/bn_sprite_item.h:
 C:/butano-master/butano/include/bn_sprite_shape_size.h:

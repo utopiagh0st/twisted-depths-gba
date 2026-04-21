@@ -28,7 +28,7 @@ void Hud::update(int player_hp, int player_hp_max) {
                 _hp_gauge.push_back(hp_open_piece);
                 y_offset += 4;
             }
-            int hp_closed_amount = player_hp_max - player_hp;
+            int hp_closed_amount = player_hp_max - player_hp + 2;
             for (int i = 0; i < hp_closed_amount; i++) {
                 bn::sprite_ptr hp_closed_piece = bn::sprite_items::hp_closed.create_sprite(104,y_offset);
                 hp_closed_piece.set_bg_priority(0);
@@ -38,7 +38,7 @@ void Hud::update(int player_hp, int player_hp_max) {
             if (player_hp == 0) {
                 _spr_hp_zipper = bn::sprite_items::hp_zipper.create_sprite(105, -64);
             } else {
-                _spr_hp_zipper = bn::sprite_items::hp_zipper.create_sprite(105, (player_hp*4)-62);
+                _spr_hp_zipper = bn::sprite_items::hp_zipper.create_sprite(105, (player_hp*4)-58);
             }
             _spr_hp_zipper.set_bg_priority(0);
         }

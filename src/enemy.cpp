@@ -2,6 +2,7 @@
 #include "bn_sprite_items_enemy.h"
 #include "bn_fixed_point.h"
 #include "bn_math.h"
+#include "bn_rect.h"
 
 static bn::sprite_ptr create_character_sprite(EnemyType type, int x, int y) { //Character sprite selector
     switch(type) {
@@ -25,6 +26,15 @@ Enemy::Enemy(EnemyType type, int x, int y) :
 
     _type = type;
     _sprite.set_bg_priority(1);
+}
+
+bn::rect Enemy::get_hitbox() {
+    return bn::rect(
+    int(_position.x()),
+    int(_position.y()),
+    16,   // width
+    16    // height
+    );
 }
 
 void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos) {

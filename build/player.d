@@ -41,6 +41,8 @@ player.o: C:/butano-master/games/twisted-depths-gba/src/player.cpp \
  C:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
  C:/butano-master/butano/include/bn_fixed.h \
  C:/butano-master/butano/include/bn_fixed_point.h \
+ C:/butano-master/butano/include/bn_rect.h \
+ C:/butano-master/butano/include/bn_size.h \
  C:/butano-master/butano/include/bn_keypad.h \
  C:/butano-master/butano/include/bn_math.h \
  C:/butano-master/butano/include/bn_sin_lut.h \
@@ -94,6 +96,8 @@ C:/butano-master/butano/include/bn_compression_type.h:
 C:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
 C:/butano-master/butano/include/bn_fixed.h:
 C:/butano-master/butano/include/bn_fixed_point.h:
+C:/butano-master/butano/include/bn_rect.h:
+C:/butano-master/butano/include/bn_size.h:
 C:/butano-master/butano/include/bn_keypad.h:
 C:/butano-master/butano/include/bn_math.h:
 C:/butano-master/butano/include/bn_sin_lut.h:

@@ -16,7 +16,7 @@ private:
     int _last_hp_max_checked = -1;
     bool _is_visible = false;
     bn::sprite_ptr _spr_hp_zipper;
-    bn::vector<bn::sprite_ptr, 20> _hp_gauge;
+    bn::vector<bn::sprite_ptr, 22> _hp_gauge;
 };
 
 #endif

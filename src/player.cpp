@@ -5,6 +5,7 @@
 #include "bn_fixed_point.h"
 #include "bn_math.h"
 #include "bn_array.h"
+#include "bn_rect.h" //hitboxes
 
 #include "bn_sprite_items_player_fran.h"
 #include "bn_sprite_animate_actions.h"
@@ -21,8 +22,8 @@ static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) 
 Player::Player(CharacterName name, int x, int y) :
     _sprite(create_character_sprite(name, x, y))
 {
-    _hp_max = 10;
-    _hp = 0;
+    _hp_max = 20;
+    _hp = 20;
 
     _position = bn::fixed_point(x,y);
     _friction = bn::fixed(0.2);
@@ -44,21 +45,36 @@ int Player::get_hp_max() {
 bn::fixed_point Player::get_position() {
     return _position;
 }
+bn::rect Player::get_hitbox() {
+    return bn::rect(
+    int(_position.x()),
+    int(_position.y()),
+    16,   // width
+    16    // height
+    );
+}
 
 
 //Functions
+void Player::take_damage(int damage) {
+    _hp -= damage;
+    if (_hp < 0) {
+        _hp = 0;
+    }
+}
+
 void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound) { //player movement
     bool moving = false;    //turn this to false before input check
     bn::fixed_point input(0, 0);
 
     //TODO: remove these _hp related instructions after debugging the hp bar!!!!
-    if(bn::keypad::up_held())    _hp++;
-    if(bn::keypad::down_held())    _hp--;
-    if(_hp < 0) {
-        _hp = 0;
-    } else if (_hp > _hp_max) {
-        _hp = _hp_max;
-    }
+    //if(bn::keypad::up_held())    _hp++;
+    //if(bn::keypad::down_held())    _hp--;
+    //if(_hp < 0) {
+    //    _hp = 0;
+    //} else if (_hp > _hp_max) {
+    //    _hp = _hp_max;
+    //}
 
     if(bn::keypad::up_held())    input.set_y(-1);
     if(bn::keypad::down_held())  input.set_y(1);
