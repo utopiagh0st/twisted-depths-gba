@@ -31,6 +31,7 @@ Player::Player(CharacterName name, int x, int y) :
     _acceleration = bn::fixed(0.2);
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
+    _knockback_velocity = bn::fixed_point(0,0);
 
     _sprite.set_bg_priority(1); //sprite priority
 }
@@ -69,12 +70,12 @@ void Player::apply_knockback(bn::fixed_point kb_velocity)
     bn::fixed speed = bn::sqrt(kb_velocity.x() * kb_velocity.x() + kb_velocity.y() * kb_velocity.y());
 
     if (speed > 0) {
-        bn::fixed_point direction = enemy_velocity / speed;
+        bn::fixed_point direction = kb_velocity / speed;
 
-        // optional upward bias
-        //direction.set_y(direction.y() - 0.3);
+        //optional upward bias
+        direction.set_y(direction.y() - 0.3);
 
-        bn::fixed strength = bn::min(speed * 1.5, bn::fixed(6));
+        bn::fixed strength = bn::min(speed * 2, bn::fixed(6)); //speed times multiplier OR the threshold
 
         _knockback_velocity = direction * strength;
     }
@@ -111,7 +112,8 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
         _velocity *= (bn::fixed(1) - _friction);    //friction when there isn't
     }
 
-    _position += _velocity; //movin
+    _position += _velocity + _knockback_velocity; //movin
+    _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
 
     if (_position.y() <top_bound) {    //makin sure nothing goes off the rails but literally
         _position.set_y(top_bound);
@@ -154,4 +156,5 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 
 void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
     update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
+
 }

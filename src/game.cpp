@@ -70,8 +70,16 @@ void Game::update_playing() {
         enemy.update(_bounds[0], _bounds[1], _bounds[2], _bounds[3], _player->get_position());
         // Colission checks
         if (_player->get_hitbox().intersects(enemy.get_hitbox())) {
+            enemy.set_alive(false);
             _player->take_damage(1);
-            _player->apply_knockback(enemy.get_position(), enemy.get_velocity());
+            _player->apply_knockback(enemy.get_velocity());
+        }
+    }
+    for(int i = 0; i < _enemies.size(); ) { //erasing dead guys
+        if(!_enemies[i].is_alive()) {
+            _enemies.erase(_enemies.begin() + i); //using pointers!!
+        } else {
+            ++i;
         }
     }
 }

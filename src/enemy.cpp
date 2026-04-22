@@ -18,7 +18,8 @@ static bn::sprite_ptr create_character_sprite(EnemyType type, int x, int y) { //
 Enemy::Enemy(EnemyType type, int x, int y) :
     _sprite(create_character_sprite(type,x,y)),
     _spr_hitbox(bn::sprite_items::hitbox.create_sprite(x,y))
-{
+{   
+    _alive = true;
     _position = bn::fixed_point(x,y);
     _velocity = bn::fixed_point(0,0);
     _friction = bn::fixed(0.07);
@@ -31,6 +32,9 @@ Enemy::Enemy(EnemyType type, int x, int y) :
     _sprite.set_bg_priority(1);
 }
 
+bool Enemy::is_alive() {
+    return _alive;
+}
 bn::fixed_point Enemy::get_position() {
     return _position;
 }
@@ -44,6 +48,9 @@ bn::rect Enemy::get_hitbox() {
     8,   // width
     9    // height
     );
+}
+void Enemy::set_alive(bool alive) {
+    _alive = alive;
 }
 
 void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos) {

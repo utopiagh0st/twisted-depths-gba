@@ -17,6 +17,8 @@ public:
     bn::rect get_hitbox();
     bn::fixed_point get_position();
     bn::fixed_point get_velocity();
+    bool is_alive();
+    void set_alive(bool alive);
     bn::fixed get_distance(bn::fixed_point final_pos);
     void update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos);
 private:
@@ -24,6 +26,7 @@ private:
     bn::sprite_ptr _spr_hitbox;
 
     EnemyType _type;
+    bool _alive;
     bn::sprite_ptr _sprite;
     bn::fixed_point _position;
     bn::fixed_point _velocity;
