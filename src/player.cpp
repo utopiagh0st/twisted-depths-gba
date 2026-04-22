@@ -32,6 +32,7 @@ Player::Player(CharacterName name, int x, int y) :
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
+    _act_direction = 0;
 
     _sprite.set_bg_priority(1); //sprite priority
 }
@@ -156,5 +157,4 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 
 void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
     update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
-
 }

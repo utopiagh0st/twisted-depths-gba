@@ -1,9 +1,8 @@
 #include "enemy.h"
-#include "bn_sprite_items_enemy.h"
 #include "bn_fixed_point.h"
 #include "bn_math.h"
 #include "bn_rect.h"
-
+#include "bn_sprite_items_enemy.h"
 #include "bn_sprite_items_hitbox.h"
 
 static bn::sprite_ptr create_character_sprite(EnemyType type, int x, int y) { //Character sprite selector
@@ -45,8 +44,8 @@ bn::rect Enemy::get_hitbox() {
     return bn::rect(
     int(_position.x()-1),
     int(_position.y()+1),
-    8,   // width
-    9    // height
+    8,   // width8
+    9    // height9
     );
 }
 void Enemy::set_alive(bool alive) {
@@ -75,7 +74,7 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
             deaccelerate();
             bnd_collide(top_bnd, bottom_bnd, left_bnd, right_bnd);
             if (_velocity == bn::fixed_point(0,0)) {
-                _cooldown = 100;
+                _cooldown = 50;
                 _step++;
             }
         break;
@@ -92,6 +91,14 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
 
     bn::rect hitbox = get_hitbox();
     _spr_hitbox.set_position(hitbox.x(), hitbox.y());
+    bn::fixed scale_x = bn::fixed(hitbox.width()) / 16;
+    bn::fixed scale_y = bn::fixed(hitbox.height()) / 16;
+
+    scale_x = bn::max(scale_x, bn::fixed(0.01));
+    scale_y = bn::max(scale_y, bn::fixed(0.01));
+
+    _spr_hitbox.set_horizontal_scale(scale_x);
+    _spr_hitbox.set_vertical_scale(scale_y);
     _spr_hitbox.set_bg_priority(0);
 }
 

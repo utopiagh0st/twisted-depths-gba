@@ -1,3 +1,4 @@
-coroutine.o: C:/butano-master/butano/hw/3rd_party/agbabi/src/coroutine.c \
- C:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h
-C:/butano-master/butano/hw/3rd_party/agbabi/include/agbabi.h:
+coroutine.o: \
+ /home/Commodore/butano/butano/hw/3rd_party/agbabi/src/coroutine.c \
+ /home/Commodore/butano/butano/hw/3rd_party/agbabi/src/../include/agbabi.h
+/home/Commodore/butano/butano/hw/3rd_party/agbabi/src/../include/agbabi.h:

@@ -36,6 +36,7 @@ private:
     bn::fixed _max_speed;
     bn::fixed_point _velocity;
     bn::fixed_point _knockback_velocity;
+    int _act_direction;
     void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound);
 };
 
