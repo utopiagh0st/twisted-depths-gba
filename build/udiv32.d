@@ -1,2 +1,1 @@
-udiv32.o: \
- /home/Commodore/butano/butano/hw/3rd_party/gba-modern/src/udiv32.s
+udiv32.o: C:/butano-master/butano/hw/3rd_party/gba-modern/src/udiv32.s

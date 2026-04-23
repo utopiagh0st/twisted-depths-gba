@@ -13,6 +13,12 @@ enum class CharacterName {
     dank,
     angel
 };
+enum class Direction {
+    Up,
+    Down,
+    Left,
+    Right
+};
 
 class Player {
 public:
@@ -30,13 +36,14 @@ private:
 
     int _hp;
     int _hp_max;
+    Direction _direction;
     bn::fixed_point _position;
     bn::fixed _friction;
     bn::fixed _acceleration;
     bn::fixed _max_speed;
     bn::fixed_point _velocity;
     bn::fixed_point _knockback_velocity;
-    int _act_direction;
+    bn::fixed_point _last_input;
     void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound);
 };
 

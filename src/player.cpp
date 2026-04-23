@@ -8,16 +8,19 @@
 #include "bn_rect.h" //hitboxes
 
 #include "bn_sprite_items_hitbox.h"
-#include "bn_sprite_items_player_fran.h"
+#include "bn_sprite_items_player_fran_walk_up.h"
+#include "bn_sprite_items_player_fran_walk_down.h"
+#include "bn_sprite_items_player_fran_walk_left.h"
+#include "bn_sprite_items_player_fran_walk_right.h"
 #include "bn_sprite_animate_actions.h"
 
 static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) { //Character sprite selector
     switch(name) {
         case CharacterName::diabolus:
-            return bn::sprite_items::player_fran.create_sprite(x, y);
+            return bn::sprite_items::player_fran_walk_up.create_sprite(x, y);
     }
 
-    return bn::sprite_items::player_fran.create_sprite(x, y);
+    return bn::sprite_items::player_fran_walk_up.create_sprite(x, y);
 }
 
 Player::Player(CharacterName name, int x, int y) :
@@ -26,13 +29,14 @@ Player::Player(CharacterName name, int x, int y) :
     _hp_max = 20;
     _hp = 20;
 
+    _direction = Direction::Down;
     _position = bn::fixed_point(x,y);
     _friction = bn::fixed(0.2);
     _acceleration = bn::fixed(0.2);
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
-    _act_direction = 0;
+    _last_input = bn::fixed_point(0,0);
 
     _sprite.set_bg_priority(1); //sprite priority
 }
@@ -95,10 +99,22 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     //    _hp = _hp_max;
     //}
 
-    if(bn::keypad::up_held())    input.set_y(-1);
-    if(bn::keypad::down_held())  input.set_y(1);
-    if(bn::keypad::left_held())  input.set_x(-1);
-    if(bn::keypad::right_held()) input.set_x(1);
+    if(bn::keypad::left_held()) {
+        input.set_x(-1);
+        _direction = Direction::Left;
+    }
+    if(bn::keypad::right_held()) {
+        input.set_x(1);
+        _direction = Direction::Right;
+    }
+    if(bn::keypad::up_held()) {
+        input.set_y(-1);
+        _direction = Direction::Up;
+    }
+    if(bn::keypad::down_held()) {
+        input.set_y(1);
+        _direction = Direction::Down;
+    }
 
     if(input != bn::fixed_point(0, 0)) {    //acceleration if there's input
         moving = true;
@@ -127,31 +143,67 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
         _position.set_x(right_bound);
     }
 
+    //animation
     if(moving) {
-        if(!walk_anim.has_value()) {
-            walk_anim.emplace(
-                bn::sprite_animate_action<4>::forever(
-                    _sprite,
-                    8,
-                    bn::sprite_items::player_fran.tiles_item(),
-                    bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
-                )
-            );
+        if (_last_input != input) {
+            int walk_animation_speed = int(_max_speed * 3);
+            if (_direction == Direction::Up) {
+                walk_anim.emplace(
+                    bn::sprite_animate_action<4>::forever(
+                        _sprite,
+                        walk_animation_speed,
+                        bn::sprite_items::player_fran_walk_up.tiles_item(),
+                        bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
+                    )
+                );
+            } else if (_direction == Direction::Down) {
+                walk_anim.emplace(
+                    bn::sprite_animate_action<4>::forever(
+                        _sprite,
+                        walk_animation_speed,
+                        bn::sprite_items::player_fran_walk_down.tiles_item(),
+                        bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
+                    )
+                );
+            } else if (_direction == Direction::Left) {
+                walk_anim.emplace(
+                    bn::sprite_animate_action<4>::forever(
+                        _sprite,
+                        walk_animation_speed,
+                        bn::sprite_items::player_fran_walk_left.tiles_item(),
+                        bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
+                    )
+                );
+            } else if (_direction == Direction::Right) {
+                walk_anim.emplace(
+                    bn::sprite_animate_action<4>::forever(
+                        _sprite,
+                        walk_animation_speed,
+                        bn::sprite_items::player_fran_walk_right.tiles_item(),
+                        bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
+                    )
+                );
+            }
         }
-
         walk_anim->update();
-    }
-    else
-    {
-        // Stop animation
+    } else {
+        //stop animation
         walk_anim.reset();
-
-        // Force idle frame
-        _sprite.set_tiles(
-            bn::sprite_items::player_fran.tiles_item(),
-            1   // idle frame
-        );
+        //standing frame
+        if (_direction == Direction::Up) {
+            _sprite.set_tiles(bn::sprite_items::player_fran_walk_up.tiles_item(), 1);
+        } else if (_direction == Direction::Down) {
+            _sprite.set_tiles(bn::sprite_items::player_fran_walk_down.tiles_item(), 1);
+        } else if (_direction == Direction::Left) {
+            _sprite.set_tiles(bn::sprite_items::player_fran_walk_left.tiles_item(), 1);
+        } else if (_direction == Direction::Right) {
+            _sprite.set_tiles(bn::sprite_items::player_fran_walk_right.tiles_item(), 1);
+        } else {
+            _sprite.set_tiles(bn::sprite_items::player_fran_walk_down.tiles_item(), 1);
+        }
     }
+
+    _last_input = input;
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
 }
 

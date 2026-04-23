@@ -1,0 +1,1 @@
+player_fran_walk_left_bn_gfx.o: player_fran_walk_left_bn_gfx.s
