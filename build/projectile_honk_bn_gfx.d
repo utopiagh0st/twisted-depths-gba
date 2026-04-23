@@ -1,0 +1,1 @@
+projectile_honk_bn_gfx.o: projectile_honk_bn_gfx.s

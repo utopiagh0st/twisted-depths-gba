@@ -4,6 +4,7 @@
 #include "hud.h"
 #include "player.h"
 #include "enemy.h"
+#include "projectile.h"
 //utilities and structures
 #include "bn_vector.h"
 #include "bn_random.h"
@@ -55,11 +56,13 @@ void Game::update_pause() {
 void Game::update_playing() {
     //Player
     _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
-    //HUD
-    _hud->update(_player->get_hp(), _player->get_hp_max());
-    //Inputs
+    //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
         _enemies.push_back(Enemy(EnemyType::LimeCat, random.get_int(-66,66), random.get_int(-50,48)));
+    }
+    if (bn::keypad::b_pressed() && _projectiles.size() < MAX_PROJECTILES) {
+        _player->attack();
+        _projectiles.push_back(Projectile(ProjectileType::Honk, ProjectileOwner::Player, _player->get_shot_velocity(), _player->get_position()));
     }
     if (bn::keypad::start_pressed()) {
         bn::music::pause();
@@ -82,6 +85,19 @@ void Game::update_playing() {
             ++i;
         }
     }
+    for(int i = 0; i < _projectiles.size(); ) { //erasing stray shots
+        if(!_projectiles[i].is_alive()) {
+            _projectiles.erase(_projectiles.begin() + i); //using pointers!!
+        } else {
+            ++i;
+        }
+    }
+    //Projectiles
+    for (Projectile& projectile : _projectiles) {
+        projectile.update();
+    }
+    //HUD
+    _hud->update(_player->get_hp(), _player->get_hp_max());
 }
 
 void Game::update() {   //main update loop

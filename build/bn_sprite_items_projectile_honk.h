@@ -1,0 +1,42 @@
+#ifndef BN_SPRITE_ITEMS_PROJECTILE_HONK_H
+#define BN_SPRITE_ITEMS_PROJECTILE_HONK_H
+
+#include "bn_sprite_item.h"
+
+//{{BLOCK(projectile_honk_bn_gfx)
+
+//======================================================================
+//
+//	projectile_honk_bn_gfx, 32x32@4, 
+//	+ palette 16 entries, not compressed
+//	+ 16 tiles Metatiled by 4x4 not compressed
+//	Total size: 32 + 512 = 544
+//
+//	Time-stamp: 2026-04-23, 10:48:33
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
+//	( http://www.coranac.com/projects/#grit )
+//
+//======================================================================
+
+#ifndef GRIT_PROJECTILE_HONK_BN_GFX_H
+#define GRIT_PROJECTILE_HONK_BN_GFX_H
+
+#define projectile_honk_bn_gfxTilesLen 512
+extern const bn::tile projectile_honk_bn_gfxTiles[16];
+
+#define projectile_honk_bn_gfxPalLen 32
+extern const bn::color projectile_honk_bn_gfxPal[16];
+
+#endif // GRIT_PROJECTILE_HONK_BN_GFX_H
+
+//}}BLOCK(projectile_honk_bn_gfx)
+
+namespace bn::sprite_items
+{
+    constexpr inline sprite_item projectile_honk(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
+            sprite_tiles_item(span<const tile>(projectile_honk_bn_gfxTiles, 16), bpp_mode::BPP_4, compression_type::NONE, 1), 
+            sprite_palette_item(span<const color>(projectile_honk_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
+}
+
+#endif
+

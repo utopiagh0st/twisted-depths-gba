@@ -6,6 +6,10 @@
 #include "bn_fixed.h"
 #include "bn_rect.h"
 
+enum class ProjectileType {
+    Honk,
+    Bullet
+};
 enum class ProjectileOwner {
     Enemy,
     Player
@@ -13,14 +17,23 @@ enum class ProjectileOwner {
 
 class Projectile {
 public:
-    Projectile(bn::fixed_point pos, bn::fixed_point velocity, ProjectileOwner owner);
+    Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point velocity, bn::fixed_point position);
     bn::rect get_hitbox();
     ProjectileOwner get_owner();
+    bool is_alive();
     void update();
 private:
+    bool _debug;
+    bn::fixed _size;
     bn::fixed_point _position;
     bn::fixed_point _velocity;
+    bn::fixed _friction;
+    ProjectileType _type;
     ProjectileOwner _owner;
     bn::sprite_ptr _sprite;
+    bn::optional<bn::sprite_ptr> _spr_hitbox;
+    bool _alive;
+    bn::sprite_ptr create_projectile_sprite(ProjectileType type, bn::fixed_point position);
+    void update_movement();
 };
 #endif

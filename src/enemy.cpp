@@ -132,7 +132,7 @@ void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns t
     if(length > _max_speed + 1) {
         direction /= length;
         _velocity += direction * _acceleration;
-    }
+    }   
 
     bn::fixed speed_sq = _velocity.x()*_velocity.x() + _velocity.y()*_velocity.y();
     if (speed_sq > _max_speed*_max_speed) {

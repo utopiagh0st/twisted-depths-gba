@@ -12,6 +12,7 @@
 #include "bn_sprite_items_player_fran_walk_down.h"
 #include "bn_sprite_items_player_fran_walk_left.h"
 #include "bn_sprite_items_player_fran_walk_right.h"
+#include "bn_sprite_items_player_fran_attack_left.h"
 #include "bn_sprite_animate_actions.h"
 
 static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) { //Character sprite selector
@@ -29,6 +30,7 @@ Player::Player(CharacterName name, int x, int y) :
     _hp_max = 20;
     _hp = 20;
 
+    _animation_cooldown = 0;
     _direction = Direction::Down;
     _position = bn::fixed_point(x,y);
     _friction = bn::fixed(0.2);
@@ -37,6 +39,7 @@ Player::Player(CharacterName name, int x, int y) :
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
+    _shot_speed = bn::fixed(8);
 
     _sprite.set_bg_priority(1); //sprite priority
 }
@@ -60,6 +63,20 @@ bn::rect Player::get_hitbox() {
     13    // height
     );
 }
+bn::fixed_point Player::get_shot_velocity() {
+    bn::fixed_point shot_velocity_modifier = _velocity;
+    switch (_direction) {
+        case Direction::Up:
+            return bn::fixed_point(0, _shot_speed * -1) + shot_velocity_modifier;
+        case Direction::Down:
+            return bn::fixed_point(0, _shot_speed) + shot_velocity_modifier;
+        case Direction::Left:
+            return bn::fixed_point(_shot_speed * -1, 0) + shot_velocity_modifier;
+        case Direction::Right:
+            return bn::fixed_point(_shot_speed, 0) + shot_velocity_modifier;
+    }
+    return bn::fixed_point(0, _shot_speed * -1);
+}
 
 
 //Functions
@@ -69,9 +86,21 @@ void Player::take_damage(int damage) {
         _hp = 0;
     }
 }
+void Player::attack() {
+    _sprite.set_horizontal_flip(false);
+    switch (_direction) {
+        case Direction::Left :
+            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+        case Direction::Right :
+            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+            _sprite.set_horizontal_flip(false);
+        default:
+            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+    }
+    _animation_cooldown = 20;
+}
 
-void Player::apply_knockback(bn::fixed_point kb_velocity)
-{
+void Player::apply_knockback(bn::fixed_point kb_velocity) {
     bn::fixed speed = bn::sqrt(kb_velocity.x() * kb_velocity.x() + kb_velocity.y() * kb_velocity.y());
 
     if (speed > 0) {
@@ -144,7 +173,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     }
 
     //animation
-    if(moving) {
+    if(moving && _animation_cooldown == 0) {
         if (_last_input != input) {
             int walk_animation_speed = int(_max_speed * 3);
             if (_direction == Direction::Up) {
@@ -186,7 +215,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
             }
         }
         walk_anim->update();
-    } else {
+    } else if (_animation_cooldown == 0){
         //stop animation
         walk_anim.reset();
         //standing frame
@@ -201,6 +230,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
         } else {
             _sprite.set_tiles(bn::sprite_items::player_fran_walk_down.tiles_item(), 1);
         }
+        _sprite.set_horizontal_flip(false);
     }
 
     _last_input = input;
@@ -209,4 +239,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 
 void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
     update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
+    if (_animation_cooldown > 0) {
+        _animation_cooldown--;
+    }
 }

@@ -4,6 +4,7 @@
 //classes
 #include "player.h"
 #include "enemy.h"
+#include "projectile.h"
 #include "hud.h"
 #include "environment.h"
 //utilities and structures
@@ -26,13 +27,17 @@ private:
     State _state;
 
     bn::random random;
-
+    //interface management
     bn::optional<Hud> _hud;
-    bn::optional<Player> _player;
     bn::optional<Environment> _environment;
-    static constexpr int MAX_ENEMIES = 64;
+    //entity management
+    bn::optional<Player> _player;
+    static constexpr int MAX_ENEMIES = 50;
+    static constexpr int MAX_PROJECTILES = 50;
     bn::vector<Enemy, MAX_ENEMIES> _enemies;
+    bn::vector<Projectile, MAX_PROJECTILES> _projectiles;
 
+    //sprites & backgrounds
     bn::optional<bn::regular_bg_ptr> _floor_bg;
     bn::optional<bn::regular_bg_ptr> _walls_bg;
     int _bounds[4];
