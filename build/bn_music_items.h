@@ -6,7 +6,8 @@
 namespace bn::music_items
 {
     constexpr inline music_item castlevania2(0);
-    constexpr inline music_item silence(1);
+    constexpr inline music_item corrupt2(1);
+    constexpr inline music_item silence(2);
 }
 
 #endif

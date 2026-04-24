@@ -33,7 +33,7 @@ Player::Player(CharacterName name, int x, int y) :
     _animation_cooldown = 0;
     _direction = Direction::Down;
     _position = bn::fixed_point(x,y);
-    _friction = bn::fixed(0.2);
+    _friction = bn::fixed(0.3);
     _acceleration = bn::fixed(0.2);
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
@@ -87,17 +87,36 @@ void Player::take_damage(int damage) {
     }
 }
 void Player::attack() {
-    _sprite.set_horizontal_flip(false);
+    if (_walk_anim) {
+        _walk_anim.reset();
+    }
     switch (_direction) {
         case Direction::Left :
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+            _sprite.set_horizontal_flip(false);
+            _velocity += bn::fixed_point(2, 0);
+            break;
         case Direction::Right :
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+            _sprite.set_horizontal_flip(true);
+            _velocity -= bn::fixed_point(2, 0);
+            break;
+        case Direction::Up :
+            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
             _sprite.set_horizontal_flip(false);
+            _velocity += bn::fixed_point(0, 2);
+            break;
+        case Direction::Down :
+            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+            _sprite.set_horizontal_flip(true);
+            _velocity -= bn::fixed_point(0, 2);
+            break;
         default:
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+            break;
     }
     _animation_cooldown = 20;
+    
 }
 
 void Player::apply_knockback(bn::fixed_point kb_velocity) {
@@ -174,10 +193,10 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 
     //animation
     if(moving && _animation_cooldown == 0) {
-        if (_last_input != input) {
+        if (_last_input != input || !_walk_anim) {
             int walk_animation_speed = int(_max_speed * 3);
             if (_direction == Direction::Up) {
-                walk_anim.emplace(
+                _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
                         _sprite,
                         walk_animation_speed,
@@ -186,7 +205,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
                     )
                 );
             } else if (_direction == Direction::Down) {
-                walk_anim.emplace(
+                _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
                         _sprite,
                         walk_animation_speed,
@@ -195,7 +214,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
                     )
                 );
             } else if (_direction == Direction::Left) {
-                walk_anim.emplace(
+                _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
                         _sprite,
                         walk_animation_speed,
@@ -204,7 +223,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
                     )
                 );
             } else if (_direction == Direction::Right) {
-                walk_anim.emplace(
+                _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
                         _sprite,
                         walk_animation_speed,
@@ -214,10 +233,13 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
                 );
             }
         }
-        walk_anim->update();
+        if(_walk_anim) {
+            _walk_anim->update();
+        }
+        
     } else if (_animation_cooldown == 0){
         //stop animation
-        walk_anim.reset();
+        _walk_anim.reset();
         //standing frame
         if (_direction == Direction::Up) {
             _sprite.set_tiles(bn::sprite_items::player_fran_walk_up.tiles_item(), 1);
@@ -230,7 +252,6 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
         } else {
             _sprite.set_tiles(bn::sprite_items::player_fran_walk_down.tiles_item(), 1);
         }
-        _sprite.set_horizontal_flip(false);
     }
 
     _last_input = input;
@@ -238,8 +259,11 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 }
 
 void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
-    update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
     if (_animation_cooldown > 0) {
         _animation_cooldown--;
     }
+    if(_animation_cooldown == 0) {
+        _sprite.set_horizontal_flip(false);
+    }
+    update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
 }

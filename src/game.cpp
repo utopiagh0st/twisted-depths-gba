@@ -40,7 +40,7 @@ void Game::update_title() { //use this one as a template of a state change
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
         _hud.emplace(true);
 
-        bn::music_items::castlevania2.play(1);    //banger starts
+        bn::music_items::corrupt2.play(1);    //banger starts
 
         _state = State::Playing;    //change of state
     }

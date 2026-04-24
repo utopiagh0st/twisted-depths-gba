@@ -34,7 +34,7 @@ public:
     void update(int top_bound, int bottom_bound, int left_bound, int right_bound);  //passing bounds to avoid circle relationships
 private:
     bn::sprite_ptr _sprite;
-    bn::optional<bn::sprite_animate_action<4>> walk_anim;
+    bn::optional<bn::sprite_animate_action<4>> _walk_anim;
 
     int _animation_cooldown;
     int _hp;
