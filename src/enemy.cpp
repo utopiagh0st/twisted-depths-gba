@@ -5,21 +5,21 @@
 #include "bn_sprite_items_enemy.h"
 #include "bn_sprite_items_hitbox.h"
 
-static bn::sprite_ptr create_character_sprite(EnemyType type, int x, int y) { //Character sprite selector
+static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point position) { //Character sprite selector
     switch(type) {
         case EnemyType::LimeCat:
-            return bn::sprite_items::enemy.create_sprite(x, y);
+            return bn::sprite_items::enemy.create_sprite(position);
     }
 
-    return bn::sprite_items::enemy.create_sprite(x, y);
+    return bn::sprite_items::enemy.create_sprite(position);
 }
 
-Enemy::Enemy(EnemyType type, int x, int y) :
-    _sprite(create_character_sprite(type,x,y)),
-    _spr_hitbox(bn::sprite_items::hitbox.create_sprite(x,y))
-{   
+Enemy::Enemy(EnemyType type, bn::fixed_point position) :
+    _sprite(create_character_sprite(type, position))
+{
+    _debug = false;
     _alive = true;
-    _position = bn::fixed_point(x,y);
+    _position = position;
     _velocity = bn::fixed_point(0,0);
     _friction = bn::fixed(0.07);
     _acceleration = bn::fixed(0.3);
@@ -29,6 +29,9 @@ Enemy::Enemy(EnemyType type, int x, int y) :
 
     _type = type;
     _sprite.set_bg_priority(1);
+    if (_debug) {
+        _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));
+    }
 }
 
 bool Enemy::is_alive() {
@@ -89,17 +92,19 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
         break;
     }
 
-    bn::rect hitbox = get_hitbox();
-    _spr_hitbox.set_position(hitbox.x(), hitbox.y());
-    bn::fixed scale_x = bn::fixed(hitbox.width()) / 16;
-    bn::fixed scale_y = bn::fixed(hitbox.height()) / 16;
+    if (_debug) {
+        bn::rect hitbox = get_hitbox();
+        _spr_hitbox->set_position(hitbox.x(), hitbox.y());
+        bn::fixed scale_x = bn::fixed(hitbox.width()) / 16;
+        bn::fixed scale_y = bn::fixed(hitbox.height()) / 16;
 
-    scale_x = bn::max(scale_x, bn::fixed(0.01));
-    scale_y = bn::max(scale_y, bn::fixed(0.01));
+        scale_x = bn::max(scale_x, bn::fixed(0.01));
+        scale_y = bn::max(scale_y, bn::fixed(0.01));
 
-    _spr_hitbox.set_horizontal_scale(scale_x);
-    _spr_hitbox.set_vertical_scale(scale_y);
-    _spr_hitbox.set_bg_priority(0);
+        _spr_hitbox->set_horizontal_scale(scale_x);
+        _spr_hitbox->set_vertical_scale(scale_y);
+        _spr_hitbox->set_bg_priority(0);
+    }
 }
 
 bool Enemy::bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {

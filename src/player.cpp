@@ -13,6 +13,8 @@
 #include "bn_sprite_items_player_fran_walk_left.h"
 #include "bn_sprite_items_player_fran_walk_right.h"
 #include "bn_sprite_items_player_fran_attack_left.h"
+#include "bn_sprite_items_player_fran_attack_up.h"
+#include "bn_sprite_items_player_fran_attack_down.h"
 #include "bn_sprite_animate_actions.h"
 
 static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) { //Character sprite selector
@@ -102,13 +104,13 @@ void Player::attack() {
             _velocity -= bn::fixed_point(2, 0);
             break;
         case Direction::Up :
-            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+            _sprite.set_tiles(bn::sprite_items::player_fran_attack_up.tiles_item(), 0);
             _sprite.set_horizontal_flip(false);
             _velocity += bn::fixed_point(0, 2);
             break;
         case Direction::Down :
-            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
-            _sprite.set_horizontal_flip(true);
+            _sprite.set_tiles(bn::sprite_items::player_fran_attack_down.tiles_item(), 0);
+            _sprite.set_horizontal_flip(false);
             _velocity -= bn::fixed_point(0, 2);
             break;
         default:

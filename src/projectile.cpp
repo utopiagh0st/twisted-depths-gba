@@ -9,7 +9,7 @@ bn::sprite_ptr Projectile::create_projectile_sprite(ProjectileType type, bn::fix
         case ProjectileType::Honk:
             bn::sprite_ptr sprite = bn::sprite_items::projectile_honk.create_sprite(position);
             _size = 0.1;
-            return sprite;
+            return sprite; 
     }
     _size = 1;
     return bn::sprite_items::projectile_honk.create_sprite(position);

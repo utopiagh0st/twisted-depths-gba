@@ -13,7 +13,7 @@ enum class EnemyType
 
 class Enemy {
 public:
-    Enemy(EnemyType type, int x, int y);
+    Enemy(EnemyType type, bn::fixed_point position);
     bn::rect get_hitbox();
     bn::fixed_point get_position();
     bn::fixed_point get_velocity();
@@ -23,7 +23,8 @@ public:
     void update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos);
 private:
     //debug
-    bn::sprite_ptr _spr_hitbox;
+    bn::optional<bn::sprite_ptr> _spr_hitbox;
+    bool _debug;
 
     EnemyType _type;
     bool _alive;

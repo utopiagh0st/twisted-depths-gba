@@ -1,0 +1,1 @@
+player_fran_attack_up_bn_gfx.o: player_fran_attack_up_bn_gfx.s
