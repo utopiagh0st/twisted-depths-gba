@@ -1,0 +1,1 @@
+wall_vertical_street_bn_gfx.o: wall_vertical_street_bn_gfx.s

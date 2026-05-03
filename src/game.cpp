@@ -31,11 +31,7 @@ Game::Game() :
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
-        _environment.emplace(
-            bn::regular_bg_items::floor_bg,
-            bn::regular_bg_items::walls_bg,
-            bn::regular_bg_items::border_blue
-        );
+        _environment.emplace(RoomType::STREET_H);
 
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
         _hud.emplace(true);

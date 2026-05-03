@@ -40,7 +40,10 @@ environment.o: \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h \
  /home/Commodore/butano/butano/include/bn_tile.h \
- /home/Commodore/butano/butano/include/bn_optional.h
+ /home/Commodore/butano/butano/include/bn_optional.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_floor_horizontal_street.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_wall_vertical_street.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_wall_horizontal_street.h
 /home/Commodore/butano/games/twisted-depths-gba/src/environment.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_ptr.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
@@ -82,3 +85,6 @@ environment.o: \
 /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h:
 /home/Commodore/butano/butano/include/bn_tile.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_floor_horizontal_street.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_wall_vertical_street.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_wall_horizontal_street.h:

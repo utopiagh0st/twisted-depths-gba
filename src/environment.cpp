@@ -3,17 +3,33 @@
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
 
-Environment::Environment(bn::regular_bg_item current_floor, bn::regular_bg_item current_walls, bn::regular_bg_item current_border)
+Environment::Environment(RoomType room_type)
 {
-    create_env(current_floor, current_walls, current_border );
+    emplace_bgs(room_type);
 }
 
-void Environment::create_env(bn::regular_bg_item floor, bn::regular_bg_item walls, bn::regular_bg_item border) {
-    _floor_bg.emplace(floor.create_bg(0, 0));  //bg emplacement
-    _walls_bg.emplace(walls.create_bg(0, 0));
-    _border_bg.emplace(border.create_bg(0, 0));
-    
-    _border_bg->set_priority(0);
-    _walls_bg->set_priority(3);
-    _floor_bg->set_priority(3);  //priority (0 is the highest)
+void Environment::emplace_bgs(RoomType room_type) {
+    for(const RoomData& room : ROOM_LOOKUP) {
+        if(room_type == room.type) {
+            // Función auxiliar interna o lógica directa para actualizar cada capa
+            auto update_layer = [](bn::optional<bn::regular_bg_ptr>& layer, const bn::regular_bg_item& item) {
+                if(layer) {
+                    layer->set_item(item);
+                } else {
+                    layer.emplace(item.create_bg(0, 0));
+                    layer->set_priority(3); // El piso debería tener mayor número (fondo)
+                }
+            };
+
+            // Actualizamos cada parte de la habitación
+            // Prioridad 3 para el piso (atrás), 2 para las paredes (frente al piso)
+            update_layer(_floor, room.bg_floor);
+            update_layer(_left_wall, room.bg_left_wall);
+            update_layer(_right_wall, room.bg_right_wall);
+            update_layer(_up_wall, room.bg_up_wall);
+            update_layer(_down_wall, room.bg_down_wall);
+
+            return; // Salimos del bucle ya que encontramos la sala
+        }
+    }
 }

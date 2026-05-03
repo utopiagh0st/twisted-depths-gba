@@ -1,0 +1,1 @@
+doorway_vertical_street_bn_gfx.o: doorway_vertical_street_bn_gfx.s
