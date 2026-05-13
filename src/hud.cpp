@@ -8,10 +8,13 @@
 #include "bn_sprite_items_hp_closed.h"
 #include "bn_sprite_items_hp_open.h"
 //backgrounds
+#include "bn_regular_bg_items_border_blue.h"
 
 Hud::Hud(bool visible) :
-    _spr_hp_zipper(bn::sprite_items::hp_zipper.create_sprite(225, 101))
+    _spr_hp_zipper(bn::sprite_items::hp_zipper.create_sprite(225, 101)),
+    _bg_border(bn::regular_bg_items::border_blue.create_bg(0, 0))
 {
+    _bg_border->set_priority(0);
     _is_visible = visible;
     //initialization
 }
@@ -20,7 +23,7 @@ void Hud::update(int player_hp, int player_hp_max) {
     if (_is_visible) {
         //HP ZIPPER
         if (player_hp != _last_hp_checked || player_hp_max != _last_hp_max_checked) {
-            _hp_gauge.clear();
+            _hp_gauge.clear(); //resets the gauge to draw it from scratch, there must be a better way to achieve this but I wanna sleep
             int y_offset = -78;
             for (int i = 0; i < player_hp; i++) {
                 bn::sprite_ptr hp_open_piece = bn::sprite_items::hp_open.create_sprite(104,y_offset);

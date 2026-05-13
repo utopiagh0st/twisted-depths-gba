@@ -36,7 +36,7 @@ Player::Player(CharacterName name, int x, int y) :
     _direction = Direction::Down;
     _position = bn::fixed_point(x,y);
     _friction = bn::fixed(0.3);
-    _acceleration = bn::fixed(0.2);
+    _acceleration = bn::fixed(0.3);
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);

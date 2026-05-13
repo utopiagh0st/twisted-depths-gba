@@ -17,6 +17,7 @@ private:
     bool _is_visible = false;
     bn::sprite_ptr _spr_hp_zipper;
     bn::vector<bn::sprite_ptr, 22> _hp_gauge;
+    bn::optional<bn::regular_bg_ptr> _bg_border;
 };
 
 #endif

@@ -31,7 +31,7 @@ Game::Game() :
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
-        _environment.emplace(RoomType::STREET_H);
+        _environment.emplace(RoomType::STREET_LR);
 
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
         _hud.emplace(true);
@@ -52,6 +52,7 @@ void Game::update_pause() {
 void Game::update_playing() {
     //Player
     _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
         _enemies.push_back(Enemy(EnemyType::LimeCat, bn::fixed_point(random.get_int(-66,66), random.get_int(-50,48)) ));
@@ -64,6 +65,7 @@ void Game::update_playing() {
         bn::music::pause();
         _state = State::Pause;  //pause button just stops running the game logic
     }
+
     //Enemies
     for (Enemy& enemy : _enemies) {
         enemy.update(_bounds[0], _bounds[1], _bounds[2], _bounds[3], _player->get_position());
@@ -88,10 +90,12 @@ void Game::update_playing() {
             ++i;
         }
     }
+
     //Projectiles
     for (Projectile& projectile : _projectiles) {
         projectile.update();
     }
+
     //HUD
     _hud->update(_player->get_hp(), _player->get_hp_max());
 }

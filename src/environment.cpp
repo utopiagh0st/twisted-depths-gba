@@ -23,11 +23,7 @@ void Environment::emplace_bgs(RoomType room_type) {
 
             // Actualizamos cada parte de la habitación
             // Prioridad 3 para el piso (atrás), 2 para las paredes (frente al piso)
-            update_layer(_floor, room.bg_floor);
-            update_layer(_left_wall, room.bg_left_wall);
-            update_layer(_right_wall, room.bg_right_wall);
-            update_layer(_up_wall, room.bg_up_wall);
-            update_layer(_down_wall, room.bg_down_wall);
+            update_layer(_bg, room.bg);
 
             return; // Salimos del bucle ya que encontramos la sala
         }
