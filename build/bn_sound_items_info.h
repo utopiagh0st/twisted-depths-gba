@@ -8,7 +8,7 @@
 namespace bn::sound_items_info
 {
     constexpr inline pair<sound_item, string_view> array[] = {
-        make_pair(sound_item(12), string_view("mute")),
+        make_pair(sound_item(23), string_view("mute")),
     };
 
     constexpr inline span<const pair<sound_item, string_view>> span(array);

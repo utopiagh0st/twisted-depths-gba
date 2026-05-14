@@ -1,5 +1,5 @@
-#ifndef ENVIRONMENT_H
-#define ENVIRONMENT_H
+#ifndef ROOM_H
+#define ROOM_H
 
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
@@ -25,9 +25,9 @@ constexpr RoomData ROOM_LOOKUP[] = {
     {   RoomType::DEBUG_CLOSED, bn::regular_bg_items::bg_street_lr, false, true}
 };
 
-class Environment {
+class Room {
 public:
-    Environment(RoomType room_type);
+    Room(RoomType room_type);
     void emplace_bgs(RoomType room_type);
 private:
     bn::optional<bn::regular_bg_ptr> _bg;

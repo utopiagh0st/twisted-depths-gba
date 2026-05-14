@@ -1,6 +1,6 @@
 //classes
 #include "game.h"
-#include "environment.h"
+#include "room.h"
 #include "hud.h"
 #include "player.h"
 #include "enemy.h"
@@ -31,12 +31,12 @@ Game::Game() :
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
-        _environment.emplace(RoomType::STREET_LR);
+        _room.emplace(RoomType::STREET_LR);
 
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
         _hud.emplace(true);
 
-        bn::music_items::corrupt2.play(1);    //banger starts
+        bn::music_items::dark_experience.play(1);    //banger starts
 
         _state = State::Playing;    //change of state
     }

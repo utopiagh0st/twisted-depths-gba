@@ -6,7 +6,7 @@
 #include "enemy.h"
 #include "projectile.h"
 #include "hud.h"
-#include "environment.h"
+#include "room.h"
 //utilities and structures
 #include "bn_optional.h"
 #include "bn_vector.h"
@@ -29,7 +29,8 @@ private:
     bn::random random;
     //interface management
     bn::optional<Hud> _hud;
-    bn::optional<Environment> _environment;
+    bn::optional<Room> _room;
+
     //entity management
     bn::optional<Player> _player;
     static constexpr int MAX_ENEMIES = 50;

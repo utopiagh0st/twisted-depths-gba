@@ -60,7 +60,7 @@ main.o: C:/butano-master/games/twisted-depths-gba/src/main.cpp \
  C:/butano-master/butano/include/bn_regular_bg_tiles_item.h \
  C:/butano-master/butano/include/bn_optional.h \
  C:/butano-master/butano/include/bn_vector.h \
- C:/butano-master/games/twisted-depths-gba/src/environment.h \
+ C:/butano-master/games/twisted-depths-gba/src/room.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_lr.h \
  C:/butano-master/butano/include/bn_random.h \
  C:/butano-master/butano/include/bn_math.h \
@@ -128,7 +128,7 @@ C:/butano-master/butano/include/bn_regular_bg_map_cell.h:
 C:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
 C:/butano-master/butano/include/bn_optional.h:
 C:/butano-master/butano/include/bn_vector.h:
-C:/butano-master/games/twisted-depths-gba/src/environment.h:
+C:/butano-master/games/twisted-depths-gba/src/room.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_lr.h:
 C:/butano-master/butano/include/bn_random.h:
 C:/butano-master/butano/include/bn_math.h:

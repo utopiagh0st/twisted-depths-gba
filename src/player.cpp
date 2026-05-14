@@ -35,7 +35,7 @@ Player::Player(CharacterName name, int x, int y) :
     _animation_cooldown = 0;
     _direction = Direction::Down;
     _position = bn::fixed_point(x,y);
-    _friction = bn::fixed(0.3);
+    _friction = bn::fixed(0.2);
     _acceleration = bn::fixed(0.3);
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
@@ -89,6 +89,7 @@ void Player::take_damage(int damage) {
     }
 }
 void Player::attack() {
+    int atk_knockback = 4;
     if (_walk_anim) {
         _walk_anim.reset();
     }
@@ -96,22 +97,22 @@ void Player::attack() {
         case Direction::Left :
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
             _sprite.set_horizontal_flip(false);
-            _velocity += bn::fixed_point(2, 0);
+            _velocity += bn::fixed_point(atk_knockback, 0);
             break;
         case Direction::Right :
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
             _sprite.set_horizontal_flip(true);
-            _velocity -= bn::fixed_point(2, 0);
+            _velocity -= bn::fixed_point(atk_knockback, 0);
             break;
         case Direction::Up :
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_up.tiles_item(), 0);
             _sprite.set_horizontal_flip(false);
-            _velocity += bn::fixed_point(0, 2);
+            _velocity += bn::fixed_point(0, atk_knockback);
             break;
         case Direction::Down :
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_down.tiles_item(), 0);
             _sprite.set_horizontal_flip(false);
-            _velocity -= bn::fixed_point(0, 2);
+            _velocity -= bn::fixed_point(0, atk_knockback);
             break;
         default:
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
