@@ -8,6 +8,10 @@ Room::Room(RoomType room_type)
     emplace_bgs(room_type);
 }
 
+RoomType Room::get_roomtype_with_entries(bool up, bool down, bool left, bool right, ) {
+    return 
+}
+
 void Room::emplace_bgs(RoomType room_type) {
     for(const RoomData& room_blueprint : ROOM_LOOKUP) {
         if(room_type == room_blueprint.type) {
