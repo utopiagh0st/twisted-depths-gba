@@ -1,35 +1,34 @@
 #include "room.h"
+#include "bn_vector.h"
+#include "bn_random.h"
 //sprites, txt and bg
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
 
-Room::Room(RoomType room_type)
+Room::Room(bn::random& rnd, RoomType required_entries) :
+    _rnd(rnd)
 {
-    emplace_bgs(room_type);
+    emplace_bgs( get_random_room_index(LevelType::STREET, required_entries) );
 }
 
-RoomType Room::get_roomtype_with_entries(bool up, bool down, bool left, bool right, ) {
-    return 
-}
-
-void Room::emplace_bgs(RoomType room_type) {
-    for(const RoomData& room_blueprint : ROOM_LOOKUP) {
-        if(room_type == room_blueprint.type) {
-            // Función auxiliar interna o lógica directa para actualizar cada capa
-            auto update_layer = [](bn::optional<bn::regular_bg_ptr>& layer, const bn::regular_bg_item& bg_item) {
-                if(layer) {
-                    layer->set_item(bg_item);
-                } else {
-                    layer.emplace(bg_item.create_bg(0, 0));
-                    layer->set_priority(3); // El piso debería tener mayor número (fondo)
-                }
-            };
-
-            // Actualizamos cada parte de la habitación
-            // Prioridad 3 para el piso (atrás), 2 para las paredes (frente al piso)
-            update_layer(_bg, room_blueprint.bg);
-
-            return; // Salimos del bucle ya que encontramos la sala
+int Room::get_random_room_index(LevelType level_type, RoomType required_entries) {
+    bn::vector<int, 32> room_candidates;
+    for(const RoomData& room : ROOM_LOOKUP) {
+        if(level_type == room.level_type && has_entries(room.room_type, required_entries)) {
+            int room_id = &room - ROOM_LOOKUP;
+            room_candidates.push_back(room_id);
         }
+    }
+    return room_candidates[_rnd.get_int(room_candidates.size())];
+}
+
+void Room::emplace_bgs(int room_index) {
+    const RoomData& room = ROOM_LOOKUP[room_index];
+
+    if(_bg) {
+        _bg->set_item(room.bg);
+    } else {
+        _bg.emplace(room.bg.create_bg(0, 0));
+        _bg->set_priority(3);
     }
 }

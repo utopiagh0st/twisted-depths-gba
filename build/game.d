@@ -57,12 +57,26 @@ game.o: C:/butano-master/games/twisted-depths-gba/src/game.cpp \
  C:/butano-master/butano/include/bn_optional.h \
  C:/butano-master/butano/include/bn_vector.h \
  C:/butano-master/games/twisted-depths-gba/src/room.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_lr.h \
  C:/butano-master/butano/include/bn_random.h \
  C:/butano-master/butano/include/bn_math.h \
  C:/butano-master/butano/include/bn_sin_lut.h \
  C:/butano-master/butano/include/bn_reciprocal_lut.h \
  C:/butano-master/butano/include/bn_rule_of_three_approximation.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_u.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_d.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_l.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_r.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ud.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_lr.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ul.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ur.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_dl.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_dr.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ulr.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_dlr.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_udl.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_udr.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_udlr.h \
  C:/butano-master/butano/include/bn_music.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_music_items.h \
  C:/butano-master/butano/include/bn_music_item.h \
@@ -131,12 +145,26 @@ C:/butano-master/butano/include/bn_regular_bg_tiles_item.h:
 C:/butano-master/butano/include/bn_optional.h:
 C:/butano-master/butano/include/bn_vector.h:
 C:/butano-master/games/twisted-depths-gba/src/room.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_lr.h:
 C:/butano-master/butano/include/bn_random.h:
 C:/butano-master/butano/include/bn_math.h:
 C:/butano-master/butano/include/bn_sin_lut.h:
 C:/butano-master/butano/include/bn_reciprocal_lut.h:
 C:/butano-master/butano/include/bn_rule_of_three_approximation.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_u.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_d.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_l.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_r.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ud.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_lr.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ul.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ur.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_dl.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_dr.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_ulr.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_dlr.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_udl.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_udr.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_street_udlr.h:
 C:/butano-master/butano/include/bn_music.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_music_items.h:
 C:/butano-master/butano/include/bn_music_item.h:
