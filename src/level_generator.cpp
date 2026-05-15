@@ -43,16 +43,7 @@ Level Level_generator::generate_level(LevelType level_type) {
         }
     }
 
-    return Level(
-    level_type,
-    level_map,
-    start_room_index);
-}
-
-Room::Room(bn::random& rnd, RoomType required_entries) :
-    _rnd(rnd)
-{
-    emplace_bgs( get_random_room_index(LevelType::STREET, required_entries) );
+    return Level(level_type, level_map, bn::fixed_point(4, 1)); //y,x
 }
 
 int Level_generator::get_random_room_index(LevelType level_type, RoomType required_entries) {
@@ -64,15 +55,4 @@ int Level_generator::get_random_room_index(LevelType level_type, RoomType requir
         }
     }
     return room_candidates[_rnd.get_int(room_candidates.size())];
-}
-
-void Room::emplace_bgs(int room_index) {
-    const RoomData& room = ROOM_LOOKUP[room_index];
-
-    if(_bg) {
-        _bg->set_item(room.bg);
-    } else {
-        _bg.emplace(room.bg.create_bg(0, 0));
-        _bg->set_priority(3);
-    }
 }

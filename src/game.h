@@ -13,6 +13,13 @@
 #include "bn_random.h"
 //sprites, txt and bg
 
+enum class Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
 class Game {
 public:
     Game();

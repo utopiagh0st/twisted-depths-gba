@@ -57,6 +57,9 @@ int Player::get_hp_max() {
 bn::fixed_point Player::get_position() {
     return _position;
 }
+void Player::set_position(bn::fixed_point new_position) {
+    _sprite.set_position(new_position);
+}
 bn::rect Player::get_hitbox() {
     return bn::rect(
     int(_position.x()),
@@ -183,6 +186,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     _position += _velocity + _knockback_velocity; //movin
     _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
 
+    /*
     if (_position.y() <top_bound) {    //makin sure nothing goes off the rails but literally
         _position.set_y(top_bound);
     } else if (_position.y() > bottom_bound) {
@@ -193,6 +197,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     } else if (_position.x() > right_bound) {
         _position.set_x(right_bound);
     }
+    */
 
     //animation
     if(moving && _animation_cooldown == 0) {

@@ -23,15 +23,16 @@
 Game::Game() :
     _state(State::Title)    //starts with title state
 {
-    _bounds[0] = -50;   //up
-    _bounds[1] = 48;    //down
-    _bounds[2] = -66;   //left
-    _bounds[3] = 66;    //right
+    _bounds[Direction::Up] = -50;   //up
+    _bounds[Direction::Down] = 48;    //down
+    _bounds[Direction::Left] = -66;   //left
+    _bounds[Direction::Right] = 66;    //right
 }
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
         _level = level_generator.generate_level(LevelType::STREET);
+        _level.draw_room(_level.get_starting_room());
         //_room.emplace(random, RoomType::U);
 
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
@@ -52,7 +53,21 @@ void Game::update_pause() {
 
 void Game::update_playing() {
     //Player
-    _player->update(_bounds[0], _bounds[1], _bounds[2], _bounds[3]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    _player->update(_bounds[Direction::Up], _bounds[Direction::Down], _bounds[Direction::Left], _bounds[Direction::Right]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    //Room Transition
+    if (_player->get_position().y() < _bounds[Direction::Up]) {
+        _level.room_transition(Direction::Up);
+        _player.set_position(bn::fixed_point(0,0));
+    } else if (_player->get_position().y() > _bounds[Direction::Down]) {
+        _level.room_transition(Direction::Down);
+        _player.set_position(bn::fixed_point(0,0));
+    } else if (_player->get_position().x() < _bounds[Direction::Left]) {
+        _level.room_transition(Direction::Left);
+        _player.set_position(bn::fixed_point(0,0));
+    } else if (_player->get_position().x() > _bounds[Direction::Right]) {
+        _level.room_transition(Direction::Right);
+        _player.set_position(bn::fixed_point(0,0));
+    } 
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
@@ -69,7 +84,7 @@ void Game::update_playing() {
 
     //Enemies
     for (Enemy& enemy : _enemies) {
-        enemy.update(_bounds[0], _bounds[1], _bounds[2], _bounds[3], _player->get_position());
+        enemy.update(_bounds[Direction::Up], _bounds[Direction::Down], _bounds[Direction::Left], _bounds[Direction::Right], _player->get_position());
         // Colission checks
         if (_player->get_hitbox().intersects(enemy.get_hitbox())) {
             //enemy.set_alive(false);
