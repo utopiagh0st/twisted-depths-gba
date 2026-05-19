@@ -21,19 +21,20 @@
 #include "bn_regular_bg_items_border_blue.h"
 
 Game::Game() :
-    _state(State::Title)    //starts with title state
+    _state(State::Title),    //starts with title state
+    _level_generator(_rnd)
 {
-    _bounds[Direction::Up] = -50;   //up
-    _bounds[Direction::Down] = 48;    //down
-    _bounds[Direction::Left] = -66;   //left
-    _bounds[Direction::Right] = 66;    //right
+    _bounds[UP] = -50;   //up
+    _bounds[DOWN] = 48;    //down
+    _bounds[LEFT] = -66;   //left
+    _bounds[RIGHT] = 66;    //right
 }
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
-        _level = level_generator.generate_level(LevelType::STREET);
-        _level.draw_room(_level.get_starting_room());
-        //_room.emplace(random, RoomType::U);
+        _level.emplace(_level_generator.generate_level(LevelType::STREET));
+        _level->load_room(_level->get_starting_room_pos());
+        //_room.emplace(_rnd, RoomType::U);
 
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
         _hud.emplace(true);
@@ -52,26 +53,28 @@ void Game::update_pause() {
 }
 
 void Game::update_playing() {
+    _level->update();
     //Player
-    _player->update(_bounds[Direction::Up], _bounds[Direction::Down], _bounds[Direction::Left], _bounds[Direction::Right]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    _player->update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     //Room Transition
-    if (_player->get_position().y() < _bounds[Direction::Up]) {
-        _level.room_transition(Direction::Up);
-        _player.set_position(bn::fixed_point(0,0));
-    } else if (_player->get_position().y() > _bounds[Direction::Down]) {
-        _level.room_transition(Direction::Down);
-        _player.set_position(bn::fixed_point(0,0));
-    } else if (_player->get_position().x() < _bounds[Direction::Left]) {
-        _level.room_transition(Direction::Left);
-        _player.set_position(bn::fixed_point(0,0));
-    } else if (_player->get_position().x() > _bounds[Direction::Right]) {
-        _level.room_transition(Direction::Right);
-        _player.set_position(bn::fixed_point(0,0));
-    } 
+
+    if (_player->get_position().y() < _bounds[UP]) {
+        _player->set_position(bn::fixed_point(0,_bounds[DOWN] - 2));
+        _level->begin_room_transition(UP);
+    } else if (_player->get_position().y() > _bounds[DOWN]) {
+        _player->set_position(bn::fixed_point(0,_bounds[UP] + 2));
+        _level->begin_room_transition(DOWN);
+    } else if (_player->get_position().x() < _bounds[LEFT]) {
+        _player->set_position(bn::fixed_point(_bounds[RIGHT] - 2,0));
+        _level->begin_room_transition(LEFT);
+    } else if (_player->get_position().x() > _bounds[RIGHT]) {
+        _player->set_position(bn::fixed_point(_bounds[LEFT] + 2,0));
+        _level->begin_room_transition(RIGHT);
+    }
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
-        _enemies.push_back(Enemy(EnemyType::LimeCat, bn::fixed_point(random.get_int(-66,66), random.get_int(-50,48)) ));
+        _enemies.push_back(Enemy(EnemyType::LimeCat, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)) ));
     }
     if (bn::keypad::b_pressed() && _projectiles.size() < MAX_PROJECTILES) {
         _player->attack();
@@ -84,7 +87,7 @@ void Game::update_playing() {
 
     //Enemies
     for (Enemy& enemy : _enemies) {
-        enemy.update(_bounds[Direction::Up], _bounds[Direction::Down], _bounds[Direction::Left], _bounds[Direction::Right], _player->get_position());
+        enemy.update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _player->get_position());
         // Colission checks
         if (_player->get_hitbox().intersects(enemy.get_hitbox())) {
             //enemy.set_alive(false);
@@ -128,5 +131,5 @@ void Game::update() {   //main update loop
             update_pause();
             break;
     }
-    random.update();
+    _rnd.update();
 }

@@ -1,5 +1,5 @@
 #include "room_data.h"
-
+#include "bn_array.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
 
@@ -20,7 +20,7 @@
 #include "bn_regular_bg_items_bg_street_udlr.h"
 
 //only has ts lookup array
-constexpr RoomData ROOM_LOOKUP[] = {
+const bn::array<RoomData, 15> ROOM_LOOKUP = {{
     {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u},
     {   LevelType::STREET, RoomType::D, bn::regular_bg_items::bg_street_d},
     {   LevelType::STREET, RoomType::L, bn::regular_bg_items::bg_street_l},
@@ -36,4 +36,4 @@ constexpr RoomData ROOM_LOOKUP[] = {
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_udl},
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_udr},
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_udlr}
-};
+}};

@@ -7,18 +7,14 @@
 #include "projectile.h"
 #include "hud.h"
 #include "room.h"
+#include "level.h"
+#include "level_generator.h"
+
 //utilities and structures
 #include "bn_optional.h"
 #include "bn_vector.h"
 #include "bn_random.h"
 //sprites, txt and bg
-
-enum class Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
 
 class Game {
 public:
@@ -33,21 +29,22 @@ private:
     };
     State _state;
 
-    bn::random random;
+    bn::random _rnd;
+    bn::optional<Level> _level;
+    Level_generator _level_generator;
+
     //interface management
     bn::optional<Hud> _hud;
     bn::optional<Room> _room;
 
     //entity management
     bn::optional<Player> _player;
+
     static constexpr int MAX_ENEMIES = 50;
     static constexpr int MAX_PROJECTILES = 50;
     bn::vector<Enemy, MAX_ENEMIES> _enemies;
     bn::vector<Projectile, MAX_PROJECTILES> _projectiles;
 
-    //sprites & backgrounds
-    bn::optional<bn::regular_bg_ptr> _floor_bg;
-    bn::optional<bn::regular_bg_ptr> _walls_bg;
     int _bounds[4];
 
     void update_title();

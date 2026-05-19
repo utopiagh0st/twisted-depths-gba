@@ -5,15 +5,17 @@
 #include "bn_regular_bg_item.h"
 #include "bn_optional.h"
 #include "bn_random.h"
-
+#include "bn_fixed_point.h"
+#include "room_data.h"
 
 class Room {
 public:
-    Room(bn::random& rnd, RoomType room_type);
-    int get_random_room_index(LevelType level_type, RoomType required_entries);
-    void emplace_bgs(int room_id);
+    Room(int room_index);
+    void put_bg_below();
+    bn::fixed_point get_bg_position();
+    void draw_bg(bn::fixed_point position);
 private:
-    bn::random& _rnd;
+    int _room_index;
     bn::optional<bn::regular_bg_ptr> _bg;
 };
 

@@ -24,6 +24,7 @@ class Player {
 public:
     Player(CharacterName name, int x, int y);
     bn::fixed_point get_position();
+    void set_position(bn::fixed_point new_position);
     int get_hp();
     int get_hp_max();
     bn::rect get_hitbox();

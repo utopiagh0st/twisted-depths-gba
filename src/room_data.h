@@ -3,6 +3,11 @@
 
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
+#include "bn_array.h"
+
+//to make room generation a lil clearer
+constexpr int EMPTY = -1;
+constexpr int UNSET = -2;
 
 enum class LevelType {
     STREET
@@ -36,6 +41,6 @@ struct RoomData {
 };
 
 // static look-up table that lives in cpp cuz it'll get big
-extern RoomData ROOM_LOOKUP[];
+extern const bn::array<RoomData, 15> ROOM_LOOKUP;
 
 #endif

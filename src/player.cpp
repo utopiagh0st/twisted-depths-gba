@@ -59,6 +59,7 @@ bn::fixed_point Player::get_position() {
 }
 void Player::set_position(bn::fixed_point new_position) {
     _sprite.set_position(new_position);
+    _position = new_position;
 }
 bn::rect Player::get_hitbox() {
     return bn::rect(
