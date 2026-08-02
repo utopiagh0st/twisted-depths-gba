@@ -1,0 +1,1 @@
+projectile_blink_bn_gfx.o: projectile_blink_bn_gfx.s

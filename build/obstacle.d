@@ -1,5 +1,5 @@
-player.o: C:/butano-master/games/twisted-depths-gba/src/player.cpp \
- C:/butano-master/games/twisted-depths-gba/src/player.h \
+obstacle.o: C:/butano-master/games/twisted-depths-gba/src/obstacle.cpp \
+ C:/butano-master/games/twisted-depths-gba/src/obstacle.h \
  C:/butano-master/butano/include/bn_sprite_ptr.h \
  C:/butano-master/butano/include/bn_optional.h \
  C:/butano-master/butano/include/bn_assert.h \
@@ -24,45 +24,30 @@ player.o: C:/butano-master/games/twisted-depths-gba/src/player.cpp \
  C:/butano-master/butano/include/bn_compare.h \
  C:/butano-master/butano/include/bn_point.h \
  C:/butano-master/butano/include/bn_fixed_point_fwd.h \
- C:/butano-master/butano/include/bn_sprite_animate_actions.h \
+ C:/butano-master/butano/include/bn_fixed_point.h \
+ C:/butano-master/butano/include/bn_fixed.h \
+ C:/butano-master/butano/include/bn_rect.h \
+ C:/butano-master/butano/include/bn_size.h \
+ C:/butano-master/butano/include/bn_math.h \
  C:/butano-master/butano/include/bn_array.h \
  C:/butano-master/butano/include/bn_iterator.h \
  C:/butano-master/butano/include/bn_array_fwd.h \
- C:/butano-master/butano/include/bn_vector.h \
- C:/butano-master/butano/include/bn_vector_fwd.h \
- C:/butano-master/butano/include/bn_sprite_ptr.h \
- C:/butano-master/butano/include/bn_sprite_tiles_ptr.h \
- C:/butano-master/butano/include/bn_span.h \
- C:/butano-master/butano/include/bn_span_fwd.h \
- C:/butano-master/butano/include/bn_sprite_tiles_item.h \
- C:/butano-master/butano/include/bn_tile.h \
- C:/butano-master/butano/include/bn_bpp_mode.h \
- C:/butano-master/butano/include/bn_compression_type.h \
- C:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
- C:/butano-master/butano/include/bn_fixed.h \
- C:/butano-master/butano/include/bn_fixed_point.h \
- C:/butano-master/butano/include/bn_rect.h \
- C:/butano-master/butano/include/bn_size.h \
- C:/butano-master/games/twisted-depths-gba/src/obstacle.h \
- C:/butano-master/butano/include/bn_keypad.h \
- C:/butano-master/butano/include/bn_math.h \
  C:/butano-master/butano/include/bn_sin_lut.h \
  C:/butano-master/butano/include/bn_reciprocal_lut.h \
  C:/butano-master/butano/include/bn_rule_of_three_approximation.h \
- C:/butano-master/butano/include/bn_array.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_hitbox.h \
  C:/butano-master/butano/include/bn_sprite_item.h \
  C:/butano-master/butano/include/bn_sprite_shape_size.h \
+ C:/butano-master/butano/include/bn_bpp_mode.h \
+ C:/butano-master/butano/include/bn_sprite_tiles_item.h \
+ C:/butano-master/butano/include/bn_span.h \
+ C:/butano-master/butano/include/bn_span_fwd.h \
+ C:/butano-master/butano/include/bn_tile.h \
+ C:/butano-master/butano/include/bn_compression_type.h \
  C:/butano-master/butano/include/bn_sprite_palette_item.h \
  C:/butano-master/butano/include/bn_color.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_up.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_down.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_left.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_right.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_left.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_up.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_down.h
-C:/butano-master/games/twisted-depths-gba/src/player.h:
+ C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_wall.h
+C:/butano-master/games/twisted-depths-gba/src/obstacle.h:
 C:/butano-master/butano/include/bn_sprite_ptr.h:
 C:/butano-master/butano/include/bn_optional.h:
 C:/butano-master/butano/include/bn_assert.h:
@@ -87,41 +72,26 @@ C:/butano-master/butano/include/bn_fixed.h:
 C:/butano-master/butano/include/bn_compare.h:
 C:/butano-master/butano/include/bn_point.h:
 C:/butano-master/butano/include/bn_fixed_point_fwd.h:
-C:/butano-master/butano/include/bn_sprite_animate_actions.h:
+C:/butano-master/butano/include/bn_fixed_point.h:
+C:/butano-master/butano/include/bn_fixed.h:
+C:/butano-master/butano/include/bn_rect.h:
+C:/butano-master/butano/include/bn_size.h:
+C:/butano-master/butano/include/bn_math.h:
 C:/butano-master/butano/include/bn_array.h:
 C:/butano-master/butano/include/bn_iterator.h:
 C:/butano-master/butano/include/bn_array_fwd.h:
-C:/butano-master/butano/include/bn_vector.h:
-C:/butano-master/butano/include/bn_vector_fwd.h:
-C:/butano-master/butano/include/bn_sprite_ptr.h:
-C:/butano-master/butano/include/bn_sprite_tiles_ptr.h:
-C:/butano-master/butano/include/bn_span.h:
-C:/butano-master/butano/include/bn_span_fwd.h:
-C:/butano-master/butano/include/bn_sprite_tiles_item.h:
-C:/butano-master/butano/include/bn_tile.h:
-C:/butano-master/butano/include/bn_bpp_mode.h:
-C:/butano-master/butano/include/bn_compression_type.h:
-C:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
-C:/butano-master/butano/include/bn_fixed.h:
-C:/butano-master/butano/include/bn_fixed_point.h:
-C:/butano-master/butano/include/bn_rect.h:
-C:/butano-master/butano/include/bn_size.h:
-C:/butano-master/games/twisted-depths-gba/src/obstacle.h:
-C:/butano-master/butano/include/bn_keypad.h:
-C:/butano-master/butano/include/bn_math.h:
 C:/butano-master/butano/include/bn_sin_lut.h:
 C:/butano-master/butano/include/bn_reciprocal_lut.h:
 C:/butano-master/butano/include/bn_rule_of_three_approximation.h:
-C:/butano-master/butano/include/bn_array.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_hitbox.h:
 C:/butano-master/butano/include/bn_sprite_item.h:
 C:/butano-master/butano/include/bn_sprite_shape_size.h:
+C:/butano-master/butano/include/bn_bpp_mode.h:
+C:/butano-master/butano/include/bn_sprite_tiles_item.h:
+C:/butano-master/butano/include/bn_span.h:
+C:/butano-master/butano/include/bn_span_fwd.h:
+C:/butano-master/butano/include/bn_tile.h:
+C:/butano-master/butano/include/bn_compression_type.h:
 C:/butano-master/butano/include/bn_sprite_palette_item.h:
 C:/butano-master/butano/include/bn_color.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_up.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_down.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_left.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk_right.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_left.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_up.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_down.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_wall.h:

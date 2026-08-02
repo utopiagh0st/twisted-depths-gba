@@ -49,6 +49,7 @@ main.o: C:/butano-master/games/twisted-depths-gba/src/main.cpp \
  C:/butano-master/butano/include/bn_fixed_point.h \
  C:/butano-master/butano/include/bn_rect.h \
  C:/butano-master/butano/include/bn_size.h \
+ C:/butano-master/games/twisted-depths-gba/src/obstacle.h \
  C:/butano-master/games/twisted-depths-gba/src/enemy.h \
  C:/butano-master/games/twisted-depths-gba/src/projectile.h \
  C:/butano-master/games/twisted-depths-gba/src/hud.h \
@@ -121,6 +122,7 @@ C:/butano-master/butano/include/bn_fixed.h:
 C:/butano-master/butano/include/bn_fixed_point.h:
 C:/butano-master/butano/include/bn_rect.h:
 C:/butano-master/butano/include/bn_size.h:
+C:/butano-master/games/twisted-depths-gba/src/obstacle.h:
 C:/butano-master/games/twisted-depths-gba/src/enemy.h:
 C:/butano-master/games/twisted-depths-gba/src/projectile.h:
 C:/butano-master/games/twisted-depths-gba/src/hud.h:

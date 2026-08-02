@@ -35,6 +35,7 @@ void Game::update_title() { //use this one as a template of a state change
 
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
         _hud.emplace(true);
+        _obstacles.push_back(Obstacle(ObstacleType::Rock, bn::fixed_point(10,10)));
 
         bn::music_items::dark_experience.play(1);    //banger starts
 
@@ -51,8 +52,9 @@ void Game::update_pause() {
 
 void Game::update_playing() {
     _level->update();
+
     //Player
-    _player->update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT]);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    _player->update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _obstacles);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     //Room Transition
 
     if (_player->get_position().y() < _bounds[UP]) {
@@ -71,7 +73,7 @@ void Game::update_playing() {
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
-        _enemies.push_back(Enemy(EnemyType::LimeCat, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)) ));
+        _enemies.push_back(Enemy(EnemyType::LimeCat, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48))));
     }
     if (bn::keypad::b_pressed() && _projectiles.size() < MAX_PROJECTILES) {
         _player->attack();
@@ -111,6 +113,7 @@ void Game::update_playing() {
     for (Projectile& projectile : _projectiles) {
         projectile.update();
     }
+    
 
     //HUD
     _hud->update(_player->get_hp(), _player->get_hp_max());

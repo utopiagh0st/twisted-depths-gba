@@ -141,7 +141,7 @@ void Player::apply_knockback(bn::fixed_point kb_velocity) {
     }
 }
 
-void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound) { //player movement
+void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,50> obstacles) { //player movement
     bool moving = false;    //turn this to false before input check
     bn::fixed_point input(0, 0);
 
@@ -184,10 +184,26 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
         _velocity *= (bn::fixed(1) - _friction);    //friction when there isn't
     }
 
-    _position += _velocity + _knockback_velocity; //movin
-    _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
+    bn::fixed_point total_velocity = _velocity + _knockback_velocity;
+    //_position += total_velocity; //movin
 
-    
+    _position.set_x(_position.x() + total_velocity.x()); //x collision check (FUCK THERE MUST BE A BETTER WAY TO DO THIS)
+    for (Obstacle& obstacle : obstacles) {
+        // Colission checks
+        if (get_hitbox().intersects(obstacle.get_hitbox())) {
+            _position.set_x(_position.x() - total_velocity.x());
+        }
+    }
+
+    _position.set_y(_position.y() + total_velocity.y()); //y collision checkkkkk
+    for (Obstacle& obstacle : obstacles) {
+        // Colission checks
+        if (get_hitbox().intersects(obstacle.get_hitbox())) {
+            _position.set_y(_position.y() - total_velocity.y());
+        }
+    }
+
+    /*
     if (_position.y() <top_bound) {    //makin sure nothing goes off the rails but literally
         _position.set_y(top_bound);
     } else if (_position.y() > bottom_bound) {
@@ -198,6 +214,12 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     } else if (_position.x() > right_bound) {
         _position.set_x(right_bound);
     }
+    */
+
+
+
+    _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
+
     //mark
 
     //animation
@@ -264,15 +286,16 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     }
 
     _last_input = input;
+    
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
 }
 
-void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
+void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::vector<Obstacle,50> obstacles) {
     if (_animation_cooldown > 0) {
         _animation_cooldown--;
     }
     if(_animation_cooldown == 0) {
         _sprite.set_horizontal_flip(false);
     }
-    update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd);
+    update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd, obstacles);
 }

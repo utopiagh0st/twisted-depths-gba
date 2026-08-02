@@ -40,10 +40,12 @@ private:
 
     //entity management
     bn::optional<Player> _player;
-
+    
     static constexpr int MAX_ENEMIES = 50;
+    static constexpr int MAX_OBSTACLES = 50;
     static constexpr int MAX_PROJECTILES = 50;
     bn::vector<Enemy, MAX_ENEMIES> _enemies;
+    bn::vector<Obstacle, MAX_OBSTACLES> _obstacles;
     bn::vector<Projectile, MAX_PROJECTILES> _projectiles;
 
     int _bounds[4];
