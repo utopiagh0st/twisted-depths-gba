@@ -1,0 +1,13 @@
+Celtic1 --> Habitación inicial
+Cave2 --> Pelea semijodida
+Cave1 --> Cutscene
+Bloodsuckers --> Club
+Beastie_Boys --> Pelea final
+Avantgarde1 --> Alguna zona
+Anarchy1 --> Projection zone
+Alcatraz3 --> Menú o zona 1
+Corrupt2 -->casita boooo
+Crimewatch_and_Bastard --> Pelea booo
+Darkage1 --> Menu
+Deadline --> Alguna zona
+Deepcore --> Hell

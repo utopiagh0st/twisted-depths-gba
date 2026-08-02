@@ -2,6 +2,7 @@
 #define GAME_H
 
 //classes
+#include "bn_regular_bg_ptr.h"
 #include "player.h"
 #include "enemy.h"
 #include "projectile.h"

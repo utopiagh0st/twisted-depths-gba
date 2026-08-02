@@ -16,9 +16,6 @@
 #include "bn_keypad.h"
 //sprites themselves
 //bgs
-#include "bn_regular_bg_items_floor_bg.h"
-#include "bn_regular_bg_items_walls_bg.h"
-#include "bn_regular_bg_items_border_blue.h"
 
 Game::Game() :
     _state(State::Title),    //starts with title state
