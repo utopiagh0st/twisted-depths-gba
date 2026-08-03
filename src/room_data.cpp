@@ -21,6 +21,7 @@
 
 //only has ts lookup array
 const bn::array<RoomData, 15> ROOM_LOOKUP = {{
+    //STREET
     {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u},
     {   LevelType::STREET, RoomType::D, bn::regular_bg_items::bg_street_d},
     {   LevelType::STREET, RoomType::L, bn::regular_bg_items::bg_street_l},
@@ -32,7 +33,10 @@ const bn::array<RoomData, 15> ROOM_LOOKUP = {{
     {   LevelType::STREET, RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_dl},
     {   LevelType::STREET, RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_dr},
     {   LevelType::STREET, RoomType::U | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_ulr},
-    {   LevelType::STREET, RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_dlr},
+    //{   LevelType::STREET, RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_dlr},//TS
+
+    {   LevelType::STREET, RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_dlr},//TS
+
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_udl},
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_udr},
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_udlr}

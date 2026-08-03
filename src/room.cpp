@@ -26,3 +26,7 @@ void Room::draw_bg(bn::fixed_point position) {
         _bg->set_priority(3);
     }
 }
+void Room::generate_border() {
+    const RoomData& room_data = ROOM_LOOKUP[_room_index];
+    
+}

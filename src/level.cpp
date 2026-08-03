@@ -32,6 +32,7 @@ void Level::begin_room_transition(int next_room_dir) {
 void Level::load_room(bn::point map_index) {
     _current_room.emplace( _level_map[map_index.x()][map_index.y()] );
     _current_room->draw_bg(bn::fixed_point(0,0));
+    _current_room->generate_border();
 }
 
 void Level::do_room_transition() {

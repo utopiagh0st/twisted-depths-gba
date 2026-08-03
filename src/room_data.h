@@ -33,14 +33,20 @@ constexpr bool match_entries(RoomType room, RoomType required) {
     return room == required;
 }
 
-// struct to link the enum with the asset
+//enemy struct to link em with a position
+struct EnemySpawn {
+    bn::fixed_point position;
+    EnemyType type;
+};
+//struct to link the enum with the asset
 struct RoomData {
     LevelType level_type;
     RoomType room_type;
     bn::regular_bg_item bg;
+    bn::array<EnemySpawn, 20>
 };
 
-// static look-up table that lives in cpp cuz it'll get big
+// static look-up table that lives in cpp cuz it'll get big, don't ask me to explain this, I never understood c
 extern const bn::array<RoomData, 15> ROOM_LOOKUP;
 
 #endif
