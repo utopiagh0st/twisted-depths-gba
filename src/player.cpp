@@ -141,7 +141,7 @@ void Player::apply_knockback(bn::fixed_point kb_velocity) {
     }
 }
 
-void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,50> obstacles) { //player movement
+void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,50>& obstacles) { //player movement
     bool moving = false;    //turn this to false before input check
     bn::fixed_point input(0, 0);
 
@@ -290,7 +290,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
 }
 
-void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::vector<Obstacle,50> obstacles) {
+void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::vector<Obstacle,50>& obstacles) {
     if (_animation_cooldown > 0) {
         _animation_cooldown--;
     }

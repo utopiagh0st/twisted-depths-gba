@@ -7,12 +7,15 @@
 #include "bn_rect.h"
 
 enum class ObstacleType {
-    Rock
+    Rock,
+    RoomBorderHor,
+    RoomBorderVer
 };
 
 class Obstacle {
 public:
     Obstacle(ObstacleType type, bn::fixed_point position);
+    void auto_set_hitbox();
     bn::rect get_hitbox();
     bn::fixed_point get_position();
 private:
@@ -22,6 +25,8 @@ private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_ptr> _spr_hitbox;
     bool _active;
-    bn::sprite_ptr create_obstacle_sprite(ObstacleType type, bn::fixed_point position);
+    bool _visible;
+    bn::fixed_point _hitbox_dimensions;
+    bn::sprite_ptr create_obstacle_sprite_and_config(ObstacleType type, bn::fixed_point position);
 };
 #endif

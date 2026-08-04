@@ -21,21 +21,20 @@ Game::Game() :
     _state(State::Title),    //starts with title state
     _level_generator(_rnd)
 {
-    _bounds[UP] = -50;   //up
-    _bounds[DOWN] = 48;    //down
-    _bounds[LEFT] = -66;   //left
-    _bounds[RIGHT] = 66;    //right
+    _bounds[UP] = -60;   //up
+    _bounds[DOWN] = 60;    //down
+    _bounds[LEFT] = -80;   //left
+    _bounds[RIGHT] = 80;    //right
 }
 
 void Game::update_title() { //use this one as a template of a state change
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
         _level.emplace(_level_generator.generate_level(LevelType::STREET));
-        _level->load_room(_level->get_starting_room_pos());
+        _level->load_room(_level->get_starting_room_pos(), _obstacles);
         //_room.emplace(_rnd, RoomType::U);
 
         _player.emplace(CharacterName::diabolus, 0, 0);   //replaces the empty player
         _hud.emplace(true);
-        _obstacles.push_back(Obstacle(ObstacleType::Rock, bn::fixed_point(10,10)));
 
         bn::music_items::dark_experience.play(1);    //banger starts
 
@@ -56,7 +55,7 @@ void Game::update_playing() {
     //Player
     _player->update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _obstacles);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     //Room Transition
-
+    
     if (_player->get_position().y() < _bounds[UP]) {
         _player->set_position(bn::fixed_point(0,_bounds[DOWN] - 2));
         _level->begin_room_transition(UP);
@@ -70,6 +69,7 @@ void Game::update_playing() {
         _player->set_position(bn::fixed_point(_bounds[LEFT] + 2,0));
         _level->begin_room_transition(RIGHT);
     }
+    /**/
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
@@ -94,6 +94,7 @@ void Game::update_playing() {
             _player->apply_knockback(enemy.get_velocity());
         }
     }
+
     for(int i = 0; i < _enemies.size(); ) { //erasing dead guys
         if(!_enemies[i].is_alive()) {
             _enemies.erase(_enemies.begin() + i); //using pointers!!

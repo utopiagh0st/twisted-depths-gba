@@ -4,6 +4,8 @@
 #include "room_data.h"
 #include "room.h"
 #include "bn_point.h"
+#include "bn_vector.h"
+#include "obstacle.h"
 
 constexpr int UP = 0;
 constexpr int DOWN = 1;
@@ -14,7 +16,7 @@ class Level {
 public:
     Level(LevelType level_type, bn::array<bn::array<int, 5>, 5> level_map, bn::point starting_room);
     bn::point get_starting_room_pos();
-    void load_room(bn::point room_pos);
+    void load_room(bn::point room_pos, bn::vector<Obstacle, 50>& obstacles);
     void begin_room_transition(int direction);
     void update();
 private:

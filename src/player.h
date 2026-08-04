@@ -33,7 +33,7 @@ public:
     void attack();
     void take_damage(int damage);
     void apply_knockback(bn::fixed_point kb_velocity);
-    void update(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,50> obstacles);  //passing bounds to avoid circle relationships
+    void update(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,50>& obstacles);  //passing bounds to avoid circle relationships
 private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_animate_action<4>> _walk_anim;
@@ -50,7 +50,7 @@ private:
     bn::fixed_point _knockback_velocity;
     bn::fixed_point _last_input;
     bn::fixed _shot_speed;
-    void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,50> obstacles);
+    void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,50>& obstacles);
 };
 
 #endif

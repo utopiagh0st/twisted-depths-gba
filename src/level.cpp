@@ -29,10 +29,10 @@ void Level::begin_room_transition(int next_room_dir) {
     _doing_room_transition = true;
 }
 
-void Level::load_room(bn::point map_index) {
+void Level::load_room(bn::point map_index, bn::vector<Obstacle, 50>& obstacles) {
     _current_room.emplace( _level_map[map_index.x()][map_index.y()] );
     _current_room->draw_bg(bn::fixed_point(0,0));
-    _current_room->generate_border();
+    _current_room->generate_border(obstacles);
 }
 
 void Level::do_room_transition() {
