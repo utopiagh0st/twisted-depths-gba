@@ -16,6 +16,7 @@ class Obstacle {
 public:
     Obstacle(ObstacleType type, bn::fixed_point position);
     void auto_set_hitbox();
+    ObstacleType get_type();
     bn::rect get_hitbox();
     bn::fixed_point get_position();
 private:

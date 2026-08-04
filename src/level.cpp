@@ -35,7 +35,7 @@ void Level::load_room(bn::point map_index, bn::vector<Obstacle, 50>& obstacles) 
     _current_room->generate_border(obstacles);
 }
 
-void Level::do_room_transition() {
+void Level::do_room_transition(bn::vector<Obstacle, 50>& obstacles) {
     bn::point next_room_pos;
     bn::fixed_point next_room_bg_pos_diff;
     bn::fixed_point velocity;
@@ -87,13 +87,13 @@ void Level::do_room_transition() {
         _next_room.reset();
         _current_room_pos = next_room_pos;
         _current_room->draw_bg(bn::fixed_point(0,0));
+        _current_room->generate_border(obstacles);
         _doing_room_transition = false;
     }
 }
 
-void Level::update(obstacles) {
+void Level::update(bn::vector<Obstacle, 50>& obstacles) {
     if (_doing_room_transition) {
-        do_room_transition();
-        _current_room->generate_border(obstacles);
+        do_room_transition(obstacles);
     }
 }

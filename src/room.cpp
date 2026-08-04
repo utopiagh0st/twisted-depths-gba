@@ -30,8 +30,8 @@ void Room::draw_bg(bn::fixed_point position) {
 
 void Room::clear_borders(bn::vector<Obstacle, 50>& obstacles) {
     for(int i = 0; i < obstacles.size(); ) { //erasing lol
-        obstacles.erase(obstacles.begin() + i); //using pointers!!
         if(obstacles[i].get_type() == ObstacleType::RoomBorderHor || obstacles[i].get_type() == ObstacleType::RoomBorderVer) {
+            obstacles.erase(obstacles.begin() + i); //using pointers!!
         } else {
             ++i;
         }

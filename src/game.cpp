@@ -50,23 +50,23 @@ void Game::update_pause() {
 }
 
 void Game::update_playing() {
-    _level->update();
+    _level->update(_obstacles);
 
     //Player
     _player->update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _obstacles);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     //Room Transition
     
     if (_player->get_position().y() < _bounds[UP]) {
-        _player->set_position(bn::fixed_point(0,_bounds[DOWN] - 2));
+        _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[DOWN] - 10));
         _level->begin_room_transition(UP);
     } else if (_player->get_position().y() > _bounds[DOWN]) {
-        _player->set_position(bn::fixed_point(0,_bounds[UP] + 2));
+        _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[UP] + 10));
         _level->begin_room_transition(DOWN);
     } else if (_player->get_position().x() < _bounds[LEFT]) {
-        _player->set_position(bn::fixed_point(_bounds[RIGHT] - 2,0));
+        _player->set_position(bn::fixed_point(_bounds[RIGHT] - 10,_player->get_position().y()));
         _level->begin_room_transition(LEFT);
     } else if (_player->get_position().x() > _bounds[RIGHT]) {
-        _player->set_position(bn::fixed_point(_bounds[LEFT] + 2,0));
+        _player->set_position(bn::fixed_point(_bounds[LEFT] + 10,_player->get_position().y()));
         _level->begin_room_transition(RIGHT);
     }
     /**/
