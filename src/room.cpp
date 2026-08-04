@@ -29,17 +29,17 @@ void Room::draw_bg(bn::fixed_point position) {
 }
 
 void Room::clear_borders(bn::vector<Obstacle, 50>& obstacles) {
-    for(int i = 0; i < obstacles.size(); ) { //erasing stray shots
-        if(obstacles[i].get_type() == ObstacleType::RoomBorderHor) {
-            _projectiles.erase(_projectiles.begin() + i); //using pointers!!
+    for(int i = 0; i < obstacles.size(); ) { //erasing lol
+        obstacles.erase(obstacles.begin() + i); //using pointers!!
+        if(obstacles[i].get_type() == ObstacleType::RoomBorderHor || obstacles[i].get_type() == ObstacleType::RoomBorderVer) {
         } else {
             ++i;
         }
     }
-    obstacles.erase(obstacles.begin() + i);
 }
 
 void Room::generate_border(bn::vector<Obstacle, 50>& obstacles) {
+    clear_borders(obstacles);
     const RoomData& room_data = ROOM_LOOKUP[_room_index];
     if (!has_entries(room_data.room_type, RoomType::U)) {
         obstacles.push_back(Obstacle(ObstacleType::RoomBorderHor, bn::fixed_point(0,-64)));

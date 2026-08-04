@@ -17,7 +17,6 @@ bn::sprite_ptr Obstacle::create_obstacle_sprite_and_config(ObstacleType type, bn
             return bn::sprite_items::wall.create_sprite(position);
         case ObstacleType::RoomBorderVer:
             _visible = false;
-            set_hitbox(bn::fixed_point(16,144));
             return bn::sprite_items::wall.create_sprite(position);; 
     }
     return bn::sprite_items::wall.create_sprite(position);

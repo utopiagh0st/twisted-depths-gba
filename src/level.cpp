@@ -91,8 +91,9 @@ void Level::do_room_transition() {
     }
 }
 
-void Level::update() {
+void Level::update(obstacles) {
     if (_doing_room_transition) {
         do_room_transition();
+        _current_room->generate_border(obstacles);
     }
 }

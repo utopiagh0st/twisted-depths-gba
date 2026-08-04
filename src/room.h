@@ -17,6 +17,7 @@ public:
     bn::fixed_point get_bg_position();
     void draw_bg(bn::fixed_point position);
     void generate_border(bn::vector<Obstacle, 50>& obstacles);
+    void clear_borders(bn::vector<Obstacle, 50>& obstacles);
 private:
     int _room_index;
     bn::optional<bn::regular_bg_ptr> _bg;
