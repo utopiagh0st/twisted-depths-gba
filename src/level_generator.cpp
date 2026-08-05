@@ -11,36 +11,81 @@
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
 
-Level_generator::Level_generator(bn::random rnd) :
+Level_generator::Level_generator(bn::random& rnd) :
     _rnd(rnd)
 {}
 
 Level Level_generator::generate_level(LevelType level_type) {
-    int map_size = 5; //min 5
+    constexpr int map_size = 5; //min 5
     bn::array<bn::array<int, map_size>, map_size> level_map;
+
     //fill map with empty
     for (int i = 0; i < map_size; i++) {
         for (int j = 0; j < map_size; j++) {
             level_map[i][j] = EMPTY;
         }
     }
+
     //generate random starting room
+    int num_rooms = 12;
+    bn::point current_room;
+    bn::vector<bn::point, 25> generated_rooms;
+    int failed_attempts = 0;
+
     bn::point starting_room = bn::point(_rnd.get_int(map_size),_rnd.get_int(map_size));
     level_map[starting_room.x()][starting_room.y()] = UNSET;
+    generated_rooms.push_back(starting_room);
+
     //generate from starting room with no branches
-    int main_branch_size = (map_size / 3) + _rnd.get_int((map_size/9)*(-1), map_size/9);
-    int turn_direction;
-    bn::point current_room = starting_room;
-    for (int i = 0; i < main_branch_size; i++) { //turn randomly to a free direction
-        turn_direction = _rnd.get_int(3);
-        if (turn_direction == UP &&
-            current_room.x() > 0 &&
-            level_map[current_room.x()-1][current_room.y()] == EMPTY) {
 
-        } else if (turn_direction == DOWN) {
-
+    while (generated_rooms.size() < num_rooms && failed_attempts < 100) {
+        current_room = generated_rooms[_rnd.get_int(generated_rooms.size())];
+        bn::array<int, 4> directions = {
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT
+        };
+        //shuffle
+        for(int i = 3; i > 0; --i) {
+            int j = _rnd.get_int(i + 1);
+            int temp = directions[i];
+            directions[i] = directions[j];
+            directions[j] = temp;
         }
-    
+
+        for (int i = 0; i < 4; i++) {
+            if (directions[i] == UP &&
+                current_room.x() > 0 &&
+                level_map[current_room.x()-1][current_room.y()] == EMPTY) {
+                level_map[current_room.x()-1][current_room.y()] = UNSET;
+                generated_rooms.push_back(bn::point(current_room.x()-1, current_room.y()));
+                failed_attempts = 0;
+                break;
+            } else if (directions[i] == DOWN &&
+                current_room.x() < map_size - 1 &&
+                level_map[current_room.x()+1][current_room.y()] == EMPTY) {
+                level_map[current_room.x()+1][current_room.y()] = UNSET;
+                generated_rooms.push_back(bn::point(current_room.x()+1, current_room.y()));
+                failed_attempts = 0;
+                break;
+            } else if (directions[i] == LEFT &&
+                current_room.y() > 0 &&
+                level_map[current_room.x()][current_room.y()-1] == EMPTY) {
+                level_map[current_room.x()][current_room.y()-1] = UNSET;
+                generated_rooms.push_back(bn::point(current_room.x(), current_room.y()-1));
+                failed_attempts = 0;
+                break;
+            } else if (directions[i] == RIGHT &&
+                current_room.y() < map_size - 1 &&
+                level_map[current_room.x()][current_room.y()+1] == EMPTY) {
+                level_map[current_room.x()][current_room.y()+1] = UNSET;
+                generated_rooms.push_back(bn::point(current_room.x(), current_room.y()+1));
+                failed_attempts = 0;
+                break;
+            }
+        }
+        failed_attempts++;
     }
     //throw the dice to get n of branches
     
@@ -54,11 +99,6 @@ Level Level_generator::generate_level(LevelType level_type) {
     }
     */
 
-    for (int i = 0; i < map_size; i++) {
-        for (int j = 0; j < map_size; j++) {
-            level_map[i][j] = EMPTY;
-        }
-    }
     /*
     bn::array<bn::array<int, map_size>, map_size> level_map = {{
         {{EMPTY,EMPTY,UNSET,UNSET,UNSET}},

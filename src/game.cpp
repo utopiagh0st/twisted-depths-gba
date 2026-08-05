@@ -124,6 +124,7 @@ void Game::update() {   //main update loop
     switch (_state) {   //switch to use different update thingys
         case State::Title:
             update_title();
+            _rnd.update();
             break;
         case State::Playing:
             update_playing();
