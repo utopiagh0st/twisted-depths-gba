@@ -1,7 +1,11 @@
 #include "level.h"
 #include "room_data.h"
+#include "bn_sprite_ptr.h"
+#include "bn_sprite_items_icon_small_room.h"
+#include "bn_sprite_items_icon_small_current_room.h"
 
-Level::Level(LevelType level_type, bn::array<bn::array<int, 5>, 5> level_map, bn::point starting_room_pos) {
+
+Level::Level(LevelType level_type, bn::array<bn::array<int, 10>, 10> level_map, bn::point starting_room_pos) {
     _doing_room_transition = false;
     _level_type = level_type;
     _level_map = level_map;
@@ -11,6 +15,26 @@ Level::Level(LevelType level_type, bn::array<bn::array<int, 5>, 5> level_map, bn
 
 bn::point Level::get_starting_room_pos() {
     return _starting_room_pos;
+}
+
+void Level::toggle_map(bool show) {
+    if (show) {
+        bn::point position = bn::point(-50,-50);
+        bn::point map_pos = _current_room_pos;
+        for (int v = 0; v < map_size; v++) {
+            for (int h = 0; h < map_size; h++) {
+                if (_level_map[v][h] != EMPTY) {
+                    if(bn::point(v,h) == _current_room_pos) {
+                        _minimap_tiles.push_back(bn::sprite_items::icon_small_current_room.create_sprite(position.x()+h*8,position.y()+v*8));
+                    } else {
+                        _minimap_tiles.push_back(bn::sprite_items::icon_small_room.create_sprite(position.x()+h*8,position.y()+v*8));
+                    }
+                }
+            }
+        }
+    } else {
+        _minimap_tiles.clear();
+    }
 }
 
 void Level::begin_room_transition(int next_room_dir) {

@@ -16,8 +16,8 @@ Level_generator::Level_generator(bn::random& rnd) :
 {}
 
 Level Level_generator::generate_level(LevelType level_type) {
-    constexpr int map_size = 5; //min 5
-    bn::array<bn::array<int, map_size>, map_size> level_map;
+     //min 5
+    bn::array<bn::array<int, 10>, 10> level_map;
 
     //fill map with empty
     for (int i = 0; i < map_size; i++) {
@@ -27,9 +27,9 @@ Level Level_generator::generate_level(LevelType level_type) {
     }
 
     //generate random starting room
-    int num_rooms = 12;
+    int num_rooms = 50;
     bn::point current_room;
-    bn::vector<bn::point, 25> generated_rooms;
+    bn::vector<bn::point, 100> generated_rooms;
     int failed_attempts = 0;
 
     bn::point starting_room = bn::point(_rnd.get_int(map_size),_rnd.get_int(map_size));

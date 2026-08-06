@@ -44,6 +44,7 @@ void Game::update_title() { //use this one as a template of a state change
 
 void Game::update_pause() {
     if (bn::keypad::start_pressed()) {
+        _level->toggle_map(false);
         bn::music::resume();
         _state = State::Playing;  //pause button just stops running the game logic
     }  
@@ -81,6 +82,7 @@ void Game::update_playing() {
     }
     if (bn::keypad::start_pressed()) {
         bn::music::pause();
+        _level->toggle_map(true);
         _state = State::Pause;  //pause button just stops running the game logic
     }
 

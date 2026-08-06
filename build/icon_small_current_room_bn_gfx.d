@@ -1,0 +1,1 @@
+icon_small_current_room_bn_gfx.o: icon_small_current_room_bn_gfx.s
