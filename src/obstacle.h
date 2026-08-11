@@ -6,8 +6,10 @@
 #include "bn_fixed.h"
 #include "bn_rect.h"
 
+constexpr int max_obstacles = 63;
+
 enum class ObstacleType {
-    Rock,
+    Trashcan,
     RoomBorderHor,
     RoomBorderVer,
     RoomCornerHor

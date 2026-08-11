@@ -47,9 +47,9 @@ room.o: /home/Commodore/butano/games/twisted-depths-gba/src/room.cpp \
  /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h \
  /home/Commodore/butano/butano/include/bn_fixed_point.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/room_data.h \
- /home/Commodore/butano/butano/include/bn_array.h \
  /home/Commodore/butano/butano/include/bn_vector.h \
  /home/Commodore/butano/butano/include/bn_vector_fwd.h \
+ /home/Commodore/butano/butano/include/bn_array.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h \
  /home/Commodore/butano/butano/include/bn_sprite_ptr.h \
  /home/Commodore/butano/butano/include/bn_fixed.h \
@@ -102,9 +102,9 @@ room.o: /home/Commodore/butano/games/twisted-depths-gba/src/room.cpp \
 /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h:
 /home/Commodore/butano/butano/include/bn_fixed_point.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/room_data.h:
-/home/Commodore/butano/butano/include/bn_array.h:
 /home/Commodore/butano/butano/include/bn_vector.h:
 /home/Commodore/butano/butano/include/bn_vector_fwd.h:
+/home/Commodore/butano/butano/include/bn_array.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
 /home/Commodore/butano/butano/include/bn_sprite_ptr.h:
 /home/Commodore/butano/butano/include/bn_fixed.h:

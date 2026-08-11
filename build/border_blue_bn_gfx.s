@@ -9,7 +9,7 @@
 @	+ regular map (flat), not compressed, 32x32 
 @	Total size: 32 + 448 + 2048 = 2528
 @
-@	Time-stamp: 2026-08-05, 07:45:11
+@	Time-stamp: 2026-08-11, 08:43:39
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -190,7 +190,7 @@ border_blue_bn_gfxMap:
 	.global border_blue_bn_gfxPal		@ 32 unsigned chars
 	.hidden border_blue_bn_gfxPal
 border_blue_bn_gfxPal:
-	.hword 0x7C1F,0x4C05,0x2801,0x1000,0x0000,0x0000,0x0000,0x0000
+	.hword 0x7C1F,0x4C05,0x2801,0x0000,0x0000,0x0000,0x0000,0x0000
 	.hword 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000
 
 @}}BLOCK(border_blue_bn_gfx)

@@ -21,23 +21,67 @@
 
 //only has ts lookup array
 const bn::array<RoomData, 15> ROOM_LOOKUP = {{
-    //STREET
-    {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u},
-    {   LevelType::STREET, RoomType::D, bn::regular_bg_items::bg_street_d},
-    {   LevelType::STREET, RoomType::L, bn::regular_bg_items::bg_street_l},
-    {   LevelType::STREET, RoomType::R, bn::regular_bg_items::bg_street_r},
-    {   LevelType::STREET, RoomType::U | RoomType::D, bn::regular_bg_items::bg_street_ud},
-    {   LevelType::STREET, RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_lr},
-    {   LevelType::STREET, RoomType::U | RoomType::L, bn::regular_bg_items::bg_street_ul},
-    {   LevelType::STREET, RoomType::U | RoomType::R, bn::regular_bg_items::bg_street_ur},
-    {   LevelType::STREET, RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_dl},
-    {   LevelType::STREET, RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_dr},
-    {   LevelType::STREET, RoomType::U | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_ulr},
-    //{   LevelType::STREET, RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_dlr},//TS
+    //STREET U
+    {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::D, bn::regular_bg_items::bg_street_d,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::L, bn::regular_bg_items::bg_street_l,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::R, bn::regular_bg_items::bg_street_r,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::U | RoomType::D, bn::regular_bg_items::bg_street_ud,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_lr,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::U | RoomType::L, bn::regular_bg_items::bg_street_ul,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::U | RoomType::R, bn::regular_bg_items::bg_street_ur,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_dl,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_dr,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::U | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_ulr,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
 
-    {   LevelType::STREET, RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_dlr},//TS
+    {   LevelType::STREET, RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_dlr,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
 
-    {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_udl},
-    {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_udr},
-    {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_udlr}
+    {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_udl,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_udr,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1},
+    {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_udlr,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    },1}
 }};

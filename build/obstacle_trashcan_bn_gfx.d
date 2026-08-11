@@ -1,0 +1,1 @@
+obstacle_trashcan_bn_gfx.o: obstacle_trashcan_bn_gfx.s

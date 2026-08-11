@@ -47,16 +47,16 @@ level_generator.o: \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h \
  /home/Commodore/butano/butano/include/bn_tile.h \
- /home/Commodore/butano/butano/include/bn_array.h \
- /home/Commodore/butano/games/twisted-depths-gba/src/room.h \
- /home/Commodore/butano/butano/include/bn_optional.h \
- /home/Commodore/butano/butano/include/bn_fixed_point.h \
  /home/Commodore/butano/butano/include/bn_vector.h \
  /home/Commodore/butano/butano/include/bn_vector_fwd.h \
+ /home/Commodore/butano/butano/include/bn_array.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h \
  /home/Commodore/butano/butano/include/bn_sprite_ptr.h \
+ /home/Commodore/butano/butano/include/bn_fixed_point.h \
  /home/Commodore/butano/butano/include/bn_fixed.h \
  /home/Commodore/butano/butano/include/bn_rect.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/room.h \
+ /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/butano/include/bn_point.h
 /home/Commodore/butano/games/twisted-depths-gba/src/level_generator.h:
 /home/Commodore/butano/butano/include/bn_random.h:
@@ -105,14 +105,14 @@ level_generator.o: \
 /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h:
 /home/Commodore/butano/butano/include/bn_tile.h:
-/home/Commodore/butano/butano/include/bn_array.h:
-/home/Commodore/butano/games/twisted-depths-gba/src/room.h:
-/home/Commodore/butano/butano/include/bn_optional.h:
-/home/Commodore/butano/butano/include/bn_fixed_point.h:
 /home/Commodore/butano/butano/include/bn_vector.h:
 /home/Commodore/butano/butano/include/bn_vector_fwd.h:
+/home/Commodore/butano/butano/include/bn_array.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
 /home/Commodore/butano/butano/include/bn_sprite_ptr.h:
+/home/Commodore/butano/butano/include/bn_fixed_point.h:
 /home/Commodore/butano/butano/include/bn_fixed.h:
 /home/Commodore/butano/butano/include/bn_rect.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/room.h:
+/home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/butano/include/bn_point.h:

@@ -47,7 +47,8 @@ obstacle.o: \
  /home/Commodore/butano/butano/include/bn_compression_type.h \
  /home/Commodore/butano/butano/include/bn_sprite_palette_item.h \
  /home/Commodore/butano/butano/include/bn_color.h \
- /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_wall.h
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_wall.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashcan.h
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
 /home/Commodore/butano/butano/include/bn_sprite_ptr.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
@@ -96,3 +97,4 @@ obstacle.o: \
 /home/Commodore/butano/butano/include/bn_sprite_palette_item.h:
 /home/Commodore/butano/butano/include/bn_color.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_wall.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashcan.h:

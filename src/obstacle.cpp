@@ -4,21 +4,23 @@
 #include "bn_rect.h"
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_wall.h"
+#include "bn_sprite_items_obstacle_trashcan.h"
+
 
 bn::sprite_ptr Obstacle::create_obstacle_sprite_and_config(ObstacleType type, bn::fixed_point position) {
     switch (type){
-        case ObstacleType::Rock:
+        case ObstacleType::Trashcan:
             _visible = true;
-            _hitbox_dimensions = bn::fixed_point(16,100);
-            return bn::sprite_items::wall.create_sprite(position);
+            return bn::sprite_items::obstacle_trashcan.create_sprite(position);
         case ObstacleType::RoomBorderHor:
             _visible = false;
             _hitbox_dimensions = bn::fixed_point(176,16);
             return bn::sprite_items::wall.create_sprite(position);
         case ObstacleType::RoomBorderVer:
             _visible = false;
-            return bn::sprite_items::wall.create_sprite(position);; 
+            return bn::sprite_items::wall.create_sprite(position);
     }
+    _visible = false;
     return bn::sprite_items::wall.create_sprite(position);
 }
 
@@ -43,6 +45,9 @@ Obstacle::Obstacle(ObstacleType type, bn::fixed_point position) :
 
 void Obstacle::auto_set_hitbox() {
     switch (_type) {
+    case ObstacleType::Trashcan:
+        _hitbox_dimensions = bn::fixed_point(16,16);
+        break;
     case ObstacleType::RoomBorderHor:
         _hitbox_dimensions = bn::fixed_point(176,16);
         break;

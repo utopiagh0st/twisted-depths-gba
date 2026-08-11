@@ -3,7 +3,10 @@
 
 #include "bn_regular_bg_ptr.h"
 #include "bn_regular_bg_item.h"
+#include "bn_vector.h"
 #include "bn_array.h"
+
+#include "obstacle.h"
 
 //to make room generation a lil clearer
 constexpr int EMPTY = -1;
@@ -33,14 +36,19 @@ constexpr bool match_entries(RoomType room, RoomType required) {
     return room == required;
 }
 
-//enemy struct to link em with a position
+//obst struct to link em with a position
+struct ObstacleSpawnData {
+    ObstacleType obstacle_type;
+    bn::fixed_point position;
+};
 
 //struct to link the enum with the asset
 struct RoomData {
     LevelType level_type;
     RoomType room_type;
     bn::regular_bg_item bg;
-    //bn::array<EnemySpawn, 20>
+    bn::array<ObstacleSpawnData, 63> obstacles_spawn_data;
+    int obstacle_count;
 };
 
 // static look-up table that lives in cpp cuz it'll get big, don't ask me to explain this, I never understood c
