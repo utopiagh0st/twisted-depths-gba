@@ -4,7 +4,11 @@ audio/corrupt2.mod
 1777042543.1299162
 audio/dark_experience.mod
 1778792390.5779798
+audio/honk.wav
+1786383467.9762475
 audio/mute.wav
 1772106250.774216
 audio/silence.mod
 1772191891.9434934
+audio/stinkbomb.mod
+1781401685.5193126

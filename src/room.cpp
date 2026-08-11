@@ -30,7 +30,7 @@ void Room::draw_bg(bn::fixed_point position) {
 
 void Room::clear_borders(bn::vector<Obstacle, 50>& obstacles) {
     for(int i = 0; i < obstacles.size(); ) { //erasing lol
-        if(obstacles[i].get_type() == ObstacleType::RoomBorderHor || obstacles[i].get_type() == ObstacleType::RoomBorderVer) {
+        if(obstacles[i].get_type() == ObstacleType::RoomBorderHor || obstacles[i].get_type() == ObstacleType::RoomBorderVer || obstacles[i].get_type() == ObstacleType::RoomCornerHor) {
             obstacles.erase(obstacles.begin() + i); //using pointers!!
         } else {
             ++i;
@@ -53,4 +53,14 @@ void Room::generate_border(bn::vector<Obstacle, 50>& obstacles) {
     if (!has_entries(room_data.room_type, RoomType::R)) {
         obstacles.push_back(Obstacle(ObstacleType::RoomBorderVer, bn::fixed_point(80,0)));
     }
+
+    if (has_entries(room_data.room_type, RoomType::U)) {
+        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(-72,-64)));
+        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(72,-64)));
+    }
+    if (has_entries(room_data.room_type, RoomType::D)) {
+        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(-72,64)));
+        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(72,64)));
+    }
+    
 }

@@ -39,7 +39,10 @@ Level Level_generator::generate_level(LevelType level_type) {
     //generate from starting room with no branches
 
     while (generated_rooms.size() < num_rooms && failed_attempts < 100) {
-        current_room = generated_rooms[_rnd.get_int(generated_rooms.size())];
+        int random_index = _rnd.get_int(generated_rooms.size());
+        current_room = generated_rooms[random_index];
+
+
         bn::array<int, 4> directions = {
             UP,
             DOWN,
@@ -53,39 +56,49 @@ Level Level_generator::generate_level(LevelType level_type) {
             directions[i] = directions[j];
             directions[j] = temp;
         }
-
+        failed_attempts++;
         for (int i = 0; i < 4; i++) {
+            bn::point candidate_room = bn::point(-1,-1);
             if (directions[i] == UP &&
                 current_room.x() > 0 &&
                 level_map[current_room.x()-1][current_room.y()] == EMPTY) {
-                level_map[current_room.x()-1][current_room.y()] = UNSET;
-                generated_rooms.push_back(bn::point(current_room.x()-1, current_room.y()));
-                failed_attempts = 0;
-                break;
+                candidate_room = bn::point(current_room.x()-1, current_room.y());
             } else if (directions[i] == DOWN &&
                 current_room.x() < map_size - 1 &&
                 level_map[current_room.x()+1][current_room.y()] == EMPTY) {
-                level_map[current_room.x()+1][current_room.y()] = UNSET;
-                generated_rooms.push_back(bn::point(current_room.x()+1, current_room.y()));
-                failed_attempts = 0;
-                break;
+                candidate_room = bn::point(current_room.x()+1, current_room.y());
             } else if (directions[i] == LEFT &&
                 current_room.y() > 0 &&
                 level_map[current_room.x()][current_room.y()-1] == EMPTY) {
-                level_map[current_room.x()][current_room.y()-1] = UNSET;
-                generated_rooms.push_back(bn::point(current_room.x(), current_room.y()-1));
-                failed_attempts = 0;
-                break;
+                candidate_room = bn::point(current_room.x(), current_room.y()-1);
             } else if (directions[i] == RIGHT &&
                 current_room.y() < map_size - 1 &&
                 level_map[current_room.x()][current_room.y()+1] == EMPTY) {
-                level_map[current_room.x()][current_room.y()+1] = UNSET;
-                generated_rooms.push_back(bn::point(current_room.x(), current_room.y()+1));
-                failed_attempts = 0;
-                break;
+                candidate_room = bn::point(current_room.x(), current_room.y()+1);
+            }
+
+            if (candidate_room != bn::point(-1,-1)) {
+                int neighbors = 0;
+                if(candidate_room.x() > 0 && level_map[candidate_room.x() - 1][candidate_room.y()] != EMPTY) {
+                    ++neighbors;
+                }
+                if(candidate_room.x() < map_size - 1 && level_map[candidate_room.x() + 1][candidate_room.y()] != EMPTY) {
+                    ++neighbors;
+                }
+                if(candidate_room.y() > 0 && level_map[candidate_room.x()][candidate_room.y() - 1] != EMPTY) {
+                    ++neighbors;
+                }
+                if(candidate_room.y() < map_size -1 && level_map[candidate_room.x()][candidate_room.y() + 1] != EMPTY) {
+                    ++neighbors;
+                }
+                if (neighbors == 1) {
+                    level_map[candidate_room.x()][candidate_room.y()] = UNSET;
+                    generated_rooms.push_back(candidate_room);
+                    failed_attempts = 0;
+                    break;
+                }
             }
         }
-        failed_attempts++;
     }
     //throw the dice to get n of branches
     

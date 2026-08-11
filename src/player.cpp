@@ -16,6 +16,7 @@
 #include "bn_sprite_items_player_fran_attack_up.h"
 #include "bn_sprite_items_player_fran_attack_down.h"
 #include "bn_sprite_animate_actions.h"
+#include "bn_sound_items.h"
 
 static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) { //Character sprite selector
     switch(name) {
@@ -26,8 +27,9 @@ static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) 
     return bn::sprite_items::player_fran_walk_up.create_sprite(x, y);
 }
 
-Player::Player(CharacterName name, int x, int y) :
-    _sprite(create_character_sprite(name, x, y))
+Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
+    _sprite(create_character_sprite(name, x, y)),
+    _rnd(rnd)
 {
     _hp_max = 20;
     _hp = 20;
@@ -35,7 +37,7 @@ Player::Player(CharacterName name, int x, int y) :
     _animation_cooldown = 0;
     _direction = Direction::Down;
     _position = bn::fixed_point(x,y);
-    _friction = bn::fixed(0.3);
+    _friction = bn::fixed(0.4);
     _acceleration = bn::fixed(0.3);
     _max_speed = bn::fixed(2);
     _velocity = bn::fixed_point(0,0);
@@ -122,6 +124,8 @@ void Player::attack() {
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
             break;
     }
+
+    bn::sound_items::honk.play(0.3, _rnd.get_fixed(0.5,2), 0);
     _animation_cooldown = 20;
     
 }

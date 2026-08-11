@@ -9,6 +9,7 @@ namespace bn::music_items
     constexpr inline music_item corrupt2(1);
     constexpr inline music_item dark_experience(2);
     constexpr inline music_item silence(3);
+    constexpr inline music_item stinkbomb(4);
 }
 
 #endif

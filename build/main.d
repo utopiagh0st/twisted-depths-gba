@@ -49,6 +49,11 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
  /home/Commodore/butano/butano/include/bn_fixed_point.h \
  /home/Commodore/butano/butano/include/bn_rect.h \
  /home/Commodore/butano/butano/include/bn_size.h \
+ /home/Commodore/butano/butano/include/bn_random.h \
+ /home/Commodore/butano/butano/include/bn_math.h \
+ /home/Commodore/butano/butano/include/bn_sin_lut.h \
+ /home/Commodore/butano/butano/include/bn_reciprocal_lut.h \
+ /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h \
@@ -62,11 +67,6 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
  /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/butano/include/bn_vector.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/room.h \
- /home/Commodore/butano/butano/include/bn_random.h \
- /home/Commodore/butano/butano/include/bn_math.h \
- /home/Commodore/butano/butano/include/bn_sin_lut.h \
- /home/Commodore/butano/butano/include/bn_reciprocal_lut.h \
- /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/room_data.h \
  /home/Commodore/butano/butano/include/bn_array.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/level.h \
@@ -122,6 +122,11 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
 /home/Commodore/butano/butano/include/bn_fixed_point.h:
 /home/Commodore/butano/butano/include/bn_rect.h:
 /home/Commodore/butano/butano/include/bn_size.h:
+/home/Commodore/butano/butano/include/bn_random.h:
+/home/Commodore/butano/butano/include/bn_math.h:
+/home/Commodore/butano/butano/include/bn_sin_lut.h:
+/home/Commodore/butano/butano/include/bn_reciprocal_lut.h:
+/home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h:
@@ -135,11 +140,6 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
 /home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/butano/include/bn_vector.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/room.h:
-/home/Commodore/butano/butano/include/bn_random.h:
-/home/Commodore/butano/butano/include/bn_math.h:
-/home/Commodore/butano/butano/include/bn_sin_lut.h:
-/home/Commodore/butano/butano/include/bn_reciprocal_lut.h:
-/home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/room_data.h:
 /home/Commodore/butano/butano/include/bn_array.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/level.h:

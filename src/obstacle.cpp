@@ -48,6 +48,10 @@ void Obstacle::auto_set_hitbox() {
         break;
     case ObstacleType::RoomBorderVer:
         _hitbox_dimensions = bn::fixed_point(16,144);
+        break;
+    case ObstacleType::RoomCornerHor:
+        _hitbox_dimensions = bn::fixed_point(32,16);
+        break;
     default:
         break;
     }

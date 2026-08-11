@@ -9,7 +9,8 @@
 enum class ObstacleType {
     Rock,
     RoomBorderHor,
-    RoomBorderVer
+    RoomBorderVer,
+    RoomCornerHor
 };
 
 class Obstacle {

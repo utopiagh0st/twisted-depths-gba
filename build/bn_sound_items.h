@@ -5,7 +5,8 @@
 
 namespace bn::sound_items
 {
-    constexpr inline sound_item mute(23);
+    constexpr inline sound_item honk(23);
+    constexpr inline sound_item mute(24);
 }
 
 #endif

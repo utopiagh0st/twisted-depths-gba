@@ -7,6 +7,8 @@
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
 #include "bn_rect.h"
+#include "bn_random.h"
+
 #include "obstacle.h"
 
 enum class CharacterName {
@@ -23,7 +25,7 @@ enum class Direction {
 
 class Player {
 public:
-    Player(CharacterName name, int x, int y);
+    Player(CharacterName name, int x, int y, bn::random& rnd);
     bn::fixed_point get_position();
     void set_position(bn::fixed_point new_position);
     int get_hp();
@@ -37,6 +39,8 @@ public:
 private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_animate_action<4>> _walk_anim;
+
+    bn::random _rnd;
 
     int _animation_cooldown;
     int _hp;
