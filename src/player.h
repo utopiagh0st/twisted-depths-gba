@@ -10,6 +10,7 @@
 #include "bn_random.h"
 
 #include "obstacle.h"
+#include "projectile.h"
 
 enum class CharacterName {
     diabolus,
@@ -35,7 +36,7 @@ public:
     bool is_movement_freezed();
     void set_freeze_movement(bool freeze_movement);
 
-    void attack();
+    void attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles);
     void take_damage(int damage);
     void apply_knockback(bn::fixed_point kb_velocity);
     void update(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles);  //passing bounds to avoid circle relationships

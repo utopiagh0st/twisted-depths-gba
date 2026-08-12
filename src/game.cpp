@@ -87,8 +87,7 @@ void Game::update_playing() {
         _enemies.push_back(Enemy(EnemyType::LimeCat, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48))));
     }
     if (bn::keypad::b_pressed() && _projectiles.size() < MAX_PROJECTILES) {
-        _player->attack();
-        _projectiles.push_back(Projectile(ProjectileType::Honk, ProjectileOwner::Player, _player->get_shot_velocity(), _player->get_position()));
+        _player->attack(_projectiles);
     }
     if (bn::keypad::start_pressed()) {
         bn::music::pause();
@@ -105,6 +104,14 @@ void Game::update_playing() {
             _player->take_damage(1);
             _player->apply_knockback(enemy.get_velocity());
         }
+        for (Projectile& projectile : _projectiles) {
+            if (enemy.get_hitbox().intersects(projectile.get_hitbox())) {
+            //enemy.set_alive(false);
+            enemy.take_damage(10);
+            enemy.apply_knockback(projectile.get_velocity());
+        }
+        }
+        
     }
 
     for(int i = 0; i < _enemies.size(); ) { //erasing dead guys

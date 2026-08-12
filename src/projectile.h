@@ -6,6 +6,8 @@
 #include "bn_fixed.h"
 #include "bn_rect.h"
 
+static constexpr int MAX_PROJECTILES = 50;
+
 enum class ProjectileType {
     Honk,
     Bullet
@@ -20,6 +22,7 @@ public:
     Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point velocity, bn::fixed_point position);
     bn::rect get_hitbox();
     ProjectileOwner get_owner();
+    bn::fixed_point get_velocity();
     bool is_alive();
     void update();
 private:

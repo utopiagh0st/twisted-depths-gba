@@ -20,6 +20,8 @@ public:
     bool is_alive();
     void set_alive(bool alive);
     bn::fixed get_distance(bn::fixed_point final_pos);
+    void apply_knockback(bn::fixed_point kb_velocity);
+    void take_damage(bn::fixed damage);
     void update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos);
 private:
     //debug
@@ -31,6 +33,7 @@ private:
     bn::sprite_ptr _sprite;
     bn::fixed_point _position;
     bn::fixed_point _velocity;
+    bn::fixed_point _knockback_velocity;
     bn::fixed_point _target;
     bn::fixed _friction;
     bn::fixed _acceleration;

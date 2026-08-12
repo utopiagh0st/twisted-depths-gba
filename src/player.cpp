@@ -1,4 +1,5 @@
 #include "player.h"
+#include "projectile.h"
 #include "bn_keypad.h"
 
 #include "bn_fixed.h"
@@ -104,7 +105,7 @@ void Player::take_damage(int damage) {
         _hp = 0;
     }
 }
-void Player::attack() {
+void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
     int atk_knockback = 4;
     if (_walk_anim) {
         _walk_anim.reset();
@@ -134,7 +135,7 @@ void Player::attack() {
             _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
             break;
     }
-
+    projectiles.push_back(Projectile(ProjectileType::Honk, ProjectileOwner::Player, get_shot_velocity(), get_position()));
     bn::sound_items::honk.play(0.3, _rnd.get_fixed(0.5,2), 0);
     _animation_cooldown = 20;
     

@@ -44,6 +44,10 @@ bn::rect Projectile::get_hitbox() {
     );
 }
 
+bn::fixed_point Projectile::get_velocity() {
+    return _velocity;
+}
+
 void Projectile::update_movement() {
     _velocity *= bn::fixed(1) - _friction;
     _position += _velocity;

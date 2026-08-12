@@ -26,6 +26,8 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position) :
     _max_speed = bn::fixed(5);
     _cooldown = 0;
     _step = 0;
+    _knockback_velocity = bn::fixed_point(0,0);
+    _hp = bn::fixed(50);
 
     _type = type;
     _sprite.set_bg_priority(1);
@@ -53,6 +55,27 @@ bn::rect Enemy::get_hitbox() {
 }
 void Enemy::set_alive(bool alive) {
     _alive = alive;
+}
+void Enemy::take_damage(bn::fixed damage) {
+    _hp -= damage;
+    if(_hp <= 0) {
+        _alive = false;
+    }
+}
+
+void Enemy::apply_knockback(bn::fixed_point kb_velocity) {
+    bn::fixed speed = bn::sqrt(kb_velocity.x() * kb_velocity.x() + kb_velocity.y() * kb_velocity.y());
+
+    if (speed > 0) {
+        bn::fixed_point direction = kb_velocity / speed;
+
+        //optional upward bias
+        direction.set_y(direction.y() - 0.3);
+
+        bn::fixed strength = bn::min(speed * 2, bn::fixed(6)); //speed times multiplier OR the threshold
+
+        _knockback_velocity = direction * strength;
+    }
 }
 
 void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos) {
@@ -91,7 +114,9 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
     default:
         break;
     }
-
+    _velocity += _knockback_velocity;
+    _knockback_velocity *= (bn::fixed(1) - _friction);
+    
     if (_debug) {
         bn::rect hitbox = get_hitbox();
         _spr_hitbox->set_position(hitbox.x(), hitbox.y());
