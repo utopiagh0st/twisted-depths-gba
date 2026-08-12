@@ -17,9 +17,13 @@ bn::point Level::get_starting_room_pos() {
     return _starting_room_pos;
 }
 
+bool Level::is_doing_room_transition() {
+    return _doing_room_transition;
+}
+
 void Level::toggle_map(bool show) {
     if (show) {
-        bn::point position = bn::point(-50,-50);
+        bn::point position = bn::point(-80,-64);
         bn::point map_pos = _current_room_pos;
         for (int v = 0; v < map_size; v++) {
             for (int h = 0; h < map_size; h++) {
@@ -29,6 +33,7 @@ void Level::toggle_map(bool show) {
                     } else {
                         _minimap_tiles.push_back(bn::sprite_items::icon_small_room.create_sprite(position.x()+h*8,position.y()+v*8));
                     }
+                    _minimap_tiles.back().set_bg_priority(0);
                 }
             }
         }
@@ -37,7 +42,8 @@ void Level::toggle_map(bool show) {
     }
 }
 
-void Level::begin_room_transition(int next_room_dir) {
+void Level::begin_room_transition(int next_room_dir, bn::vector<Obstacle, max_obstacles>& obstacles) {
+    obstacles.clear();
     _room_transition_dir = next_room_dir;
     int next_room_index;
     if(next_room_dir == UP) {
@@ -111,7 +117,6 @@ void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles) {
         _next_room.reset();
         _current_room_pos = next_room_pos;
         _current_room->draw_bg(bn::fixed_point(0,0));
-        _current_room->generate_border(obstacles);
         _current_room->generate_obstacles(obstacles);
 
         _doing_room_transition = false;

@@ -35,6 +35,7 @@ private:
     bn::fixed _friction;
     bn::fixed _acceleration;
     bn::fixed _max_speed;
+    bn::fixed _hp;
     int _cooldown;
     int _step;
     //Functions

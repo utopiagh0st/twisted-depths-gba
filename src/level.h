@@ -17,8 +17,9 @@ class Level {
 public:
     Level(LevelType level_type, bn::array<bn::array<int, 10>, 10> level_map, bn::point starting_room);
     bn::point get_starting_room_pos();
+    bool is_doing_room_transition();
     void load_room(bn::point room_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
-    void begin_room_transition(int direction);
+    void begin_room_transition(int direction, bn::vector<Obstacle, max_obstacles>& obstacles);
     void update(bn::vector<Obstacle, max_obstacles>& obstacles);
     void toggle_map(bool showing);
 private:

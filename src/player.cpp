@@ -44,6 +44,7 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
     _shot_speed = bn::fixed(10);
+    _freeze_movement = false;
 
     _sprite.set_bg_priority(2); //sprite priority
 }
@@ -59,14 +60,11 @@ int Player::get_hp_max() {
 bn::fixed_point Player::get_position() {
     return _position;
 }
-void Player::set_position(bn::fixed_point new_position) {
-    _sprite.set_position(new_position);
-    _position = new_position;
-}
+
 bn::rect Player::get_hitbox() {
     return bn::rect(
     int(_position.x()),
-    int(_position.y()),
+    int(_position.y()+1),
     6,   // width
     13    // height
     );
@@ -86,6 +84,18 @@ bn::fixed_point Player::get_shot_velocity() {
     return bn::fixed_point(0, _shot_speed * -1);
 }
 
+bool Player::is_movement_freezed() {
+    return _freeze_movement;
+}
+
+void Player::set_position(bn::fixed_point new_position) {
+    _sprite.set_position(new_position);
+    _position = new_position;
+}
+
+void Player::set_freeze_movement(bool freeze_movement) {
+    _freeze_movement = freeze_movement;
+}
 
 //Functions
 void Player::take_damage(int damage) {
@@ -301,5 +311,7 @@ void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn
     if(_animation_cooldown == 0) {
         _sprite.set_horizontal_flip(false);
     }
-    update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd, obstacles);
+    if (!_freeze_movement) {
+        update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd, obstacles);
+    }
 }

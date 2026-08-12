@@ -32,6 +32,9 @@ public:
     int get_hp_max();
     bn::rect get_hitbox();
     bn::fixed_point get_shot_velocity();
+    bool is_movement_freezed();
+    void set_freeze_movement(bool freeze_movement);
+
     void attack();
     void take_damage(int damage);
     void apply_knockback(bn::fixed_point kb_velocity);
@@ -54,6 +57,7 @@ private:
     bn::fixed_point _knockback_velocity;
     bn::fixed_point _last_input;
     bn::fixed _shot_speed;
+    bool _freeze_movement;
     void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles);
 };
 

@@ -33,7 +33,7 @@ Obstacle::Obstacle(ObstacleType type, bn::fixed_point position) :
     _active = true;
     _position = position;
     _type = type;
-    _sprite.set_bg_priority(1);
+    _sprite.set_bg_priority(3);
     auto_set_hitbox();
     if (_debug) {
         _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));

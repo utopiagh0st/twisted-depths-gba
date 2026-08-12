@@ -5,6 +5,8 @@
 #include "player.h"
 #include "enemy.h"
 #include "projectile.h"
+#include "obstacle.h"
+
 //utilities and structures
 #include "bn_vector.h"
 #include "bn_random.h"
@@ -36,7 +38,7 @@ void Game::update_title() { //use this one as a template of a state change
         _player.emplace(CharacterName::diabolus, 0, 0, _rnd);   //replaces the empty player
         _hud.emplace(true);
 
-        bn::music_items::stinkbomb.play(0.1);    //banger starts
+        bn::music_items::stinkbomb.play(1);    //banger starts
 
         _state = State::Playing;    //change of state
     }
@@ -59,16 +61,24 @@ void Game::update_playing() {
     
     if (_player->get_position().y() < _bounds[UP]) {
         _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[DOWN] - 10));
-        _level->begin_room_transition(UP);
+        _player->set_freeze_movement(true);
+        _level->begin_room_transition(UP, _obstacles);
     } else if (_player->get_position().y() > _bounds[DOWN]) {
         _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[UP] + 10));
-        _level->begin_room_transition(DOWN);
+        _player->set_freeze_movement(true);
+        _level->begin_room_transition(DOWN, _obstacles);
     } else if (_player->get_position().x() < _bounds[LEFT]) {
         _player->set_position(bn::fixed_point(_bounds[RIGHT] - 10,_player->get_position().y()));
-        _level->begin_room_transition(LEFT);
+        _player->set_freeze_movement(true);
+        _level->begin_room_transition(LEFT, _obstacles);
     } else if (_player->get_position().x() > _bounds[RIGHT]) {
         _player->set_position(bn::fixed_point(_bounds[LEFT] + 10,_player->get_position().y()));
-        _level->begin_room_transition(RIGHT);
+        _player->set_freeze_movement(true);
+        _level->begin_room_transition(RIGHT, _obstacles);
+    }
+
+    if (_player->is_movement_freezed() && !_level->is_doing_room_transition()) {
+        _player->set_freeze_movement(false);
     }
     /**/
 

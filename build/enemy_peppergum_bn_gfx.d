@@ -1,0 +1,1 @@
+enemy_peppergum_bn_gfx.o: enemy_peppergum_bn_gfx.s

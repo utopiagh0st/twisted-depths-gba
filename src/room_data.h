@@ -47,7 +47,7 @@ struct RoomData {
     LevelType level_type;
     RoomType room_type;
     bn::regular_bg_item bg;
-    bn::array<ObstacleSpawnData, 63> obstacles_spawn_data;
+    ObstacleSpawnData obstacles_spawn_data[63]; //using vanilla arrays cuz bn::array works kinda weird
     int obstacle_count;
 };
 

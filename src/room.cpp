@@ -37,27 +37,17 @@ void Room::clear_borders(bn::vector<Obstacle, max_obstacles>& obstacles) {
         }
     }
 }
-void Room::clear_obstacles(bn::vector<Obstacle, max_obstacles>& obstacles) {
-    for(int i = 0; i < obstacles.size(); i++) { //erasing lol
-        obstacles.erase(obstacles.begin() + i); //using pointers!!
-    }
-}
 
 void Room::generate_obstacles(bn::vector<Obstacle, max_obstacles>& obstacles) {
+    generate_border(obstacles);
     const RoomData& room_data = ROOM_LOOKUP[_room_index];
-    for(int i = 0; i < room_data.obstacle_count; ++i)
-    {
-        const ObstacleSpawnData& obstacle_data =
-            room_data.obstacles_spawn_data[i];
-
-        obstacles.push_back(
-            Obstacle(obstacle_data.obstacle_type, obstacle_data.position)
-        );
+    for(int i = 0; i < room_data.obstacle_count; ++i) {
+        const ObstacleSpawnData& obstacle_data = room_data.obstacles_spawn_data[i];
+        obstacles.push_back(Obstacle(obstacle_data.obstacle_type, obstacle_data.position));
     }
 }
 
 void Room::generate_border(bn::vector<Obstacle, max_obstacles>& obstacles) {
-    clear_obstacles(obstacles);
     const RoomData& room_data = ROOM_LOOKUP[_room_index];
     if (!has_entries(room_data.room_type, RoomType::U)) {
         obstacles.push_back(Obstacle(ObstacleType::RoomBorderHor, bn::fixed_point(0,-64)));
