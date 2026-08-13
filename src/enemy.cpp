@@ -2,13 +2,19 @@
 #include "bn_fixed_point.h"
 #include "bn_math.h"
 #include "bn_rect.h"
+#include "bn_sprite_animate_actions.h"
+
 #include "bn_sprite_items_enemy.h"
+#include "bn_sprite_items_enemy_peppergum.h"
+
 #include "bn_sprite_items_hitbox.h"
 
 static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point position) { //Character sprite selector
     switch(type) {
         case EnemyType::LimeCat:
             return bn::sprite_items::enemy.create_sprite(position);
+        case EnemyType::PepperGum:
+            return bn::sprite_items::enemy_peppergum.create_sprite(position);
     }
 
     return bn::sprite_items::enemy.create_sprite(position);
@@ -29,10 +35,34 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position) :
     _knockback_velocity = bn::fixed_point(0,0);
     _hp = bn::fixed(50);
 
+    //optional attributes
+    
+
     _type = type;
     _sprite.set_bg_priority(1);
+
+    initial_setup();
     if (_debug) {
         _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));
+    }
+}
+
+void Enemy::initial_setup() {
+    switch(_type) {
+    case EnemyType::PepperGum:
+        _friction = bn::fixed(0.4);
+        _acceleration = bn::fixed(0.3);
+        _max_speed = bn::fixed(2);
+
+        _sprite_anim.emplace(
+            bn::sprite_animate_action<4>::forever(
+                _sprite,
+                5,
+                bn::sprite_items::enemy_peppergum.tiles_item(),
+                bn::array<uint16_t, 4>{ 0, 1, 2, 3}
+            )
+        );
+    break;
     }
 }
 
@@ -57,9 +87,12 @@ void Enemy::set_alive(bool alive) {
     _alive = alive;
 }
 void Enemy::take_damage(bn::fixed damage) {
+    if(_hp>0) {
     _hp -= damage;
-    if(_hp <= 0) {
-        _alive = false;
+    if (_hp <= 0) {
+        _step = 0;
+        _cooldown = 0;
+    }
     }
 }
 
@@ -111,12 +144,71 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
             }
         break;
         }
+        break;
+    case EnemyType::PepperGum:
+        
+        if(_hp > 0) {
+            if (_target.x() < _position.x()) {
+                _sprite.set_horizontal_flip(true);
+            } else {
+                _sprite.set_horizontal_flip(false);
+            }
+            switch (_step) {
+            case 0:
+                deaccelerate();
+                if(_cooldown == 0) {
+                    _cooldown = 40;
+                    _step++;
+                }
+                _cooldown--;
+                break;
+            case 1:
+                _target = player_pos;
+                move_towards(_target);
+                if(_cooldown == 0) {
+                    _cooldown=15;
+                    _step=0;
+                }
+                _cooldown--;
+                break;
+            }
+            _sprite_anim->update();
+        } else {
+            switch (_step) {
+            case 0:
+                _sprite_anim.emplace(
+                    bn::sprite_animate_action<4>::once(
+                        _sprite,
+                        10,
+                        bn::sprite_items::enemy_peppergum.tiles_item(),
+                        bn::array<uint16_t, 3>{3, 4, 5}
+                    )
+                );
+                _cooldown = 30;
+                _step++;
+            break;
+            case 1:
+                _cooldown--;
+                if(_cooldown == 0) {
+                    _alive = false;
+                }
+            break;
+            }
+            deaccelerate();
+            if (!_sprite_anim->done()) {
+                _sprite_anim->update();
+            }
+        }
+        break;
+        
     default:
         break;
     }
     _velocity += _knockback_velocity;
     _knockback_velocity *= (bn::fixed(1) - _friction);
-    
+    _position += _velocity;
+    _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
+
     if (_debug) {
         bn::rect hitbox = get_hitbox();
         _spr_hitbox->set_position(hitbox.x(), hitbox.y());
@@ -131,6 +223,7 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
         _spr_hitbox->set_bg_priority(0);
     }
 }
+
 
 bool Enemy::bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
     bool collided = false;
@@ -169,12 +262,9 @@ void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns t
         _velocity = (_velocity / bn::sqrt(speed_sq)) * _max_speed;
     }
     
-    _position += _velocity;
-    _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
 }
 
 void Enemy::deaccelerate() {
     _velocity *= bn::fixed(1) - _friction;
     _position += _velocity;
-    _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
 }

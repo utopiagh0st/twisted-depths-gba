@@ -84,7 +84,7 @@ void Game::update_playing() {
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
-        _enemies.push_back(Enemy(EnemyType::LimeCat, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48))));
+        _enemies.push_back(Enemy(EnemyType::PepperGum, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48))));
     }
     if (bn::keypad::b_pressed() && _projectiles.size() < MAX_PROJECTILES) {
         _player->attack(_projectiles);
@@ -107,7 +107,7 @@ void Game::update_playing() {
         for (Projectile& projectile : _projectiles) {
             if (enemy.get_hitbox().intersects(projectile.get_hitbox())) {
             //enemy.set_alive(false);
-            enemy.take_damage(10);
+            enemy.take_damage(1);
             enemy.apply_knockback(projectile.get_velocity());
         }
         }
@@ -137,6 +137,20 @@ void Game::update_playing() {
 
     //HUD
     _hud->update(_player->get_hp(), _player->get_hp_max());
+    if (_player->get_hp() <= 0) {
+        game_over();
+    }
+}
+
+void Game::game_over() {
+    _state = State::Title;
+    _projectiles.clear();
+    _enemies.clear();
+    _obstacles.clear();
+    _player.reset();
+    _level.reset();
+    _hud.reset();
+    bn::music::stop();
 }
 
 void Game::update() {   //main update loop

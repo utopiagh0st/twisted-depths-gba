@@ -52,6 +52,7 @@ struct RoomData {
 };
 
 // static look-up table that lives in cpp cuz it'll get big, don't ask me to explain this, I never understood c
-extern const bn::array<RoomData, 15> ROOM_LOOKUP;
+constexpr int ROOM_LOOKUP_SIZE = 16;
+extern const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP;
 
 #endif

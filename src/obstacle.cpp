@@ -5,6 +5,9 @@
 #include "bn_sprite_items_hitbox.h"
 #include "bn_sprite_items_wall.h"
 #include "bn_sprite_items_obstacle_trashcan.h"
+#include "bn_sprite_items_obstacle_trashbag.h"
+#include "bn_sprite_items_obstacle_trashbox.h"
+
 
 
 bn::sprite_ptr Obstacle::create_obstacle_sprite_and_config(ObstacleType type, bn::fixed_point position) {
@@ -12,6 +15,12 @@ bn::sprite_ptr Obstacle::create_obstacle_sprite_and_config(ObstacleType type, bn
         case ObstacleType::Trashcan:
             _visible = true;
             return bn::sprite_items::obstacle_trashcan.create_sprite(position);
+        case ObstacleType::Trashbag:
+            _visible = true;
+            return bn::sprite_items::obstacle_trashbag.create_sprite(position);
+        case ObstacleType::TrashBox:
+            _visible = true;
+            return bn::sprite_items::obstacle_trashbox.create_sprite(position);
         case ObstacleType::RoomBorderHor:
             _visible = false;
             _hitbox_dimensions = bn::fixed_point(176,16);
@@ -46,6 +55,12 @@ Obstacle::Obstacle(ObstacleType type, bn::fixed_point position) :
 void Obstacle::auto_set_hitbox() {
     switch (_type) {
     case ObstacleType::Trashcan:
+        _hitbox_dimensions = bn::fixed_point(16,16);
+        break;
+    case ObstacleType::Trashbag:
+        _hitbox_dimensions = bn::fixed_point(16,16);
+        break;
+    case ObstacleType::TrashBox:
         _hitbox_dimensions = bn::fixed_point(16,16);
         break;
     case ObstacleType::RoomBorderHor:

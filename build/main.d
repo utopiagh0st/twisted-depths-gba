@@ -57,6 +57,7 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
  /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h \
+ /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/hud.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_item.h \
  /home/Commodore/butano/butano/include/bn_bg_palette_item.h \
@@ -64,7 +65,6 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_item.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h \
- /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/butano/include/bn_vector.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/room.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/room_data.h \
@@ -130,6 +130,7 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h:
+/home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/hud.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_item.h:
 /home/Commodore/butano/butano/include/bn_bg_palette_item.h:
@@ -137,7 +138,6 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
 /home/Commodore/butano/butano/include/bn_regular_bg_map_item.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h:
-/home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/butano/include/bn_vector.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/room.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/room_data.h:

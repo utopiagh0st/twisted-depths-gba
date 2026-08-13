@@ -30,14 +30,21 @@ lil coords helper
 [-64,32 ][-48,32 ][-32,32 ][-16,32 ][  0,32 ][ 16,32 ][ 32,32 ][ 48,32 ][ 64,32 ]
 [-64,48 ][-48,48 ][-32,48 ][-16,48 ][  0,48 ][ 16,48 ][ 32,48 ][ 48,48 ][ 64,48 ]
 */
-const bn::array<RoomData, 15> ROOM_LOOKUP = {{ //Leveltype, roomtype (entrances), background, array of obstacle data, obstacle num (adding enemies next!!)
-    //STREET U
+const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP = {{ //Leveltype, roomtype (entrances), background, array of obstacle data, obstacle num (adding enemies next!!)
+    ////STREET 
+    //U
     {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u,
     {
         {ObstacleType::Trashcan, bn::fixed_point(-64,-32)},
-        {ObstacleType::Trashcan, bn::fixed_point(48,48)}
-    }, 2},
-
+        {ObstacleType::Trashbag, bn::fixed_point(48,48)},
+        {ObstacleType::TrashBox, bn::fixed_point(32,-16)}
+    }, 3},
+    {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u,
+    {
+        {ObstacleType::Trashcan, bn::fixed_point(-64,0)},
+        {ObstacleType::Trashbag, bn::fixed_point(0,48)},
+        {ObstacleType::TrashBox, bn::fixed_point(32,-16)}
+    }, 1},
     {   LevelType::STREET, RoomType::D, bn::regular_bg_items::bg_street_d,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}

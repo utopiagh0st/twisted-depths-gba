@@ -10,6 +10,8 @@ constexpr int max_obstacles = 63;
 
 enum class ObstacleType {
     Trashcan,
+    Trashbag,
+    TrashBox,
     RoomBorderHor,
     RoomBorderVer,
     RoomCornerHor

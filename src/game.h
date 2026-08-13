@@ -49,6 +49,7 @@ private:
 
     int _bounds[4];
 
+    void game_over();
     void update_title();
     void update_pause();
     void update_playing();

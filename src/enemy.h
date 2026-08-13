@@ -5,10 +5,13 @@
 #include "bn_fixed_point.h"
 #include "bn_fixed.h"
 #include "bn_rect.h"
+#include "bn_sprite_animate_actions.h"
+#include "bn_optional.h"
 
-enum class EnemyType
-{
-    LimeCat
+
+enum class EnemyType {
+    LimeCat,
+    PepperGum
 };
 
 class Enemy {
@@ -30,7 +33,9 @@ private:
 
     EnemyType _type;
     bool _alive;
+    bn::optional<bn::sprite_animate_action<4>> _sprite_anim;
     bn::sprite_ptr _sprite;
+    
     bn::fixed_point _position;
     bn::fixed_point _velocity;
     bn::fixed_point _knockback_velocity;
@@ -42,6 +47,7 @@ private:
     int _cooldown;
     int _step;
     //Functions
+    void initial_setup();
     bool bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd);
     void move_towards(bn::fixed_point final_pos);
     void deaccelerate();

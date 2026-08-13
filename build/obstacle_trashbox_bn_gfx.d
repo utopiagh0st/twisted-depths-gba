@@ -1,0 +1,1 @@
+obstacle_trashbox_bn_gfx.o: obstacle_trashbox_bn_gfx.s
