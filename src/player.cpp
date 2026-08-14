@@ -16,6 +16,9 @@
 #include "bn_sprite_items_player_fran_attack_left.h"
 #include "bn_sprite_items_player_fran_attack_up.h"
 #include "bn_sprite_items_player_fran_attack_down.h"
+#include "bn_sprite_items_visual_damage.h"
+
+
 #include "bn_sprite_animate_actions.h"
 #include "bn_sound_items.h"
 
@@ -30,10 +33,12 @@ static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) 
 
 Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _sprite(create_character_sprite(name, x, y)),
+    _damage_sprite(bn::sprite_items::visual_damage.create_sprite(x,y)),
     _rnd(rnd)
 {
     _hp_max = 20;
     _hp = 20;
+    _damage_sprite.set_visible(false);
 
     _animation_cooldown = 0;
     _direction = Direction::Down;
@@ -50,6 +55,7 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _i_frames_counter = 0;
 
     _sprite.set_bg_priority(2); //sprite priority
+    _sprite.set_z_order(2);
 }
 
 
@@ -105,7 +111,20 @@ void Player::take_damage(int damage) {
     if (_i_frames_counter <= 0) {
         _hp -= damage;
         _i_frames_counter = _i_frames;
-        bn::sound_items::player_hurt.play(1,1.2,0);
+        bn::sound_items::player_hurt.play(1,1,0);
+        _damage_sprite.set_visible(true);
+        _damage_sprite.set_position(_position.x(), _position.y());
+        _damage_sprite.set_bg_priority(2);
+        _damage_sprite.set_z_order(0);
+
+        _damage_anim.emplace(
+            bn::sprite_animate_action<10>::once(
+                _damage_sprite,
+                2,
+                bn::sprite_items::visual_damage.tiles_item(),
+                bn::array<uint16_t, 10>{ 0, 1, 2, 3, 4, 5, 6,6, 7, 7}
+            )
+        );
     }
     if (_hp < 0) {
             _hp = 0;
@@ -316,6 +335,17 @@ void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn
     if (_i_frames_counter > 0) {
         _i_frames_counter--;
     }
+    if(_damage_anim){
+        _damage_anim->update();
+
+        _damage_sprite.set_position(_position.x(), _position.y());
+
+    if(_damage_anim->done())
+    {   
+        _damage_sprite.set_visible(false);
+        _damage_anim.reset();
+    }
+}
     if (_animation_cooldown > 0) {
         _animation_cooldown--;
     }

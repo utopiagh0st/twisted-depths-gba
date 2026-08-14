@@ -9,6 +9,7 @@
 
 #include "bn_sprite_items_hitbox.h"
 
+
 static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point position) { //Character sprite selector
     switch(type) {
         case EnemyType::LimeCat:
@@ -39,7 +40,9 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position) :
     
 
     _type = type;
-    _sprite.set_bg_priority(1);
+    _sprite.set_bg_priority(2);
+    _sprite.set_z_order(1);
+
 
     initial_setup();
     if (_debug) {

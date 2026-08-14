@@ -65,6 +65,7 @@ player.o: C:/butano-master/games/twisted-depths-gba/src/player.cpp \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_left.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_up.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_down.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_visual_damage.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sound_items.h \
  C:/butano-master/butano/include/bn_sound_item.h \
  C:/butano-master/butano/include/bn_sound_handle.h
@@ -134,6 +135,7 @@ C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_walk
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_left.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_up.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_player_fran_attack_down.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_visual_damage.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sound_items.h:
 C:/butano-master/butano/include/bn_sound_item.h:
 C:/butano-master/butano/include/bn_sound_handle.h:

@@ -4,6 +4,7 @@
 #include "bn_sprite_items_projectile_honk.h"
 #include "bn_sprite_items_hitbox.h"
 
+
 bn::sprite_ptr Projectile::create_projectile_sprite(ProjectileType type, bn::fixed_point position) {
     switch (type){
         case ProjectileType::Honk:
@@ -26,7 +27,9 @@ Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_poi
     _friction = bn::fixed(0.2);
     _type = type;
     _owner = owner;
-    _sprite.set_bg_priority(1);
+    _sprite.set_bg_priority(2);
+    _sprite.set_z_order(0);
+
     if (_debug) {
         _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));
     }

@@ -10,6 +10,7 @@
 
 
 
+
 bn::sprite_ptr Obstacle::create_obstacle_sprite_and_config(ObstacleType type, bn::fixed_point position) {
     switch (type){
         case ObstacleType::Trashcan:
@@ -42,7 +43,9 @@ Obstacle::Obstacle(ObstacleType type, bn::fixed_point position) :
     _active = true;
     _position = position;
     _type = type;
-    _sprite.set_bg_priority(3);
+    _sprite.set_bg_priority(2);
+    _sprite.set_z_order(3);
+
     auto_set_hitbox();
     if (_debug) {
         _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));
