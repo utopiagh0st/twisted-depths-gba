@@ -59,6 +59,8 @@ private:
     bn::fixed_point _last_input;
     bn::fixed _shot_speed;
     bool _freeze_movement;
+    int _i_frames;
+    int _i_frames_counter;
     void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles);
 };
 

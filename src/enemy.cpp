@@ -55,11 +55,11 @@ void Enemy::initial_setup() {
         _max_speed = bn::fixed(2);
 
         _sprite_anim.emplace(
-            bn::sprite_animate_action<4>::forever(
+            bn::sprite_animate_action<3>::forever(
                 _sprite,
                 5,
                 bn::sprite_items::enemy_peppergum.tiles_item(),
-                bn::array<uint16_t, 4>{ 0, 1, 2, 3}
+                bn::array<uint16_t, 3>{ 0, 1, 2 }
             )
         );
     break;

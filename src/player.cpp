@@ -46,6 +46,8 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _last_input = bn::fixed_point(0,0);
     _shot_speed = bn::fixed(10);
     _freeze_movement = false;
+    _i_frames = 40;
+    _i_frames_counter = 0;
 
     _sprite.set_bg_priority(2); //sprite priority
 }
@@ -100,11 +102,16 @@ void Player::set_freeze_movement(bool freeze_movement) {
 
 //Functions
 void Player::take_damage(int damage) {
-    _hp -= damage;
-    if (_hp < 0) {
-        _hp = 0;
+    if (_i_frames_counter <= 0) {
+        _hp -= damage;
+        _i_frames_counter = _i_frames;
+        bn::sound_items::player_hurt.play(1,1.2,0);
     }
+    if (_hp < 0) {
+            _hp = 0;
+        }
 }
+
 void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
     int atk_knockback = 4;
     if (_walk_anim) {
@@ -136,7 +143,7 @@ void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
             break;
     }
     projectiles.push_back(Projectile(ProjectileType::Honk, ProjectileOwner::Player, get_shot_velocity(), get_position()));
-    bn::sound_items::honk.play(0.3, _rnd.get_fixed(0.5,2), 0);
+    bn::sound_items::honk.play(0.2, _rnd.get_fixed(0.5,2), 0);
     _animation_cooldown = 20;
     
 }
@@ -306,6 +313,9 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 }
 
 void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::vector<Obstacle,max_obstacles>& obstacles) {
+    if (_i_frames_counter > 0) {
+        _i_frames_counter--;
+    }
     if (_animation_cooldown > 0) {
         _animation_cooldown--;
     }
