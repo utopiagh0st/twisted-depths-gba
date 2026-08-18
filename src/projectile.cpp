@@ -1,5 +1,7 @@
 #include "projectile.h"
 #include "bn_fixed_point.h"
+#include "bn_math.h"
+
 //sprites
 #include "bn_sprite_items_projectile_honk.h"
 #include "bn_sprite_items_hitbox.h"
@@ -24,6 +26,9 @@ Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_poi
     _alive = true;
     _velocity = velocity;
     _position = position;
+    _range = bn::fixed(10);
+    _distance_traveled = bn::fixed(0);
+    _piercing = true;
     _friction = bn::fixed(0.2);
     _type = type;
     _owner = owner;
@@ -38,6 +43,11 @@ Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_poi
 bool Projectile::is_alive() {
     return _alive;
 }
+
+bool Projectile::is_piercing() {
+    return _piercing;
+}
+
 bn::rect Projectile::get_hitbox() {
     return bn::rect(
     int(_position.x()),
@@ -47,8 +57,25 @@ bn::rect Projectile::get_hitbox() {
     );
 }
 
+void Projectile::set_alive(bool alive) {
+    _alive = alive;
+}
+ProjectileOwner Projectile::get_owner() {
+    return _owner;
+}
+
 bn::fixed_point Projectile::get_velocity() {
     return _velocity;
+}
+bn::fixed Projectile::get_speed() {
+    return sqrt(_velocity.x() * _velocity.x() + _velocity.y() * _velocity.y());
+}
+bn::fixed_point Projectile::get_unit_velocity_vector() {
+    bn::fixed speed = get_speed();
+    if (speed == 0) {
+        return bn::fixed_point(0,0);
+    }
+    return _velocity / speed;
 }
 
 void Projectile::update_movement() {
@@ -72,13 +99,23 @@ void Projectile::update_movement() {
 }
 
 void Projectile::update() {
-    update_movement();
     switch (_type) {
         case ProjectileType::Honk :
             if (_size < 1) {
                 _size += 0.1;
                 _sprite.set_scale(_size);
             }
+            update_movement();
+
+            break;
+        case ProjectileType::Bullet :
+            if (_distance_traveled <= _range) {
+                update_movement();
+                
+            } else {
+                
+            }
+            break;
             
     }
     if(_velocity == bn::fixed_point(0,0)) {

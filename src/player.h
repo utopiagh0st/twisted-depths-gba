@@ -27,6 +27,8 @@ enum class Direction {
 class Player {
 public:
     Player(CharacterName name, int x, int y, bn::random& rnd);
+    bn::fixed get_attack_knockback();
+    bn::fixed get_damage();
     bn::fixed_point get_position();
     void set_position(bn::fixed_point new_position);
     int get_hp();
@@ -58,6 +60,8 @@ private:
     bn::fixed_point _knockback_velocity;
     bn::fixed_point _last_input;
     bn::fixed _shot_speed;
+    bn::fixed _attack_knockback;
+    bn::fixed _damage;
     bool _freeze_movement;
     int _i_frames;
     int _i_frames_counter;

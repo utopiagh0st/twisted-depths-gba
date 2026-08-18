@@ -6,6 +6,7 @@
 #include "enemy.h"
 #include "projectile.h"
 #include "obstacle.h"
+#include <algorithm>
 
 //utilities and structures
 #include "bn_vector.h"
@@ -22,7 +23,8 @@
 Game::Game() :
     _state(State::Title),    //starts with title state
     _level_generator(_rnd)
-{
+{   
+    _frame = 0;
     _bounds[UP] = -60;   //up
     _bounds[DOWN] = 60;    //down
     _bounds[LEFT] = -80;   //left
@@ -38,7 +40,7 @@ void Game::update_title() { //use this one as a template of a state change
         _player.emplace(CharacterName::diabolus, 0, 0, _rnd);   //replaces the empty player
         _hud.emplace(true);
 
-        bn::music_items::stinkbomb.play(0.3);    //banger starts
+        bn::music_items::silence.play(0.3);    //banger starts
 
         _state = State::Playing;    //change of state
     }
@@ -97,7 +99,7 @@ void Game::update_playing() {
 
     //Enemies
     for (Enemy& enemy : _enemies) {
-        enemy.update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _player->get_position());
+        enemy.update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _player->get_position(), _obstacles);
         // Colission checks
         if (_player->get_hitbox().intersects(enemy.get_hitbox())) {
             //enemy.set_alive(false);
@@ -105,15 +107,48 @@ void Game::update_playing() {
             _player->apply_knockback(enemy.get_velocity());
         }
         for (Projectile& projectile : _projectiles) {
-            if (enemy.get_hitbox().intersects(projectile.get_hitbox())) {
-            //enemy.set_alive(false);
-            enemy.take_damage(1);
-            enemy.apply_knockback(projectile.get_velocity());
+            if (enemy.get_hitbox().intersects(projectile.get_hitbox()) && projectile.get_owner() == ProjectileOwner::Player) {
+                enemy.take_damage(_player->get_damage());
+                enemy.apply_knockback(projectile.get_unit_velocity_vector() * _player->get_attack_knockback());
+                if (!projectile.is_piercing()) {
+                    projectile.set_alive(false);
+                }
+            }
+            
         }
-        }
-        
     }
+    if (_frame % 5 == 0) { // DO every 5 frames
+    for(int i = 0; i < _enemies.size(); ++i) {
+        for(int j = i + 1; j < _enemies.size(); ++j) {
+            Enemy& enemy1 = _enemies[i];
+            Enemy& enemy2 = _enemies[j];
 
+            if(enemy1.get_hitbox().intersects(enemy2.get_hitbox())) {
+                bn::fixed_point direction =
+                    enemy1.get_position() - enemy2.get_position();
+
+                bn::fixed length = bn::sqrt(
+                    direction.x() * direction.x() +
+                    direction.y() * direction.y()
+                );
+
+                if(length != 0)
+                {
+                    direction.set_x(direction.x() / length);
+                    direction.set_y(direction.y() / length);
+
+                    enemy1.apply_knockback(direction * bn::fixed(0.2));
+                    enemy2.apply_knockback(-direction * bn::fixed(0.2));
+                }
+            }
+        }
+    }
+}
+
+    //Projectiles
+    for (Projectile& projectile : _projectiles) {
+        projectile.update();
+    }
     for(int i = 0; i < _enemies.size(); ) { //erasing dead guys
         if(!_enemies[i].is_alive()) {
             _enemies.erase(_enemies.begin() + i); //using pointers!!
@@ -129,10 +164,6 @@ void Game::update_playing() {
         }
     }
 
-    //Projectiles
-    for (Projectile& projectile : _projectiles) {
-        projectile.update();
-    }
     
 
     //HUD
@@ -166,5 +197,10 @@ void Game::update() {   //main update loop
             update_pause();
             break;
     }
+    _frame++;
+    if (_frame > 60) {
+        _frame = 1;
+    }
+    
     _rnd.update();
 }

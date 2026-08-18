@@ -1,4 +1,8 @@
 #include "enemy.h"
+#include "obstacle.h"
+
+#include "bn_vector.h"
+
 #include "bn_fixed_point.h"
 #include "bn_math.h"
 #include "bn_rect.h"
@@ -24,6 +28,7 @@ static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point po
 Enemy::Enemy(EnemyType type, bn::fixed_point position) :
     _sprite(create_character_sprite(type, position))
 {
+    _dying = false;
     _debug = false;
     _alive = true;
     _position = position;
@@ -34,8 +39,9 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position) :
     _cooldown = 0;
     _step = 0;
     _knockback_velocity = bn::fixed_point(0,0);
-    _hp = bn::fixed(50);
-
+    _hp = bn::fixed(10);
+    _i_frames = 5;
+    _i_frames_counter = 0;
     //optional attributes
     
 
@@ -55,7 +61,7 @@ void Enemy::initial_setup() {
     case EnemyType::PepperGum:
         _friction = bn::fixed(0.4);
         _acceleration = bn::fixed(0.3);
-        _max_speed = bn::fixed(2);
+        _max_speed = bn::fixed(1.5);
 
         _sprite_anim.emplace(
             bn::sprite_animate_action<3>::forever(
@@ -90,12 +96,14 @@ void Enemy::set_alive(bool alive) {
     _alive = alive;
 }
 void Enemy::take_damage(bn::fixed damage) {
-    if(_hp>0) {
-    _hp -= damage;
-    if (_hp <= 0) {
+    if(_hp > 0 && _i_frames_counter <= 0 && !_dying) {
+        _i_frames_counter = _i_frames;
+        _hp -= damage;
+    }
+    if (_hp <= 0 && !_dying) {
+        _dying = true;
         _step = 0;
         _cooldown = 0;
-    }
     }
 }
 
@@ -114,7 +122,7 @@ void Enemy::apply_knockback(bn::fixed_point kb_velocity) {
     }
 }
 
-void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos) {
+void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles) {
     switch (_type) {
     case EnemyType::LimeCat:
         switch (_step) {
@@ -150,7 +158,7 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
         break;
     case EnemyType::PepperGum:
         
-        if(_hp > 0) {
+        if(!_dying) {
             if (_target.x() < _position.x()) {
                 _sprite.set_horizontal_flip(true);
             } else {
@@ -160,7 +168,7 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
             case 0:
                 deaccelerate();
                 if(_cooldown == 0) {
-                    _cooldown = 40;
+                    _cooldown = 10;
                     _step++;
                 }
                 _cooldown--;
@@ -169,7 +177,7 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
                 _target = player_pos;
                 move_towards(_target);
                 if(_cooldown == 0) {
-                    _cooldown=15;
+                    _cooldown=10;
                     _step=0;
                 }
                 _cooldown--;
@@ -209,8 +217,29 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
     }
     _velocity += _knockback_velocity;
     _knockback_velocity *= (bn::fixed(1) - _friction);
-    _position += _velocity;
+    
+    //colission checks
+    _position.set_x(_position.x() + _velocity.x()); //x collision check (FUCK THERE MUST BE A BETTER WAY TO DO THIS)
+    for (Obstacle& obstacle : obstacles) {
+        // Colission checks
+        if (get_hitbox().intersects(obstacle.get_hitbox())) {
+            _position.set_x(_position.x() - _velocity.x());
+        }
+    }
+
+    _position.set_y(_position.y() + _velocity.y()); //y collision checkkkkk
+    for (Obstacle& obstacle : obstacles) {
+        // Colission checks
+        if (get_hitbox().intersects(obstacle.get_hitbox())) {
+            _position.set_y(_position.y() - _velocity.y());
+        }
+    }
+
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
+
+    if (_i_frames_counter > 0) {
+        _i_frames_counter--;
+    }
 
     if (_debug) {
         bn::rect hitbox = get_hitbox();
@@ -269,5 +298,4 @@ void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns t
 
 void Enemy::deaccelerate() {
     _velocity *= bn::fixed(1) - _friction;
-    _position += _velocity;
 }

@@ -23,6 +23,10 @@ public:
     bn::rect get_hitbox();
     ProjectileOwner get_owner();
     bn::fixed_point get_velocity();
+    bn::fixed_point get_unit_velocity_vector();
+    bn::fixed get_speed();
+    bool is_piercing();
+    void set_alive(bool alive);
     bool is_alive();
     void update();
 private:
@@ -36,6 +40,8 @@ private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_ptr> _spr_hitbox;
     bool _alive;
+    bool _piercing;
+
     bn::sprite_ptr create_projectile_sprite(ProjectileType type, bn::fixed_point position);
     void update_movement();
 };

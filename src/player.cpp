@@ -50,6 +50,8 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
     _shot_speed = bn::fixed(10);
+    _damage = bn::fixed(1.2);
+    _attack_knockback = bn::fixed(0.2);
     _freeze_movement = false;
     _i_frames = 40;
     _i_frames_counter = 0;
@@ -60,6 +62,12 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
 
 
 //Getters and Setters
+bn::fixed Player::get_attack_knockback() {
+    return _attack_knockback;
+}
+bn::fixed Player::get_damage() {
+    return _damage;
+}
 int Player::get_hp() {
     return _hp;
 }
@@ -340,8 +348,7 @@ void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn
 
         _damage_sprite.set_position(_position.x(), _position.y());
 
-    if(_damage_anim->done())
-    {   
+    if(_damage_anim->done()) {   
         _damage_sprite.set_visible(false);
         _damage_anim.reset();
     }

@@ -42,13 +42,13 @@ private:
     //entity management
     bn::optional<Player> _player;
     
-    static constexpr int MAX_ENEMIES = 50;
+    static constexpr int MAX_ENEMIES = 30;
     bn::vector<Enemy, MAX_ENEMIES> _enemies;
     bn::vector<Obstacle, max_obstacles> _obstacles;
     bn::vector<Projectile, MAX_PROJECTILES> _projectiles;
 
     int _bounds[4];
-
+    int _frame;
     void game_over();
     void update_title();
     void update_pause();
