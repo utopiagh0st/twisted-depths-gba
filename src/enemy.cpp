@@ -7,6 +7,7 @@
 #include "bn_math.h"
 #include "bn_rect.h"
 #include "bn_sprite_animate_actions.h"
+#include "bn_random.h"
 
 #include "bn_sprite_items_enemy.h"
 #include "bn_sprite_items_enemy_peppergum.h"
@@ -27,11 +28,13 @@ static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point po
     return bn::sprite_items::enemy.create_sprite(position);
 }
 
-Enemy::Enemy(EnemyType type, bn::fixed_point position) :
+Enemy::Enemy(EnemyType type, bn::fixed_point position, bn::random& rnd) :
+    _rnd(rnd),
     _sprite(create_character_sprite(type, position)),
     _damage_sprite(bn::sprite_items::visual_enemy_damage.create_sprite(position))
 {
     _damage_sprite.set_visible(false);
+    _damage_sprite.set_scale(0.8);
 
     _dying = false;
     _debug = false;
@@ -44,8 +47,8 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position) :
     _cooldown = 0;
     _step = 0;
     _knockback_velocity = bn::fixed_point(0,0);
-    _hp = bn::fixed(10);
-    _i_frames = 5;
+    _hp = bn::fixed(5);
+    _i_frames = 10;
     _i_frames_counter = 0;
     //optional attributes
     
@@ -109,13 +112,15 @@ void Enemy::take_damage(bn::fixed damage) {
         _damage_sprite.set_position(_position.x(), _position.y());
         _damage_sprite.set_bg_priority(2);
         _damage_sprite.set_z_order(0);
+        _damage_sprite.set_horizontal_flip(_rnd.get_bool());
+        _damage_sprite.set_vertical_flip(_rnd.get_bool());
 
         _damage_anim.emplace(
             bn::sprite_animate_action<9>::once(
                 _damage_sprite,
                 2,
                 bn::sprite_items::visual_enemy_damage.tiles_item(),
-                bn::array<uint16_t, 9>{ 0, 1, 2, 3, 4, 5, 5, 6, 6}
+                bn::array<uint16_t, 9>{ 0,1,2,3,4,5,5,6,6}
             )
         );
     }

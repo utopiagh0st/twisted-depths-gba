@@ -86,7 +86,7 @@ void Game::update_playing() {
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
-        _enemies.push_back(Enemy(EnemyType::PepperGum, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48))));
+        _enemies.push_back(Enemy(EnemyType::PepperGum, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)), _rnd));
     }
     if (bn::keypad::b_held() && _projectiles.size() < MAX_PROJECTILES) {
         _player->attack(_projectiles);

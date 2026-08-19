@@ -5,6 +5,8 @@
 #include "bn_fixed_point.h"
 #include "bn_fixed.h"
 #include "bn_rect.h"
+#include "bn_sprite_animate_actions.h"
+
 
 static constexpr int MAX_PROJECTILES = 50;
 
@@ -45,6 +47,8 @@ private:
     bn::fixed _damage;
     bn::fixed _knockback;
     bn::sprite_ptr _sprite;
+    bn::optional<bn::sprite_animate_action<2>> _sprite_anim;
+
     bn::optional<bn::sprite_ptr> _spr_hitbox;
     bool _alive;
     bool _piercing;

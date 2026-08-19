@@ -65,6 +65,7 @@ private:
     bn::fixed _damage;
     bn::fixed _fire_rate;
     bn::fixed _range;
+    bn::fixed _max_offset;
     int _attack_cooldown_counter;
     bool _freeze_movement;
     int _i_frames;

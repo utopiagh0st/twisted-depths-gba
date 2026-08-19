@@ -9,6 +9,7 @@
 #include "bn_optional.h"
 #include "obstacle.h"
 #include "bn_vector.h"
+#include "bn_random.h"
 
 
 enum class EnemyType {
@@ -18,7 +19,7 @@ enum class EnemyType {
 
 class Enemy {
 public:
-    Enemy(EnemyType type, bn::fixed_point position);
+    Enemy(EnemyType type, bn::fixed_point position, bn::random& rnd);
     bn::rect get_hitbox();
     bn::fixed_point get_position();
     bn::fixed_point get_velocity();
@@ -38,6 +39,7 @@ private:
     bn::optional<bn::sprite_animate_action<4>> _sprite_anim;
     bn::sprite_ptr _sprite;
     
+    bn::random _rnd;
     bool _dying;
     bn::fixed_point _position;
     bn::fixed_point _velocity;

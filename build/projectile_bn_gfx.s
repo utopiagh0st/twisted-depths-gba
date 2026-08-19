@@ -3,12 +3,12 @@
 
 @=======================================================================
 @
-@	projectile_bn_gfx, 8x8@4, 
+@	projectile_bn_gfx, 16x8@4, 
 @	+ palette 16 entries, not compressed
-@	+ 1 tiles not compressed
-@	Total size: 32 + 32 = 64
+@	+ 2 tiles not compressed
+@	Total size: 32 + 64 = 96
 @
-@	Time-stamp: 2026-08-18, 20:31:02
+@	Time-stamp: 2026-08-19, 11:32:57
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @
@@ -16,10 +16,11 @@
 
 	.section .rodata
 	.align	2
-	.global projectile_bn_gfxTiles		@ 32 unsigned chars
+	.global projectile_bn_gfxTiles		@ 64 unsigned chars
 	.hidden projectile_bn_gfxTiles
 projectile_bn_gfxTiles:
-	.word 0x00000000,0x01101010,0x01312100,0x00113210,0x01231100,0x00121310,0x01010110,0x00000000
+	.word 0x00000000,0x00011000,0x00122100,0x01233210,0x01233210,0x00122100,0x00011000,0x00000000
+	.word 0x00000000,0x00033000,0x00344300,0x03444430,0x03444430,0x00344300,0x00033000,0x00000000
 
 	.section .rodata
 	.align	2

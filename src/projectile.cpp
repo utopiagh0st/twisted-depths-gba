@@ -6,6 +6,8 @@
 #include "bn_sprite_items_projectile_honk.h"
 #include "bn_sprite_items_projectile.h"
 #include "bn_sprite_items_hitbox.h"
+#include "bn_sprite_animate_actions.h"
+
 
 
 bn::sprite_ptr Projectile::create_projectile_sprite(ProjectileType type, bn::fixed_point position) {
@@ -15,7 +17,7 @@ bn::sprite_ptr Projectile::create_projectile_sprite(ProjectileType type, bn::fix
             _size = 0.1;
             return sprite; 
     }
-    _size = 1;
+    _size = 0.1;
     return bn::sprite_items::projectile.create_sprite(position);
 }
 
@@ -33,13 +35,21 @@ Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_poi
     _knockback = knockback;
 
     _distance_traveled = bn::fixed(0);
-    _piercing = true;
+    _piercing = false;
     //_friction = bn::fixed(0.2);
     _friction = bn::fixed(0.2);
     _type = type;
     _owner = owner;
     _sprite.set_bg_priority(2);
     _sprite.set_z_order(0);
+    _sprite_anim.emplace(
+        bn::sprite_animate_action<2>::forever(
+            _sprite,
+            5,
+            bn::sprite_items::projectile.tiles_item(),
+            bn::array<uint16_t, 2>{ 0,1 }
+        )
+    );
 
     if (_debug) {
         _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));
@@ -96,7 +106,6 @@ void Projectile::set_alive(bool alive) {
 }
 
 void Projectile::update_movement() {
-    
     _position += _velocity;
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
 
@@ -125,6 +134,10 @@ void Projectile::update() {
             update_movement();
             break;
         case ProjectileType::Bullet :
+            if (_size < 1) {
+                _size += 0.1;
+                _sprite.set_scale(_size);
+            }
             if (_distance_traveled <= _range) {
                 _position += _velocity;
                 _distance_traveled += get_speed();
@@ -136,6 +149,9 @@ void Projectile::update() {
 
             break;
             
+    }
+    if(_sprite_anim) {
+        _sprite_anim->update();
     }
     if(_velocity == bn::fixed_point(0,0)) {
         _alive = false;

@@ -52,12 +52,13 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
 
     //attack vars
     //_shot_speed = bn::fixed(10);
-    _shot_speed = bn::fixed(2);
-    _fire_rate = bn::fixed(4);
+    _shot_speed = bn::fixed(3);
+    _fire_rate = bn::fixed(3);
     _attack_cooldown_counter = 0;
-    _damage = bn::fixed(1.2);
+    _damage = bn::fixed(2);
     _attack_knockback = bn::fixed(0.8);
-    _range = bn::fixed(60);;
+    _range = bn::fixed(60);
+    _max_offset = bn::fixed(0.5);
 
     _freeze_movement = false;
     _i_frames = 40;
@@ -155,32 +156,37 @@ void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
         if (_walk_anim) {
             _walk_anim.reset();
         }
+        bn::fixed_point offset;
         switch (_direction) {
             case Direction::Left :
                 _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
                 _sprite.set_horizontal_flip(false);
                 _velocity += bn::fixed_point(atk_knockback, 0);
+                offset = bn::fixed_point(0,_rnd.get_fixed(-_max_offset,_max_offset));
                 break;
             case Direction::Right :
                 _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
                 _sprite.set_horizontal_flip(true);
                 _velocity -= bn::fixed_point(atk_knockback, 0);
+                offset = bn::fixed_point(0,_rnd.get_fixed(-_max_offset,_max_offset));
                 break;
             case Direction::Up :
                 _sprite.set_tiles(bn::sprite_items::player_fran_attack_up.tiles_item(), 0);
                 _sprite.set_horizontal_flip(false);
                 _velocity += bn::fixed_point(0, atk_knockback);
+                offset = bn::fixed_point(_rnd.get_fixed(-_max_offset,_max_offset), 0);
                 break;
             case Direction::Down :
                 _sprite.set_tiles(bn::sprite_items::player_fran_attack_down.tiles_item(), 0);
                 _sprite.set_horizontal_flip(false);
                 _velocity -= bn::fixed_point(0, atk_knockback);
+                offset = bn::fixed_point(_rnd.get_fixed(-_max_offset,_max_offset), 0);
                 break;
             default:
                 _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
                 break;
         }
-        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, get_shot_velocity(), _damage, _range, _attack_knockback));
+        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, get_shot_velocity() + offset, _damage, _range, _attack_knockback));
         bn::sound_items::honk.play(0.2, _rnd.get_fixed(0.5,2), 0);
         _animation_cooldown = get_attack_cooldown();
         _attack_cooldown_counter = get_attack_cooldown();
