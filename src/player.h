@@ -35,6 +35,7 @@ public:
     int get_hp_max();
     bn::rect get_hitbox();
     bn::fixed_point get_shot_velocity();
+    int get_attack_cooldown();
     bool is_movement_freezed();
     void set_freeze_movement(bool freeze_movement);
 
@@ -62,6 +63,9 @@ private:
     bn::fixed _shot_speed;
     bn::fixed _attack_knockback;
     bn::fixed _damage;
+    bn::fixed _fire_rate;
+    bn::fixed _range;
+    int _attack_cooldown_counter;
     bool _freeze_movement;
     int _i_frames;
     int _i_frames_counter;

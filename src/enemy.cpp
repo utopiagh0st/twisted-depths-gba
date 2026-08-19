@@ -10,6 +10,8 @@
 
 #include "bn_sprite_items_enemy.h"
 #include "bn_sprite_items_enemy_peppergum.h"
+#include "bn_sprite_items_visual_enemy_damage.h"
+
 
 #include "bn_sprite_items_hitbox.h"
 
@@ -26,8 +28,11 @@ static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point po
 }
 
 Enemy::Enemy(EnemyType type, bn::fixed_point position) :
-    _sprite(create_character_sprite(type, position))
+    _sprite(create_character_sprite(type, position)),
+    _damage_sprite(bn::sprite_items::visual_enemy_damage.create_sprite(position))
 {
+    _damage_sprite.set_visible(false);
+
     _dying = false;
     _debug = false;
     _alive = true;
@@ -97,8 +102,22 @@ void Enemy::set_alive(bool alive) {
 }
 void Enemy::take_damage(bn::fixed damage) {
     if(_hp > 0 && _i_frames_counter <= 0 && !_dying) {
-        _i_frames_counter = _i_frames;
         _hp -= damage;
+        _i_frames_counter = _i_frames;
+        
+        _damage_sprite.set_visible(true);
+        _damage_sprite.set_position(_position.x(), _position.y());
+        _damage_sprite.set_bg_priority(2);
+        _damage_sprite.set_z_order(0);
+
+        _damage_anim.emplace(
+            bn::sprite_animate_action<9>::once(
+                _damage_sprite,
+                2,
+                bn::sprite_items::visual_enemy_damage.tiles_item(),
+                bn::array<uint16_t, 9>{ 0, 1, 2, 3, 4, 5, 5, 6, 6}
+            )
+        );
     }
     if (_hp <= 0 && !_dying) {
         _dying = true;
@@ -239,6 +258,17 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
 
     if (_i_frames_counter > 0) {
         _i_frames_counter--;
+    }
+
+    if(_damage_anim){
+        _damage_anim->update();
+
+        _damage_sprite.set_position(_position.x(), _position.y());
+
+        if(_damage_anim->done()) {   
+            _damage_sprite.set_visible(false);
+            _damage_anim.reset();
+        }
     }
 
     if (_debug) {

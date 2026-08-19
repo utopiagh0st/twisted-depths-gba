@@ -40,7 +40,7 @@ void Game::update_title() { //use this one as a template of a state change
         _player.emplace(CharacterName::diabolus, 0, 0, _rnd);   //replaces the empty player
         _hud.emplace(true);
 
-        bn::music_items::silence.play(0.3);    //banger starts
+        bn::music_items::corrupt2.play(0.3);    //banger starts
 
         _state = State::Playing;    //change of state
     }
@@ -88,7 +88,7 @@ void Game::update_playing() {
     if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
         _enemies.push_back(Enemy(EnemyType::PepperGum, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48))));
     }
-    if (bn::keypad::b_pressed() && _projectiles.size() < MAX_PROJECTILES) {
+    if (bn::keypad::b_held() && _projectiles.size() < MAX_PROJECTILES) {
         _player->attack(_projectiles);
     }
     if (bn::keypad::start_pressed()) {
@@ -108,8 +108,8 @@ void Game::update_playing() {
         }
         for (Projectile& projectile : _projectiles) {
             if (enemy.get_hitbox().intersects(projectile.get_hitbox()) && projectile.get_owner() == ProjectileOwner::Player) {
-                enemy.take_damage(_player->get_damage());
-                enemy.apply_knockback(projectile.get_unit_velocity_vector() * _player->get_attack_knockback());
+                enemy.take_damage(projectile.get_damage());
+                enemy.apply_knockback(projectile.get_unit_velocity_vector() * projectile.get_knockback());
                 if (!projectile.is_piercing()) {
                     projectile.set_alive(false);
                 }

@@ -4,6 +4,7 @@
 
 //sprites
 #include "bn_sprite_items_projectile_honk.h"
+#include "bn_sprite_items_projectile.h"
 #include "bn_sprite_items_hitbox.h"
 
 
@@ -15,20 +16,25 @@ bn::sprite_ptr Projectile::create_projectile_sprite(ProjectileType type, bn::fix
             return sprite; 
     }
     _size = 1;
-    return bn::sprite_items::projectile_honk.create_sprite(position);
+    return bn::sprite_items::projectile.create_sprite(position);
 }
 
-Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point velocity,  bn::fixed_point position) :
+Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point position, bn::fixed_point velocity, bn::fixed damage, bn::fixed range, bn::fixed knockback) :
     _sprite(create_projectile_sprite(type, position))
 {   
     _debug = false;
     _sprite.set_scale(_size);
     _alive = true;
+
     _velocity = velocity;
     _position = position;
-    _range = bn::fixed(10);
+    _range = range;
+    _damage = damage;
+    _knockback = knockback;
+
     _distance_traveled = bn::fixed(0);
     _piercing = true;
+    //_friction = bn::fixed(0.2);
     _friction = bn::fixed(0.2);
     _type = type;
     _owner = owner;
@@ -57,9 +63,14 @@ bn::rect Projectile::get_hitbox() {
     );
 }
 
-void Projectile::set_alive(bool alive) {
-    _alive = alive;
+bn::fixed Projectile::get_damage() {
+    return _damage;
 }
+
+bn::fixed Projectile::get_knockback() {
+    return _knockback;
+}
+
 ProjectileOwner Projectile::get_owner() {
     return _owner;
 }
@@ -67,9 +78,11 @@ ProjectileOwner Projectile::get_owner() {
 bn::fixed_point Projectile::get_velocity() {
     return _velocity;
 }
+
 bn::fixed Projectile::get_speed() {
     return sqrt(_velocity.x() * _velocity.x() + _velocity.y() * _velocity.y());
 }
+
 bn::fixed_point Projectile::get_unit_velocity_vector() {
     bn::fixed speed = get_speed();
     if (speed == 0) {
@@ -78,8 +91,12 @@ bn::fixed_point Projectile::get_unit_velocity_vector() {
     return _velocity / speed;
 }
 
+void Projectile::set_alive(bool alive) {
+    _alive = alive;
+}
+
 void Projectile::update_movement() {
-    _velocity *= bn::fixed(1) - _friction;
+    
     _position += _velocity;
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
 
@@ -106,15 +123,17 @@ void Projectile::update() {
                 _sprite.set_scale(_size);
             }
             update_movement();
-
             break;
         case ProjectileType::Bullet :
             if (_distance_traveled <= _range) {
-                update_movement();
-                
+                _position += _velocity;
+                _distance_traveled += get_speed();
             } else {
-                
+                _velocity *= bn::fixed(1) - _friction;
+                _position += _velocity;
             }
+            _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
+
             break;
             
     }

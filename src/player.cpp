@@ -49,9 +49,16 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
-    _shot_speed = bn::fixed(10);
+
+    //attack vars
+    //_shot_speed = bn::fixed(10);
+    _shot_speed = bn::fixed(2);
+    _fire_rate = bn::fixed(4);
+    _attack_cooldown_counter = 0;
     _damage = bn::fixed(1.2);
-    _attack_knockback = bn::fixed(0.2);
+    _attack_knockback = bn::fixed(0.8);
+    _range = bn::fixed(60);;
+
     _freeze_movement = false;
     _i_frames = 40;
     _i_frames_counter = 0;
@@ -62,6 +69,9 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
 
 
 //Getters and Setters
+int Player::get_attack_cooldown() {
+    return int(60/_fire_rate);
+}
 bn::fixed Player::get_attack_knockback() {
     return _attack_knockback;
 }
@@ -87,7 +97,7 @@ bn::rect Player::get_hitbox() {
     );
 }
 bn::fixed_point Player::get_shot_velocity() {
-    bn::fixed_point shot_velocity_modifier = _velocity;
+    bn::fixed_point shot_velocity_modifier = _velocity*0.1;
     switch (_direction) {
         case Direction::Up:
             return bn::fixed_point(0, _shot_speed * -1) + shot_velocity_modifier;
@@ -136,43 +146,45 @@ void Player::take_damage(int damage) {
     }
     if (_hp < 0) {
             _hp = 0;
-        }
+    }
 }
 
 void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
-    int atk_knockback = 4;
-    if (_walk_anim) {
-        _walk_anim.reset();
+    if (_attack_cooldown_counter <= 0) {
+        int atk_knockback = 1;
+        if (_walk_anim) {
+            _walk_anim.reset();
+        }
+        switch (_direction) {
+            case Direction::Left :
+                _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+                _sprite.set_horizontal_flip(false);
+                _velocity += bn::fixed_point(atk_knockback, 0);
+                break;
+            case Direction::Right :
+                _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+                _sprite.set_horizontal_flip(true);
+                _velocity -= bn::fixed_point(atk_knockback, 0);
+                break;
+            case Direction::Up :
+                _sprite.set_tiles(bn::sprite_items::player_fran_attack_up.tiles_item(), 0);
+                _sprite.set_horizontal_flip(false);
+                _velocity += bn::fixed_point(0, atk_knockback);
+                break;
+            case Direction::Down :
+                _sprite.set_tiles(bn::sprite_items::player_fran_attack_down.tiles_item(), 0);
+                _sprite.set_horizontal_flip(false);
+                _velocity -= bn::fixed_point(0, atk_knockback);
+                break;
+            default:
+                _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+                break;
+        }
+        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, get_shot_velocity(), _damage, _range, _attack_knockback));
+        bn::sound_items::honk.play(0.2, _rnd.get_fixed(0.5,2), 0);
+        _animation_cooldown = get_attack_cooldown();
+        _attack_cooldown_counter = get_attack_cooldown();
     }
-    switch (_direction) {
-        case Direction::Left :
-            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
-            _sprite.set_horizontal_flip(false);
-            _velocity += bn::fixed_point(atk_knockback, 0);
-            break;
-        case Direction::Right :
-            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
-            _sprite.set_horizontal_flip(true);
-            _velocity -= bn::fixed_point(atk_knockback, 0);
-            break;
-        case Direction::Up :
-            _sprite.set_tiles(bn::sprite_items::player_fran_attack_up.tiles_item(), 0);
-            _sprite.set_horizontal_flip(false);
-            _velocity += bn::fixed_point(0, atk_knockback);
-            break;
-        case Direction::Down :
-            _sprite.set_tiles(bn::sprite_items::player_fran_attack_down.tiles_item(), 0);
-            _sprite.set_horizontal_flip(false);
-            _velocity -= bn::fixed_point(0, atk_knockback);
-            break;
-        default:
-            _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
-            break;
-    }
-    projectiles.push_back(Projectile(ProjectileType::Honk, ProjectileOwner::Player, get_shot_velocity(), get_position()));
-    bn::sound_items::honk.play(0.2, _rnd.get_fixed(0.5,2), 0);
-    _animation_cooldown = 20;
-    
 }
 
 void Player::apply_knockback(bn::fixed_point kb_velocity) {
@@ -342,6 +354,9 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
 void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::vector<Obstacle,max_obstacles>& obstacles) {
     if (_i_frames_counter > 0) {
         _i_frames_counter--;
+    }
+    if (_attack_cooldown_counter > 0) {
+        _attack_cooldown_counter--;
     }
     if(_damage_anim){
         _damage_anim->update();

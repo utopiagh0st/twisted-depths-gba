@@ -51,6 +51,9 @@ private:
     int _step;
     int _i_frames;
     int _i_frames_counter;
+
+    bn::sprite_ptr _damage_sprite;
+    bn::optional<bn::sprite_animate_action<9>> _damage_anim;
     //Functions
     void initial_setup();
     bool bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd);

@@ -19,12 +19,15 @@ enum class ProjectileOwner {
 
 class Projectile {
 public:
-    Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point velocity, bn::fixed_point position);
+    Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point position, bn::fixed_point velocity, bn::fixed damage, bn::fixed range, bn::fixed knockback);
     bn::rect get_hitbox();
     ProjectileOwner get_owner();
     bn::fixed_point get_velocity();
     bn::fixed_point get_unit_velocity_vector();
     bn::fixed get_speed();
+    bn::fixed get_damage();
+    bn::fixed get_knockback();
+
     bool is_piercing();
     void set_alive(bool alive);
     bool is_alive();
@@ -37,6 +40,10 @@ private:
     bn::fixed _friction;
     ProjectileType _type;
     ProjectileOwner _owner;
+    bn::fixed _range;
+    bn::fixed _distance_traveled;
+    bn::fixed _damage;
+    bn::fixed _knockback;
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_ptr> _spr_hitbox;
     bool _alive;
