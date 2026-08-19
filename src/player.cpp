@@ -152,7 +152,7 @@ void Player::take_damage(int damage) {
 
 void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
     if (_attack_cooldown_counter <= 0) {
-        int atk_knockback = 1;
+        int atk_knockback = 0;
         if (_walk_anim) {
             _walk_anim.reset();
         }
@@ -188,7 +188,7 @@ void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
         }
         projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, get_shot_velocity() + offset, _damage, _range, _attack_knockback));
         bn::sound_items::honk.play(0.2, _rnd.get_fixed(0.5,2), 0);
-        _animation_cooldown = get_attack_cooldown();
+        _animation_cooldown = get_attack_cooldown()*0.8;
         _attack_cooldown_counter = get_attack_cooldown();
     }
 }

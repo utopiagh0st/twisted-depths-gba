@@ -41,10 +41,25 @@ const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP = {{ //Leveltype, roomty
     }, 3},
     {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u,
     {
-        {ObstacleType::Trashcan, bn::fixed_point(-64,0)},
-        {ObstacleType::Trashbag, bn::fixed_point(0,48)},
-        {ObstacleType::TrashBox, bn::fixed_point(32,-16)}
-    }, 1},
+        {ObstacleType::Trashcan, bn::fixed_point(-48,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-32,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-16,-32)},
+        {ObstacleType::Trashbag, bn::fixed_point( 16,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 32,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 48,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-48,-16)},
+        {ObstacleType::Trashcan, bn::fixed_point( 48,-16)},
+
+        {ObstacleType::Trashcan, bn::fixed_point(-48,32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-32,32)},
+        {ObstacleType::TrashBox, bn::fixed_point(-16,32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 16,32)},
+        {ObstacleType::Trashbag, bn::fixed_point( 32,32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 48,32)},
+        {ObstacleType::TrashBox, bn::fixed_point(-48,16)},
+        {ObstacleType::Trashcan, bn::fixed_point( 48,16)}
+        
+    }, 16},
     {   LevelType::STREET, RoomType::D, bn::regular_bg_items::bg_street_d,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
