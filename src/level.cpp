@@ -5,7 +5,8 @@
 #include "bn_sprite_items_icon_small_current_room.h"
 
 
-Level::Level(LevelType level_type, bn::array<bn::array<int, 10>, 10> level_map, bn::point starting_room_pos) {
+Level::Level(LevelType level_type, bn::array<bn::array<int, 10>, 10> level_map, bn::point starting_room_pos, bn::random& rnd) {
+    _rnd = rnd;
     _doing_room_transition = false;
     _level_type = level_type;
     _level_map = level_map;
@@ -42,7 +43,7 @@ void Level::toggle_map(bool show) {
     }
 }
 
-void Level::begin_room_transition(int next_room_dir, bn::vector<Obstacle, max_obstacles>& obstacles) {
+void Level::begin_room_transition(int next_room_dir, bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies) {
     obstacles.clear();
     _room_transition_dir = next_room_dir;
     int next_room_index;
@@ -55,17 +56,17 @@ void Level::begin_room_transition(int next_room_dir, bn::vector<Obstacle, max_ob
     } else if(next_room_dir == RIGHT) {
         next_room_index = _level_map[_current_room_pos.x()][_current_room_pos.y() + 1];
     }
-    _next_room.emplace(next_room_index);
+    _next_room.emplace(next_room_index, _rnd);
     _doing_room_transition = true;
 }
 
 void Level::load_room(bn::point map_index, bn::vector<Obstacle, max_obstacles>& obstacles) {
-    _current_room.emplace( _level_map[map_index.x()][map_index.y()] );
+    _current_room.emplace( _level_map[map_index.x()][map_index.y()], _rnd );
     _current_room->draw_bg(bn::fixed_point(0,0));
     _current_room->generate_border(obstacles);
 }
 
-void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles) {
+void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies) {
     bn::point next_room_pos;
     bn::fixed_point next_room_bg_pos_diff;
     bn::fixed_point velocity;
@@ -117,14 +118,19 @@ void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles) {
         _next_room.reset();
         _current_room_pos = next_room_pos;
         _current_room->draw_bg(bn::fixed_point(0,0));
-        _current_room->generate_obstacles(obstacles);
+        if (_current_room_pos == _starting_room_pos) {
+            _current_room->generate_border(obstacles);
+        } else {
+            _current_room->generate_obstacles(obstacles);
+            _current_room->generate_enemies(enemies);
 
+        }
         _doing_room_transition = false;
     }
 }
 
-void Level::update(bn::vector<Obstacle, max_obstacles>& obstacles) {
+void Level::update(bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies) {
     if (_doing_room_transition) {
-        do_room_transition(obstacles);
+        do_room_transition(obstacles, enemies);
     }
 }

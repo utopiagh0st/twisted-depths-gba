@@ -11,6 +11,7 @@
 #include "bn_vector.h"
 #include "bn_random.h"
 
+constexpr int max_enemies = 30;
 
 enum class EnemyType {
     LimeCat,

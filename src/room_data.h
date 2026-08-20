@@ -7,6 +7,7 @@
 #include "bn_array.h"
 
 #include "obstacle.h"
+#include "enemy.h"
 
 //to make room generation a lil clearer
 constexpr int EMPTY = -1;
@@ -41,6 +42,10 @@ struct ObstacleSpawnData {
     ObstacleType obstacle_type;
     bn::fixed_point position;
 };
+struct EnemySpawnData {
+    EnemyType enemy_type;
+    bn::fixed_point position;
+};
 
 //struct to link the enum with the asset
 struct RoomData {
@@ -49,6 +54,8 @@ struct RoomData {
     bn::regular_bg_item bg;
     ObstacleSpawnData obstacles_spawn_data[63]; //using vanilla arrays cuz bn::array works kinda weird
     int obstacle_count;
+    EnemySpawnData enemies_spawn_data[30];
+    int enemy_count;
 };
 
 // static look-up table that lives in cpp cuz it'll get big, don't ask me to explain this, I never understood c

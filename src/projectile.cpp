@@ -68,8 +68,8 @@ bn::rect Projectile::get_hitbox() {
     return bn::rect(
     int(_position.x()),
     int(_position.y()),
-    15,   // width8
-    12    // height9
+    8,   // width8
+    8    // height9
     );
 }
 

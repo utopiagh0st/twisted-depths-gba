@@ -9,10 +9,11 @@
 #include "room_data.h"
 #include "bn_vector.h"
 #include "obstacle.h"
+#include "enemy.h"
 
 class Room {
 public:
-    Room(int room_index);
+    Room(int room_index, bn::random& rnd);
     void put_bg_below();
     bn::fixed_point get_bg_position();
     void draw_bg(bn::fixed_point position);
@@ -20,8 +21,10 @@ public:
     void clear_borders(bn::vector<Obstacle, max_obstacles>& obstacles);
     void generate_obstacles(bn::vector<Obstacle, max_obstacles>& obstacles);
     void clear_obstacles(bn::vector<Obstacle, max_obstacles>& obstacles);
+    void generate_enemies(bn::vector<Enemy, max_enemies>& enemies);
 private:
     int _room_index;
+    bn::random _rnd;
     bn::optional<bn::regular_bg_ptr> _bg;
 };
 

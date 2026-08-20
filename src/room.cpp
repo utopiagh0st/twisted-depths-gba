@@ -7,7 +7,8 @@
 #include "bn_regular_bg_item.h"
 #include "room_data.h"
 
-Room::Room(int room_index) {
+Room::Room(int room_index, bn::random& rnd) {
+    _rnd = rnd;
     _room_index = room_index;
 }
 
@@ -71,4 +72,12 @@ void Room::generate_border(bn::vector<Obstacle, max_obstacles>& obstacles) {
         obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(72,64)));
     }
     
+}
+
+void Room::generate_enemies(bn::vector<Enemy, max_enemies>& enemies) {
+    const RoomData& room_data = ROOM_LOOKUP[_room_index];
+    for(int i = 0; i < room_data.enemy_count; ++i) {
+        const EnemySpawnData& enemy_data = room_data.enemies_spawn_data[i];
+        enemies.push_back(Enemy(enemy_data.enemy_type, enemy_data.position, _rnd));
+    }
 }

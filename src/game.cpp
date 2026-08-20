@@ -55,7 +55,7 @@ void Game::update_pause() {
 }
 
 void Game::update_playing() {
-    _level->update(_obstacles);
+    _level->update(_obstacles,_enemies);
 
     //Player
     _player->update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _obstacles);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
@@ -64,19 +64,19 @@ void Game::update_playing() {
     if (_player->get_position().y() < _bounds[UP]) {
         _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[DOWN] - 10));
         _player->set_freeze_movement(true);
-        _level->begin_room_transition(UP, _obstacles);
+        _level->begin_room_transition(UP, _obstacles, _enemies);
     } else if (_player->get_position().y() > _bounds[DOWN]) {
         _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[UP] + 10));
         _player->set_freeze_movement(true);
-        _level->begin_room_transition(DOWN, _obstacles);
+        _level->begin_room_transition(DOWN, _obstacles, _enemies);
     } else if (_player->get_position().x() < _bounds[LEFT]) {
         _player->set_position(bn::fixed_point(_bounds[RIGHT] - 10,_player->get_position().y()));
         _player->set_freeze_movement(true);
-        _level->begin_room_transition(LEFT, _obstacles);
+        _level->begin_room_transition(LEFT, _obstacles, _enemies);
     } else if (_player->get_position().x() > _bounds[RIGHT]) {
         _player->set_position(bn::fixed_point(_bounds[LEFT] + 10,_player->get_position().y()));
         _player->set_freeze_movement(true);
-        _level->begin_room_transition(RIGHT, _obstacles);
+        _level->begin_room_transition(RIGHT, _obstacles, _enemies);
     }
 
     if (_player->is_movement_freezed() && !_level->is_doing_room_transition()) {
@@ -85,7 +85,7 @@ void Game::update_playing() {
     /**/
 
     //Miscelaneous inputs
-    if (bn::keypad::a_pressed() && _enemies.size() < MAX_ENEMIES) {
+    if (bn::keypad::a_pressed() && _enemies.size() < max_enemies) {
         _enemies.push_back(Enemy(EnemyType::PepperGum, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)), _rnd));
     }
     if (bn::keypad::b_held() && _projectiles.size() < MAX_PROJECTILES) {

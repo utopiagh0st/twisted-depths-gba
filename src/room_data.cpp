@@ -38,7 +38,10 @@ const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP = {{ //Leveltype, roomty
         {ObstacleType::Trashcan, bn::fixed_point(-64,-32)},
         {ObstacleType::Trashbag, bn::fixed_point(48,48)},
         {ObstacleType::TrashBox, bn::fixed_point(32,-16)}
-    }, 3},
+    }, 3,
+    {
+        {EnemyType::PepperGum, bn::fixed_point(0,0)}
+    }, 1},
     {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u,
     {
         {ObstacleType::Trashcan, bn::fixed_point(-48,-32)},
@@ -66,8 +69,8 @@ const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP = {{ //Leveltype, roomty
     }, 1},
     {   LevelType::STREET, RoomType::L, bn::regular_bg_items::bg_street_l,
     {
-        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
-    }, 1},
+        //{ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    }, 0},
     {   LevelType::STREET, RoomType::R, bn::regular_bg_items::bg_street_r,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}

@@ -144,7 +144,7 @@ Level Level_generator::generate_level(LevelType level_type) {
         }
     }
 
-    return Level(level_type, level_map, starting_room); //y,x
+    return Level(level_type, level_map, starting_room, _rnd); //y,x
 }
 
 int Level_generator::get_random_room_index(LevelType level_type, RoomType required_entries) {

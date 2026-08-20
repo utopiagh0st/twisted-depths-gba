@@ -92,9 +92,9 @@ bn::fixed_point Player::get_position() {
 bn::rect Player::get_hitbox() {
     return bn::rect(
     int(_position.x()),
-    int(_position.y()+1),
+    int(_position.y()+4),
     6,   // width
-    13    // height
+    10    // height
     );
 }
 bn::fixed_point Player::get_shot_velocity() {

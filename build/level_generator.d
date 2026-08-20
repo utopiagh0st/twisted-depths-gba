@@ -55,8 +55,15 @@ level_generator.o: \
  /home/Commodore/butano/butano/include/bn_fixed_point.h \
  /home/Commodore/butano/butano/include/bn_fixed.h \
  /home/Commodore/butano/butano/include/bn_rect.h \
- /home/Commodore/butano/games/twisted-depths-gba/src/room.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h \
+ /home/Commodore/butano/butano/include/bn_sprite_animate_actions.h \
+ /home/Commodore/butano/butano/include/bn_vector.h \
+ /home/Commodore/butano/butano/include/bn_sprite_ptr.h \
+ /home/Commodore/butano/butano/include/bn_sprite_tiles_ptr.h \
+ /home/Commodore/butano/butano/include/bn_sprite_tiles_item.h \
+ /home/Commodore/butano/butano/include/bn_sprite_animate_actions_fwd.h \
  /home/Commodore/butano/butano/include/bn_optional.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/room.h \
  /home/Commodore/butano/butano/include/bn_point.h
 /home/Commodore/butano/games/twisted-depths-gba/src/level_generator.h:
 /home/Commodore/butano/butano/include/bn_random.h:
@@ -113,6 +120,13 @@ level_generator.o: \
 /home/Commodore/butano/butano/include/bn_fixed_point.h:
 /home/Commodore/butano/butano/include/bn_fixed.h:
 /home/Commodore/butano/butano/include/bn_rect.h:
-/home/Commodore/butano/games/twisted-depths-gba/src/room.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/enemy.h:
+/home/Commodore/butano/butano/include/bn_sprite_animate_actions.h:
+/home/Commodore/butano/butano/include/bn_vector.h:
+/home/Commodore/butano/butano/include/bn_sprite_ptr.h:
+/home/Commodore/butano/butano/include/bn_sprite_tiles_ptr.h:
+/home/Commodore/butano/butano/include/bn_sprite_tiles_item.h:
+/home/Commodore/butano/butano/include/bn_sprite_animate_actions_fwd.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/room.h:
 /home/Commodore/butano/butano/include/bn_point.h:
