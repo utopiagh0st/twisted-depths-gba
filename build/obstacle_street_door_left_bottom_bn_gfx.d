@@ -1,0 +1,2 @@
+obstacle_street_door_left_bottom_bn_gfx.o: \
+ obstacle_street_door_left_bottom_bn_gfx.s

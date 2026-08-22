@@ -11,6 +11,11 @@
 #include "bn_vector.h"
 #include "bn_random.h"
 
+//6 +
+//25*2 50
+//
+
+
 constexpr int max_enemies = 30;
 
 enum class EnemyType {
