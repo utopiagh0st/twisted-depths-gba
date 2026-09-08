@@ -49,6 +49,7 @@ player.o: /home/Commodore/butano/games/twisted-depths-gba/src/player.cpp \
  /home/Commodore/butano/butano/include/bn_reciprocal_lut.h \
  /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h \
+ /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h \
  /home/Commodore/butano/butano/include/bn_keypad.h \
  /home/Commodore/butano/butano/include/bn_math.h \
@@ -119,6 +120,7 @@ player.o: /home/Commodore/butano/games/twisted-depths-gba/src/player.cpp \
 /home/Commodore/butano/butano/include/bn_reciprocal_lut.h:
 /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
+/home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h:
 /home/Commodore/butano/butano/include/bn_keypad.h:
 /home/Commodore/butano/butano/include/bn_math.h:

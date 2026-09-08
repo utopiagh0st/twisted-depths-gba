@@ -5,11 +5,12 @@
 #include "bn_sprite_items_icon_small_current_room.h"
 
 
-Level::Level(LevelType level_type, bn::array<bn::array<int, 10>, 10> level_map, bn::point starting_room_pos, bn::random& rnd) {
+Level::Level(LevelType level_type, bn::array<bn::array<int, 10>, 10>& level_map, bn::array<bn::array<bool, 10>, 10>& level_clear_map, bn::point starting_room_pos, bn::random& rnd) {
     _rnd = rnd;
     _doing_room_transition = false;
     _level_type = level_type;
     _level_map = level_map;
+    _level_clear_map = level_clear_map;
     _starting_room_pos = starting_room_pos;
     _current_room_pos = starting_room_pos;
 }
@@ -122,9 +123,16 @@ void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles, b
             _current_room->generate_border(obstacles);
         } else {
             _current_room->generate_obstacles(obstacles);
-            _current_room->generate_enemies(enemies);
-
         }
+        if (!_level_clear_map[_current_room_pos.x()][_current_room_pos.y()]) {
+            _current_room->generate_enemies(enemies);
+            if (enemies.size() > 0) {
+                _current_room->close(obstacles);
+            } else {
+                _level_clear_map[_current_room_pos.x()][_current_room_pos.y()] = true;
+            }
+        }
+        
         _doing_room_transition = false;
     }
 }
@@ -132,5 +140,9 @@ void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles, b
 void Level::update(bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies) {
     if (_doing_room_transition) {
         do_room_transition(obstacles, enemies);
+    }
+    if (enemies.size() == 0 && !_level_clear_map[_current_room_pos.x()][_current_room_pos.y()]) {
+        _level_clear_map[_current_room_pos.x()][_current_room_pos.y()] = true;
+        _current_room->open(obstacles);
     }
 }

@@ -31,6 +31,7 @@ public:
     bn::fixed get_knockback();
 
     bool is_piercing();
+    bool is_spectral();
     void set_alive(bool alive);
     bool is_alive();
     void update();
@@ -52,6 +53,7 @@ private:
     bn::optional<bn::sprite_ptr> _spr_hitbox;
     bool _alive;
     bool _piercing;
+    bool _spectral;
 
     bn::sprite_ptr create_projectile_sprite(ProjectileType type, bn::fixed_point position);
     void update_movement();

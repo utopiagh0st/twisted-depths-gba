@@ -81,3 +81,31 @@ void Room::generate_enemies(bn::vector<Enemy, max_enemies>& enemies) {
         enemies.push_back(Enemy(enemy_data.enemy_type, enemy_data.position, _rnd));
     }
 }
+
+void Room::close(bn::vector<Obstacle, max_obstacles>& obstacles) {
+    const RoomData& room_data = ROOM_LOOKUP[_room_index];
+    if (has_entries(room_data.room_type, RoomType::U)) {
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesLeft, bn::fixed_point(-24,-64)));
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesRight, bn::fixed_point(24,-64)));
+    }
+    if (has_entries(room_data.room_type, RoomType::D)) {
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesLeft, bn::fixed_point(-24,64)));
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesRight, bn::fixed_point(24,64)));
+    }
+    if (has_entries(room_data.room_type, RoomType::L)) {
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesUp, bn::fixed_point(-80,-24)));
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesDown, bn::fixed_point(-80,24)));
+    }
+    if (has_entries(room_data.room_type, RoomType::R)) {
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesUp, bn::fixed_point(80,-24)));
+        obstacles.push_back(Obstacle(ObstacleType::StreetConesDown, bn::fixed_point(80,24)));
+    }
+}
+
+void Room::open(bn::vector<Obstacle, max_obstacles>& obstacles) {
+    for(int i = 0; i < obstacles.size(); i++) { //erasing lol
+        if(obstacles[i].get_class() == ObstacleClass::Door) {
+            obstacles[i].open(); //using pointers!!
+        }
+    }
+}

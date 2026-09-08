@@ -29,28 +29,39 @@ obstacle.o: \
  /home/Commodore/butano/butano/include/bn_fixed.h \
  /home/Commodore/butano/butano/include/bn_rect.h \
  /home/Commodore/butano/butano/include/bn_size.h \
- /home/Commodore/butano/butano/include/bn_math.h \
+ /home/Commodore/butano/butano/include/bn_optional.h \
+ /home/Commodore/butano/butano/include/bn_sprite_animate_actions.h \
  /home/Commodore/butano/butano/include/bn_array.h \
  /home/Commodore/butano/butano/include/bn_iterator.h \
  /home/Commodore/butano/butano/include/bn_array_fwd.h \
+ /home/Commodore/butano/butano/include/bn_vector.h \
+ /home/Commodore/butano/butano/include/bn_vector_fwd.h \
+ /home/Commodore/butano/butano/include/bn_sprite_ptr.h \
+ /home/Commodore/butano/butano/include/bn_sprite_tiles_ptr.h \
+ /home/Commodore/butano/butano/include/bn_span.h \
+ /home/Commodore/butano/butano/include/bn_span_fwd.h \
+ /home/Commodore/butano/butano/include/bn_sprite_tiles_item.h \
+ /home/Commodore/butano/butano/include/bn_tile.h \
+ /home/Commodore/butano/butano/include/bn_bpp_mode.h \
+ /home/Commodore/butano/butano/include/bn_compression_type.h \
+ /home/Commodore/butano/butano/include/bn_sprite_animate_actions_fwd.h \
+ /home/Commodore/butano/butano/include/bn_math.h \
  /home/Commodore/butano/butano/include/bn_sin_lut.h \
  /home/Commodore/butano/butano/include/bn_reciprocal_lut.h \
  /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hitbox.h \
  /home/Commodore/butano/butano/include/bn_sprite_item.h \
  /home/Commodore/butano/butano/include/bn_sprite_shape_size.h \
- /home/Commodore/butano/butano/include/bn_bpp_mode.h \
- /home/Commodore/butano/butano/include/bn_sprite_tiles_item.h \
- /home/Commodore/butano/butano/include/bn_span.h \
- /home/Commodore/butano/butano/include/bn_span_fwd.h \
- /home/Commodore/butano/butano/include/bn_tile.h \
- /home/Commodore/butano/butano/include/bn_compression_type.h \
  /home/Commodore/butano/butano/include/bn_sprite_palette_item.h \
  /home/Commodore/butano/butano/include/bn_color.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_wall.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashcan.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashbag.h \
- /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashbox.h
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashbox.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_left_top.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_left_bottom.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_up_leftside.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_up_rightside.h
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
 /home/Commodore/butano/butano/include/bn_sprite_ptr.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
@@ -80,25 +91,36 @@ obstacle.o: \
 /home/Commodore/butano/butano/include/bn_fixed.h:
 /home/Commodore/butano/butano/include/bn_rect.h:
 /home/Commodore/butano/butano/include/bn_size.h:
-/home/Commodore/butano/butano/include/bn_math.h:
+/home/Commodore/butano/butano/include/bn_optional.h:
+/home/Commodore/butano/butano/include/bn_sprite_animate_actions.h:
 /home/Commodore/butano/butano/include/bn_array.h:
 /home/Commodore/butano/butano/include/bn_iterator.h:
 /home/Commodore/butano/butano/include/bn_array_fwd.h:
+/home/Commodore/butano/butano/include/bn_vector.h:
+/home/Commodore/butano/butano/include/bn_vector_fwd.h:
+/home/Commodore/butano/butano/include/bn_sprite_ptr.h:
+/home/Commodore/butano/butano/include/bn_sprite_tiles_ptr.h:
+/home/Commodore/butano/butano/include/bn_span.h:
+/home/Commodore/butano/butano/include/bn_span_fwd.h:
+/home/Commodore/butano/butano/include/bn_sprite_tiles_item.h:
+/home/Commodore/butano/butano/include/bn_tile.h:
+/home/Commodore/butano/butano/include/bn_bpp_mode.h:
+/home/Commodore/butano/butano/include/bn_compression_type.h:
+/home/Commodore/butano/butano/include/bn_sprite_animate_actions_fwd.h:
+/home/Commodore/butano/butano/include/bn_math.h:
 /home/Commodore/butano/butano/include/bn_sin_lut.h:
 /home/Commodore/butano/butano/include/bn_reciprocal_lut.h:
 /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hitbox.h:
 /home/Commodore/butano/butano/include/bn_sprite_item.h:
 /home/Commodore/butano/butano/include/bn_sprite_shape_size.h:
-/home/Commodore/butano/butano/include/bn_bpp_mode.h:
-/home/Commodore/butano/butano/include/bn_sprite_tiles_item.h:
-/home/Commodore/butano/butano/include/bn_span.h:
-/home/Commodore/butano/butano/include/bn_span_fwd.h:
-/home/Commodore/butano/butano/include/bn_tile.h:
-/home/Commodore/butano/butano/include/bn_compression_type.h:
 /home/Commodore/butano/butano/include/bn_sprite_palette_item.h:
 /home/Commodore/butano/butano/include/bn_color.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_wall.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashcan.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashbag.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashbox.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_left_top.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_left_bottom.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_up_leftside.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_obstacle_street_door_up_rightside.h:

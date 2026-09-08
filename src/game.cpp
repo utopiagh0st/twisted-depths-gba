@@ -7,6 +7,7 @@
 #include "projectile.h"
 #include "obstacle.h"
 #include <algorithm>
+#include <string>
 
 //utilities and structures
 #include "bn_vector.h"
@@ -19,20 +20,32 @@
 #include "bn_keypad.h"
 //sprites themselves
 //bgs
+#include "bn_sprite_ptr.h"
+#include "bn_sprite_text_generator.h"
+#include "bn_sprite_font.h"
+#include "bn_sprite_items_common_fixed_8x8_font.h"
+#include "bn_string.h"
+#include "bn_string_view.h"
+
 
 Game::Game() :
     _state(State::Title),    //starts with title state
-    _level_generator(_rnd)
+    _level_generator(_rnd),
+    _font_sprite(bn::sprite_items::common_fixed_8x8_font),
+    _text_generator(_font_sprite)
 {   
     _frame = 0;
     _bounds[UP] = -60;   //up
     _bounds[DOWN] = 60;    //down
     _bounds[LEFT] = -80;   //left
     _bounds[RIGHT] = 80;    //right
+    _text_generator.generate(-70,0,"presiona start uwu",_text_sprites);
 }
 
 void Game::update_title() { //use this one as a template of a state change
+    
     if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
+        _text_sprites.clear();
         _level.emplace(_level_generator.generate_level(LevelType::STREET));
         _level->load_room(_level->get_starting_room_pos(), _obstacles);
         //_room.emplace(_rnd, RoomType::U);
@@ -40,7 +53,7 @@ void Game::update_title() { //use this one as a template of a state change
         _player.emplace(CharacterName::diabolus, 0, 0, _rnd);   //replaces the empty player
         _hud.emplace(true);
 
-        bn::music_items::corrupt2.play(0.3);    //banger starts
+        bn::music_items::de_op.play(0.4);    //banger starts
 
         _state = State::Playing;    //change of state
     }
@@ -62,7 +75,7 @@ void Game::update_playing() {
     //Room Transition
     
     if (_player->get_position().y() < _bounds[UP]) {
-        _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[DOWN] - 10));
+        _player->set_position(bn::fixed_point(_player->get_position().x(),_bounds[DOWN] - 15));
         _player->set_freeze_movement(true);
         _level->begin_room_transition(UP, _obstacles, _enemies);
     } else if (_player->get_position().y() > _bounds[DOWN]) {
@@ -93,7 +106,9 @@ void Game::update_playing() {
     }
     if (bn::keypad::start_pressed()) {
         bn::music::pause();
-        _level->toggle_map(true);
+        if (_enemies.size() == 0) {
+            _level->toggle_map(true);
+        }
         _state = State::Pause;  //pause button just stops running the game logic
     }
 
@@ -101,22 +116,33 @@ void Game::update_playing() {
     for (Enemy& enemy : _enemies) {
         enemy.update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _player->get_position(), _obstacles);
         // Colission checks
-        if (_player->get_hitbox().intersects(enemy.get_hitbox())) {
+        if (!enemy.is_dying() && _player->get_hitbox().intersects(enemy.get_hitbox())) {
             //enemy.set_alive(false);
             _player->take_damage(1);
             _player->apply_knockback(enemy.get_velocity());
         }
         for (Projectile& projectile : _projectiles) {
             if (enemy.get_hitbox().intersects(projectile.get_hitbox()) && projectile.get_owner() == ProjectileOwner::Player) {
-                enemy.take_damage(projectile.get_damage());
-                enemy.apply_knockback(projectile.get_unit_velocity_vector() * projectile.get_knockback());
-                if (!projectile.is_piercing()) {
+                if (!enemy.is_dying() && !projectile.is_piercing()) {
                     projectile.set_alive(false);
                 }
+                enemy.take_damage(projectile.get_damage());
+                enemy.apply_knockback(projectile.get_unit_velocity_vector() * projectile.get_knockback());
             }
             
         }
     }
+
+    for (Projectile& projectile : _projectiles) {
+        if (!projectile.is_spectral()) {
+            for (Obstacle& obstacle : _obstacles) {
+                if (projectile.get_hitbox().intersects(obstacle.get_hitbox_for_projectile())) {
+                    projectile.set_alive(false);
+                }
+            }
+        }
+    }
+
     if (_frame % 5 == 0) { // DO every 5 frames
     for(int i = 0; i < _enemies.size(); ++i) {
         for(int j = i + 1; j < _enemies.size(); ++j) {
@@ -149,6 +175,10 @@ void Game::update_playing() {
     for (Projectile& projectile : _projectiles) {
         projectile.update();
     }
+    for (Obstacle& obstacle : _obstacles) {
+        obstacle.update();
+    }
+    //enemies
     for(int i = 0; i < _enemies.size(); ) { //erasing dead guys
         if(!_enemies[i].is_alive()) {
             _enemies.erase(_enemies.begin() + i); //using pointers!!
@@ -156,6 +186,7 @@ void Game::update_playing() {
             ++i;
         }
     }
+
     for(int i = 0; i < _projectiles.size(); ) { //erasing stray shots
         if(!_projectiles[i].is_alive()) {
             _projectiles.erase(_projectiles.begin() + i); //using pointers!!
@@ -182,6 +213,7 @@ void Game::game_over() {
     _level.reset();
     _hud.reset();
     bn::music::stop();
+    _text_generator.generate(-70,0,"presiona start uwu",_text_sprites);
 }
 
 void Game::update() {   //main update loop

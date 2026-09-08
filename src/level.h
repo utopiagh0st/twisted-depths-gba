@@ -17,7 +17,7 @@ constexpr int map_size = 10;
 
 class Level {
 public:
-    Level(LevelType level_type, bn::array<bn::array<int, 10>, 10> level_map, bn::point starting_room, bn::random& rnd);
+    Level(LevelType level_type, bn::array<bn::array<int, 10>, 10>& level_map, bn::array<bn::array<bool, 10>, 10>& level_clear_map, bn::point starting_room, bn::random& rnd);
     bn::point get_starting_room_pos();
     bool is_doing_room_transition();
     void load_room(bn::point room_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
@@ -28,6 +28,7 @@ private:
     bn::random _rnd;
     LevelType _level_type;
     bn::array<bn::array<int, 10>, 10> _level_map;
+    bn::array<bn::array<bool, 10>, 10> _level_clear_map;
     bn::optional<Room> _current_room;
     bn::optional<Room> _next_room;
     bn::point _starting_room_pos;

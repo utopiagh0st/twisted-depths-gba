@@ -32,16 +32,39 @@ lil coords helper
 */
 const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP = {{ //Leveltype, roomtype (entrances), background, array of obstacle data, obstacle num (adding enemies next!!)
     ////STREET 
-    //U
+    //UP
     {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u,
     {
-        {ObstacleType::Trashcan, bn::fixed_point(-64,-32)},
-        {ObstacleType::Trashbag, bn::fixed_point(48,48)},
-        {ObstacleType::TrashBox, bn::fixed_point(32,-16)}
-    }, 3,
+        {ObstacleType::Trashcan, bn::fixed_point(-48,-32)},
+        {ObstacleType::Trashbag, bn::fixed_point(-48,-16)},
+        {ObstacleType::Trashbag, bn::fixed_point(-48,0)},
+        {ObstacleType::TrashBox, bn::fixed_point(-48,16)},
+        {ObstacleType::Trashcan, bn::fixed_point(-48,32)},
+        {ObstacleType::TrashBox, bn::fixed_point(-48,48)},
+        {ObstacleType::Trashbag, bn::fixed_point( 48,-16)},
+        {ObstacleType::Trashcan, bn::fixed_point( 48,0)},
+        {ObstacleType::TrashBox, bn::fixed_point( 48,16)},
+        {ObstacleType::TrashBox, bn::fixed_point( 48,32)},
+        {ObstacleType::Trashbag, bn::fixed_point( 48,48)},
+        {ObstacleType::TrashBox, bn::fixed_point( 32,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 16,-32)},
+        {ObstacleType::TrashBox, bn::fixed_point( 0,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-16,-16)},
+        {ObstacleType::Trashbag, bn::fixed_point(-16,0)},
+        {ObstacleType::Trashbag, bn::fixed_point(-16,16)},
+        {ObstacleType::TrashBox, bn::fixed_point(-16,32)},
+        {ObstacleType::TrashBox, bn::fixed_point(0,32)},
+        {ObstacleType::Trashcan, bn::fixed_point(16,32)},
+        {ObstacleType::Trashbag, bn::fixed_point(16,16)},
+        {ObstacleType::TrashBox, bn::fixed_point(16,0)}
+    }, 22,
     {
-        {EnemyType::PepperGum, bn::fixed_point(0,0)}
-    }, 1},
+        {EnemyType::PepperGum, bn::fixed_point(0,16)},
+        {EnemyType::PepperGum, bn::fixed_point(-32,48)},
+        {EnemyType::PepperGum, bn::fixed_point(32,48)},
+        {EnemyType::PepperGum, bn::fixed_point(32,-16)}
+    }, 4},
+
     {   LevelType::STREET, RoomType::U, bn::regular_bg_items::bg_street_u,
     {
         {ObstacleType::Trashcan, bn::fixed_point(-48,-32)},
@@ -62,61 +85,117 @@ const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP = {{ //Leveltype, roomty
         {ObstacleType::TrashBox, bn::fixed_point(-48,16)},
         {ObstacleType::Trashcan, bn::fixed_point( 48,16)}
         
-    }, 16},
+    }, 16,
+    {
+        {EnemyType::PepperGum, bn::fixed_point(0,0)}
+    }, 1},
+
+    //DOWN
     {   LevelType::STREET, RoomType::D, bn::regular_bg_items::bg_street_d,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
+    }, 1,
+    {
+        {EnemyType::PepperGum, bn::fixed_point(0,0)}
     }, 1},
+
+    //LEFT
     {   LevelType::STREET, RoomType::L, bn::regular_bg_items::bg_street_l,
     {
         //{ObstacleType::Trashcan, bn::fixed_point(0,0)}
-    }, 0},
+    }, 0,
+    {
+        {EnemyType::PepperGum, bn::fixed_point(0,0)}
+    }, 1},
+
+    //RIGHT
     {   LevelType::STREET, RoomType::R, bn::regular_bg_items::bg_street_r,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //UP | DOWN
     {   LevelType::STREET, RoomType::U | RoomType::D, bn::regular_bg_items::bg_street_ud,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //LEFT | RIGHT
     {   LevelType::STREET, RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_lr,
     {
-        {ObstacleType::Trashcan, bn::fixed_point(0,0)}
-    }, 1},
+        {ObstacleType::Trashcan, bn::fixed_point(-48,32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-32,32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-16,32)},
+        {ObstacleType::Trashcan, bn::fixed_point(  0,32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 16,32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 32,32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 48,32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-48,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-32,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point(-16,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point(  0,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 16,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 32,-32)},
+        {ObstacleType::Trashcan, bn::fixed_point( 48,-32)}
+    }, 14,
+    {
+        {EnemyType::PepperGum, bn::fixed_point(-16,48)},
+        {EnemyType::PepperGum, bn::fixed_point(0,48)},
+        {EnemyType::PepperGum, bn::fixed_point(16,48)},
+        {EnemyType::PepperGum, bn::fixed_point(-16,-48)},
+        {EnemyType::PepperGum, bn::fixed_point(0,-48)},
+        {EnemyType::PepperGum, bn::fixed_point(16,-48)}
+    }, 6},
+
+    //UP | LEFT
     {   LevelType::STREET, RoomType::U | RoomType::L, bn::regular_bg_items::bg_street_ul,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //UP | RIGHT
     {   LevelType::STREET, RoomType::U | RoomType::R, bn::regular_bg_items::bg_street_ur,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //DOWN | LEFT
     {   LevelType::STREET, RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_dl,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //DOWN | RIGHT
     {   LevelType::STREET, RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_dr,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //UP | LEFT | RIGHT
     {   LevelType::STREET, RoomType::U | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_ulr,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
 
+    //DOWN | LEFT | RIGHT
     {   LevelType::STREET, RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_dlr,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
 
+    //UP | DOWN | LEFT
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L, bn::regular_bg_items::bg_street_udl,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //UP | DOWN | RIGHT
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::R, bn::regular_bg_items::bg_street_udr,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}
     }, 1},
+
+    //UP | DOWN | LEFT | RIGHT
     {   LevelType::STREET, RoomType::U | RoomType::D | RoomType::L | RoomType::R, bn::regular_bg_items::bg_street_udlr,
     {
         {ObstacleType::Trashcan, bn::fixed_point(0,0)}

@@ -30,6 +30,7 @@ public:
     bn::fixed_point get_position();
     bn::fixed_point get_velocity();
     bool is_alive();
+    bool is_dying();
     void set_alive(bool alive);
     bn::fixed get_distance(bn::fixed_point final_pos);
     void apply_knockback(bn::fixed_point kb_velocity);

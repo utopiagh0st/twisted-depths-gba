@@ -4,6 +4,8 @@ audio/corrupt2.mod
 1777042543.1299162
 audio/dark_experience.mod
 1778792390.5779798
+audio/de_op.xm
+1787663653.5901299
 audio/honk.wav
 1786383467.9762475
 audio/mute.wav

@@ -36,6 +36,7 @@ Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_poi
 
     _distance_traveled = bn::fixed(0);
     _piercing = false;
+    _spectral = false;
     //_friction = bn::fixed(0.2);
     _friction = bn::fixed(0.2);
     _type = type;
@@ -64,12 +65,16 @@ bool Projectile::is_piercing() {
     return _piercing;
 }
 
+bool Projectile::is_spectral() {
+    return _spectral;
+}
+
 bn::rect Projectile::get_hitbox() {
     return bn::rect(
     int(_position.x()),
     int(_position.y()),
-    8,   // width8
-    8    // height9
+    6,   // width8
+    6    // height9
     );
 }
 

@@ -22,6 +22,9 @@ public:
     void generate_obstacles(bn::vector<Obstacle, max_obstacles>& obstacles);
     void clear_obstacles(bn::vector<Obstacle, max_obstacles>& obstacles);
     void generate_enemies(bn::vector<Enemy, max_enemies>& enemies);
+    void close(bn::vector<Obstacle, max_obstacles>& obstacles);
+    void open(bn::vector<Obstacle, max_obstacles>& obstacles);
+
 private:
     int _room_index;
     bn::random _rnd;

@@ -27,7 +27,7 @@ Level Level_generator::generate_level(LevelType level_type) {
     }
 
     //generate random starting room
-    int num_rooms = 50;
+    int num_rooms = 10;
     bn::point current_room;
     bn::vector<bn::point, 100> generated_rooms;
     int failed_attempts = 0;
@@ -143,8 +143,12 @@ Level Level_generator::generate_level(LevelType level_type) {
             }
         }
     }
-
-    return Level(level_type, level_map, starting_room, _rnd); //y,x
+    bn::array<bn::array<bool, 10>, 10> level_clear_map;
+    for(int i = 0; i < 10; i++) {
+    level_clear_map[i].fill(false);
+    }
+    level_clear_map[starting_room.x()][starting_room.y()] = true;
+    return Level(level_type, level_map, level_clear_map, starting_room, _rnd); //y,x
 }
 
 int Level_generator::get_random_room_index(LevelType level_type, RoomType required_entries) {

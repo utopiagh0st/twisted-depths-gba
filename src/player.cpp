@@ -22,6 +22,7 @@
 #include "bn_sprite_animate_actions.h"
 #include "bn_sound_items.h"
 
+
 static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) { //Character sprite selector
     switch(name) {
         case CharacterName::diabolus:
@@ -36,8 +37,8 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _damage_sprite(bn::sprite_items::visual_damage.create_sprite(x,y)),
     _rnd(rnd)
 {
-    _hp_max = 20;
-    _hp = 20;
+    _hp_max = 5; //caps at 20
+    _hp = 5;
     _damage_sprite.set_visible(false);
 
     _animation_cooldown = 0;
@@ -45,20 +46,20 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _position = bn::fixed_point(x,y);
     _friction = bn::fixed(0.4);
     _acceleration = bn::fixed(0.3);
-    _max_speed = bn::fixed(2);
+    _max_speed = bn::fixed(1.35); //1.2 low, 1.35 common, 3 max?
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
 
     //attack vars
     //_shot_speed = bn::fixed(10);
-    _shot_speed = bn::fixed(3);
-    _fire_rate = bn::fixed(60);
+    _shot_speed = bn::fixed(4);
+    _fire_rate = bn::fixed(6); // 5 - 60, base 6
     _attack_cooldown_counter = 0;
     _damage = bn::fixed(2);
-    _attack_knockback = bn::fixed(0.8);
-    _range = bn::fixed(60);
-    _max_offset = bn::fixed(0.5);
+    _attack_knockback = bn::fixed(0.1); //0.1
+    _range = bn::fixed(120);   // max 120
+    _max_offset = bn::fixed(0.1); //base: 0.1, 0.5 is already punishing
 
     _freeze_movement = false;
     _i_frames = 40;
@@ -71,7 +72,7 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
 
 //Getters and Setters
 int Player::get_attack_cooldown() {
-    return int(60/_fire_rate);
+    return int(180/_fire_rate);
 }
 bn::fixed Player::get_attack_knockback() {
     return _attack_knockback;
@@ -92,9 +93,9 @@ bn::fixed_point Player::get_position() {
 bn::rect Player::get_hitbox() {
     return bn::rect(
     int(_position.x()),
-    int(_position.y()+4),
+    int(_position.y()+3),
     6,   // width
-    10    // height
+    9    // height
     );
 }
 bn::fixed_point Player::get_shot_velocity() {
@@ -152,7 +153,7 @@ void Player::take_damage(int damage) {
 
 void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
     if (_attack_cooldown_counter <= 0 && projectiles.size() < MAX_PROJECTILES) {
-        int atk_knockback = 0;
+        int atk_knockback = 1;
         if (_walk_anim) {
             _walk_anim.reset();
         }
@@ -187,8 +188,8 @@ void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
                 break;
         }
         projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, get_shot_velocity() + offset, _damage, _range, _attack_knockback));
-        bn::sound_items::honk.play(0.2, _rnd.get_fixed(0.5,2), 0);
-        _animation_cooldown = get_attack_cooldown()*0.8;
+        bn::sound_items::honk.play(0.1, _rnd.get_fixed(0.5,1), 0);
+        _animation_cooldown = get_attack_cooldown()*0.6;
         _attack_cooldown_counter = get_attack_cooldown();
     }
 }
@@ -211,15 +212,6 @@ void Player::apply_knockback(bn::fixed_point kb_velocity) {
 void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles) { //player movement
     bool moving = false;    //turn this to false before input check
     bn::fixed_point input(0, 0);
-
-    //TODO: remove these _hp related instructions after debugging the hp bar!!!!
-    if(bn::keypad::b_pressed() && _hp < _hp_max)    _hp++;
-    //if(bn::keypad::down_held())    _hp--;
-    //if(_hp < 0) {
-    //    _hp = 0;
-    //} else if (_hp > _hp_max) {
-    //    _hp = _hp_max;
-    //}
 
     if(bn::keypad::left_held()) {
         input.set_x(-1);
@@ -292,7 +284,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     //animation
     if(moving && _animation_cooldown == 0) {
         if (_last_input != input || !_walk_anim) {
-            int walk_animation_speed = int(_max_speed * 3);
+            int walk_animation_speed = int(16 / (_max_speed+2));
             if (_direction == Direction::Up) {
                 _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(

@@ -51,9 +51,9 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
  /home/Commodore/butano/butano/include/bn_reciprocal_lut.h \
  /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h \
+ /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h \
- /home/Commodore/butano/butano/include/bn_optional.h \
  /home/Commodore/butano/butano/include/bn_vector.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/hud.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_item.h \
@@ -68,13 +68,28 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
  /home/Commodore/butano/games/twisted-depths-gba/src/level.h \
  /home/Commodore/butano/butano/include/bn_point.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/level_generator.h \
+ /home/Commodore/butano/butano/include/bn_sprite_text_generator.h \
+ /home/Commodore/butano/butano/include/bn_camera_ptr.h \
+ /home/Commodore/butano/butano/include/bn_sprite_font.h \
+ /home/Commodore/butano/butano/include/bn_sprite_item.h \
+ /home/Commodore/butano/butano/include/bn_sprite_shape_size.h \
+ /home/Commodore/butano/butano/include/bn_sprite_palette_item.h \
+ /home/Commodore/butano/butano/include/bn_utf8_characters_map_ref.h \
+ /home/Commodore/butano/butano/include/bn_power_of_two.h \
+ /home/Commodore/butano/butano/include/bn_utf8_character.h \
+ /home/Commodore/butano/butano/include/bn_string_view.h \
+ /home/Commodore/butano/butano/include/bn_sprite_font.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h \
+ /home/Commodore/butano/butano/include/bn_sprite_item.h \
  /home/Commodore/butano/butano/include/bn_music.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_music_items.h \
  /home/Commodore/butano/butano/include/bn_music_item.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sound_items.h \
  /home/Commodore/butano/butano/include/bn_sound_item.h \
  /home/Commodore/butano/butano/include/bn_sound_handle.h \
- /home/Commodore/butano/butano/include/bn_keypad.h
+ /home/Commodore/butano/butano/include/bn_keypad.h \
+ /home/Commodore/butano/butano/include/bn_string.h \
+ /home/Commodore/butano/butano/include/bn_string_view.h
 /home/Commodore/butano/games/twisted-depths-gba/src/game.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_ptr.h:
 /home/Commodore/butano/butano/include/bn_optional.h:
@@ -127,9 +142,9 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
 /home/Commodore/butano/butano/include/bn_reciprocal_lut.h:
 /home/Commodore/butano/butano/include/bn_rule_of_three_approximation.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/obstacle.h:
+/home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/projectile.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h:
-/home/Commodore/butano/butano/include/bn_optional.h:
 /home/Commodore/butano/butano/include/bn_vector.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/hud.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_item.h:
@@ -144,6 +159,19 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
 /home/Commodore/butano/games/twisted-depths-gba/src/level.h:
 /home/Commodore/butano/butano/include/bn_point.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/level_generator.h:
+/home/Commodore/butano/butano/include/bn_sprite_text_generator.h:
+/home/Commodore/butano/butano/include/bn_camera_ptr.h:
+/home/Commodore/butano/butano/include/bn_sprite_font.h:
+/home/Commodore/butano/butano/include/bn_sprite_item.h:
+/home/Commodore/butano/butano/include/bn_sprite_shape_size.h:
+/home/Commodore/butano/butano/include/bn_sprite_palette_item.h:
+/home/Commodore/butano/butano/include/bn_utf8_characters_map_ref.h:
+/home/Commodore/butano/butano/include/bn_power_of_two.h:
+/home/Commodore/butano/butano/include/bn_utf8_character.h:
+/home/Commodore/butano/butano/include/bn_string_view.h:
+/home/Commodore/butano/butano/include/bn_sprite_font.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h:
+/home/Commodore/butano/butano/include/bn_sprite_item.h:
 /home/Commodore/butano/butano/include/bn_music.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_music_items.h:
 /home/Commodore/butano/butano/include/bn_music_item.h:
@@ -151,3 +179,5 @@ game.o: /home/Commodore/butano/games/twisted-depths-gba/src/game.cpp \
 /home/Commodore/butano/butano/include/bn_sound_item.h:
 /home/Commodore/butano/butano/include/bn_sound_handle.h:
 /home/Commodore/butano/butano/include/bn_keypad.h:
+/home/Commodore/butano/butano/include/bn_string.h:
+/home/Commodore/butano/butano/include/bn_string_view.h:

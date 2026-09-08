@@ -16,7 +16,11 @@
 #include "bn_optional.h"
 #include "bn_vector.h"
 #include "bn_random.h"
-//sprites, txt and bg
+//txt
+#include "bn_sprite_ptr.h"
+#include "bn_sprite_text_generator.h"
+#include "bn_sprite_font.h"
+#include "bn_sprite_items_common_fixed_8x8_font.h"
 
 class Game {
 public:
@@ -30,6 +34,11 @@ private:
         Playing
     };
     State _state;
+
+    bn::sprite_font _font_sprite;
+    bn::sprite_text_generator _text_generator;
+    bn::vector<bn::sprite_ptr,16> _text_sprites;
+
 
     bn::random _rnd;
     bn::optional<Level> _level;

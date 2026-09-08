@@ -34,7 +34,6 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position, bn::random& rnd) :
     _damage_sprite(bn::sprite_items::visual_enemy_damage.create_sprite(position))
 {
     _damage_sprite.set_visible(false);
-    _damage_sprite.set_scale(0.8);
 
     _dying = false;
     _debug = false;
@@ -48,7 +47,7 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position, bn::random& rnd) :
     _step = 0;
     _knockback_velocity = bn::fixed_point(0,0);
     _hp = bn::fixed(5);
-    _i_frames = 10;
+    _i_frames = 0;
     _i_frames_counter = 0;
     //optional attributes
     
@@ -86,6 +85,9 @@ void Enemy::initial_setup() {
 bool Enemy::is_alive() {
     return _alive;
 }
+bool Enemy::is_dying() {
+    return _dying;
+}
 bn::fixed_point Enemy::get_position() {
     return _position;
 }
@@ -118,7 +120,7 @@ void Enemy::take_damage(bn::fixed damage) {
         _damage_anim.emplace(
             bn::sprite_animate_action<9>::once(
                 _damage_sprite,
-                2,
+                1,
                 bn::sprite_items::visual_enemy_damage.tiles_item(),
                 bn::array<uint16_t, 9>{ 0,1,2,3,4,5,5,6,6}
             )
