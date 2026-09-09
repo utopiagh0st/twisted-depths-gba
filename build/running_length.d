@@ -1,2 +1,2 @@
 running_length.o: \
- /home/Commodore/butano/butano/hw/3rd_party/cult-of-gba-bios/src/running_length.s
+ C:/butano-master/butano/hw/3rd_party/cult-of-gba-bios/src/running_length.s

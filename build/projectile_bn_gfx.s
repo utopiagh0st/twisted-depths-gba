@@ -8,7 +8,7 @@
 @	+ 2 tiles not compressed
 @	Total size: 32 + 64 = 96
 @
-@	Time-stamp: 2026-08-19, 11:32:57
+@	Time-stamp: 2026-09-08, 19:49:15
 @	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 @	( http://www.coranac.com/projects/#grit )
 @

@@ -20,7 +20,8 @@ constexpr int max_enemies = 30;
 
 enum class EnemyType {
     LimeCat,
-    PepperGum
+    PepperGum,
+    Castabell
 };
 
 class Enemy {
@@ -68,6 +69,7 @@ private:
     bool bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd);
     void move_towards(bn::fixed_point final_pos);
     void deaccelerate();
+    void cap_velocity();
 };
 
 #endif

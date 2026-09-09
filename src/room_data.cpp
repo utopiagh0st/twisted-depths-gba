@@ -87,7 +87,7 @@ const bn::array<RoomData, ROOM_LOOKUP_SIZE> ROOM_LOOKUP = {{ //Leveltype, roomty
         
     }, 16,
     {
-        {EnemyType::PepperGum, bn::fixed_point(0,0)}
+        {EnemyType::Castabell, bn::fixed_point(0,0)}
     }, 1},
 
     //DOWN

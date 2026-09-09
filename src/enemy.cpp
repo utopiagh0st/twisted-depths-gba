@@ -11,6 +11,7 @@
 
 #include "bn_sprite_items_enemy.h"
 #include "bn_sprite_items_enemy_peppergum.h"
+#include "bn_sprite_items_enemy_castabell.h"
 #include "bn_sprite_items_visual_enemy_damage.h"
 
 
@@ -23,6 +24,8 @@ static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point po
             return bn::sprite_items::enemy.create_sprite(position);
         case EnemyType::PepperGum:
             return bn::sprite_items::enemy_peppergum.create_sprite(position);
+        case EnemyType::Castabell:
+            return bn::sprite_items::enemy_castabell.create_sprite(position);
     }
 
     return bn::sprite_items::enemy.create_sprite(position);
@@ -78,6 +81,12 @@ void Enemy::initial_setup() {
                 bn::array<uint16_t, 3>{ 0, 1, 2 }
             )
         );
+    case EnemyType::Castabell:
+        _friction = bn::fixed(0.4);
+        _acceleration = bn::fixed(0.3);
+        _max_speed = bn::fixed(1.5);
+
+        _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 1);
     break;
     }
 }
@@ -181,7 +190,8 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
             }
         break;
         }
-        break;
+
+    break;
     case EnemyType::PepperGum:
         
         if(!_dying) {
@@ -236,11 +246,52 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
                 _sprite_anim->update();
             }
         }
-        break;
-        
+    break;
+    case EnemyType::Castabell:
+        if(!_dying) {
+            _sprite.set_horizontal_flip(true);
+            switch (_step) {
+                case 0:
+                    _velocity += bn::fixed_point(_acceleration,0);
+                    cap_velocity();
+                    for (Obstacle& obstacle : obstacles) {
+                        bn::rect hypo_hitbox = bn::rect(
+                        int(_position.x()-1 + _velocity.x()),
+                        int(_position.y()+1),
+                        8,   // width8
+                        9    // height9
+                        );
+                        if (hypo_hitbox.intersects(obstacle.get_hitbox())) {
+                            _velocity -= bn::fixed_point(_acceleration,0);
+                            _step++;
+                        }
+                    }
+                break;
+                case 1:
+                    _velocity -= bn::fixed_point(_acceleration,0);
+                    cap_velocity();
+                    for (Obstacle& obstacle : obstacles) {
+                        bn::rect hypo_hitbox = bn::rect(
+                        int(_position.x()-1 + _velocity.x()),
+                        int(_position.y()+1),
+                        8,   // width8
+                        9    // height9
+                        );
+                        if (hypo_hitbox.intersects(obstacle.get_hitbox())) {
+                            _velocity += bn::fixed_point(_acceleration,0);
+                            _step=0;
+                        }
+                    }
+                break;
+            }
+        } else {
+            _alive = false;
+        }
+    break;
     default:
         break;
     }
+
     _velocity += _knockback_velocity;
     _knockback_velocity *= (bn::fixed(1) - _friction);
     
@@ -260,7 +311,6 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
             _position.set_y(_position.y() - _velocity.y());
         }
     }
-
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
 
     if (_i_frames_counter > 0) {
@@ -325,14 +375,16 @@ void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns t
         direction /= length;
         _velocity += direction * _acceleration;
     }   
-
-    bn::fixed speed_sq = _velocity.x()*_velocity.x() + _velocity.y()*_velocity.y();
-    if (speed_sq > _max_speed*_max_speed) {
-        _velocity = (_velocity / bn::sqrt(speed_sq)) * _max_speed;
-    }
-    
+    cap_velocity();
 }
 
 void Enemy::deaccelerate() {
     _velocity *= bn::fixed(1) - _friction;
+}
+
+void Enemy::cap_velocity() {
+    bn::fixed speed_sq = _velocity.x()*_velocity.x() + _velocity.y()*_velocity.y();
+    if (speed_sq > _max_speed*_max_speed) {
+        _velocity = (_velocity / bn::sqrt(speed_sq)) * _max_speed;
+    }
 }

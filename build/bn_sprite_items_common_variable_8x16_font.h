@@ -12,7 +12,7 @@
 //	+ 220 tiles Metatiled by 1x2 not compressed
 //	Total size: 32 + 7040 = 7072
 //
-//	Time-stamp: 2026-08-19, 08:40:18
+//	Time-stamp: 2026-09-08, 19:49:15
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
