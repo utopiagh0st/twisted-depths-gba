@@ -1,26 +1,26 @@
 main_gba.o: \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/gba/main_gba.c \
- C:/butano-master/butano/hw/3rd_party/maxmod/include/maxmod.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/include/mm_types.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/include/mm_mas.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/include/mm_msl.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/core/effect.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/core/mas.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/core/channel_types.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/core/player_types.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/core/mixer.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/core/player_types.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/gba/mixer.h \
- C:/butano-master/butano/hw/3rd_party/maxmod/src/core/channel_types.h
-C:/butano-master/butano/hw/3rd_party/maxmod/include/maxmod.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/include/mm_types.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/include/mm_mas.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/include/mm_msl.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/core/effect.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/core/mas.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/core/channel_types.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/core/player_types.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/core/mixer.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/core/player_types.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/gba/mixer.h:
-C:/butano-master/butano/hw/3rd_party/maxmod/src/core/channel_types.h:
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/main_gba.c \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/include/maxmod.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/include/mm_types.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/include/mm_mas.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/include/mm_msl.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/effect.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/mas.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/channel_types.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/player_types.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/mixer.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/player_types.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/mixer.h \
+ /home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/channel_types.h
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/include/maxmod.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/include/mm_types.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/include/mm_mas.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/include/mm_msl.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/effect.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/mas.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/channel_types.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/player_types.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/mixer.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/player_types.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/mixer.h:
+/home/Commodore/butano/butano/hw/3rd_party/maxmod/src/gba/../core/channel_types.h:

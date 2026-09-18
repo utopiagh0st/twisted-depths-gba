@@ -43,23 +43,16 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position, bn::random& rnd) :
     _alive = true;
     _position = position;
     _velocity = bn::fixed_point(0,0);
-    _friction = bn::fixed(0.07);
-    _acceleration = bn::fixed(0.3);
-    _max_speed = bn::fixed(5);
+    
     _cooldown = 0;
     _step = 0;
     _knockback_velocity = bn::fixed_point(0,0);
-    _hp = bn::fixed(5);
-    _i_frames = 0;
+    _i_frames = 0.1;
     _i_frames_counter = 0;
     //optional attributes
-    
-
     _type = type;
     _sprite.set_bg_priority(2);
     _sprite.set_z_order(1);
-
-
     initial_setup();
     if (_debug) {
         _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));
@@ -72,7 +65,7 @@ void Enemy::initial_setup() {
         _friction = bn::fixed(0.4);
         _acceleration = bn::fixed(0.3);
         _max_speed = bn::fixed(1.5);
-
+        _hp = bn::fixed(5);
         _sprite_anim.emplace(
             bn::sprite_animate_action<3>::forever(
                 _sprite,
@@ -81,12 +74,19 @@ void Enemy::initial_setup() {
                 bn::array<uint16_t, 3>{ 0, 1, 2 }
             )
         );
+    break;
     case EnemyType::Castabell:
-        _friction = bn::fixed(0.4);
+        _friction = bn::fixed(0.2);
         _acceleration = bn::fixed(0.3);
-        _max_speed = bn::fixed(1.5);
-
-        _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 1);
+        _max_speed = bn::fixed(3);
+        _hp = bn::fixed(10);
+        _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 0);
+    break;
+    default:
+        _friction = bn::fixed(0.07);
+        _acceleration = bn::fixed(0.3);
+        _max_speed = bn::fixed(5);
+        _hp = bn::fixed(5);
     break;
     }
 }
@@ -149,7 +149,7 @@ void Enemy::apply_knockback(bn::fixed_point kb_velocity) {
         bn::fixed_point direction = kb_velocity / speed;
 
         //optional upward bias
-        direction.set_y(direction.y() - 0.3);
+        //direction.set_y(direction.y() - 0.3);
 
         bn::fixed strength = bn::min(speed * 2, bn::fixed(6)); //speed times multiplier OR the threshold
 
@@ -160,136 +160,16 @@ void Enemy::apply_knockback(bn::fixed_point kb_velocity) {
 void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles) {
     switch (_type) {
     case EnemyType::LimeCat:
-        switch (_step) {
-        case 0:
-            _target = player_pos;
-            _step++;
-        break;
-        case 1:
-            if (get_distance(_target) > _max_speed) {
-                move_towards(_target);
-                if (bnd_collide(top_bnd, bottom_bnd, left_bnd, right_bnd)) {
-                    _step++;
-                }
-            } else {
-                _step++;
-            }
-        break;
-        case 2:
-            deaccelerate();
-            bnd_collide(top_bnd, bottom_bnd, left_bnd, right_bnd);
-            if (_velocity == bn::fixed_point(0,0)) {
-                _cooldown = 50;
-                _step++;
-            }
-        break;
-        case 3:
-            _cooldown--;
-            if (_cooldown <= 0) {
-                _step = 0;
-            }
-        break;
-        }
-
+        limecat_update(top_bnd, bottom_bnd, left_bnd, right_bnd, player_pos, obstacles);
     break;
     case EnemyType::PepperGum:
-        
-        if(!_dying) {
-            if (_target.x() < _position.x()) {
-                _sprite.set_horizontal_flip(true);
-            } else {
-                _sprite.set_horizontal_flip(false);
-            }
-            switch (_step) {
-            case 0:
-                deaccelerate();
-                if(_cooldown == 0) {
-                    _cooldown = 10;
-                    _step++;
-                }
-                _cooldown--;
-                break;
-            case 1:
-                _target = player_pos;
-                move_towards(_target);
-                if(_cooldown == 0) {
-                    _cooldown=10;
-                    _step=0;
-                }
-                _cooldown--;
-                break;
-            }
-            _sprite_anim->update();
-        } else {
-            switch (_step) {
-            case 0:
-                _sprite_anim.emplace(
-                    bn::sprite_animate_action<4>::once(
-                        _sprite,
-                        10,
-                        bn::sprite_items::enemy_peppergum.tiles_item(),
-                        bn::array<uint16_t, 3>{3, 4, 5}
-                    )
-                );
-                _cooldown = 30;
-                _step++;
-            break;
-            case 1:
-                _cooldown--;
-                if(_cooldown == 0) {
-                    _alive = false;
-                }
-            break;
-            }
-            deaccelerate();
-            if (!_sprite_anim->done()) {
-                _sprite_anim->update();
-            }
-        }
+        peppergum_update(player_pos, obstacles);
     break;
     case EnemyType::Castabell:
-        if(!_dying) {
-            _sprite.set_horizontal_flip(true);
-            switch (_step) {
-                case 0:
-                    _velocity += bn::fixed_point(_acceleration,0);
-                    cap_velocity();
-                    for (Obstacle& obstacle : obstacles) {
-                        bn::rect hypo_hitbox = bn::rect(
-                        int(_position.x()-1 + _velocity.x()),
-                        int(_position.y()+1),
-                        8,   // width8
-                        9    // height9
-                        );
-                        if (hypo_hitbox.intersects(obstacle.get_hitbox())) {
-                            _velocity -= bn::fixed_point(_acceleration,0);
-                            _step++;
-                        }
-                    }
-                break;
-                case 1:
-                    _velocity -= bn::fixed_point(_acceleration,0);
-                    cap_velocity();
-                    for (Obstacle& obstacle : obstacles) {
-                        bn::rect hypo_hitbox = bn::rect(
-                        int(_position.x()-1 + _velocity.x()),
-                        int(_position.y()+1),
-                        8,   // width8
-                        9    // height9
-                        );
-                        if (hypo_hitbox.intersects(obstacle.get_hitbox())) {
-                            _velocity += bn::fixed_point(_acceleration,0);
-                            _step=0;
-                        }
-                    }
-                break;
-            }
-        } else {
-            _alive = false;
-        }
+        castabell_update(obstacles);
     break;
     default:
-        break;
+    break;
     }
 
     _velocity += _knockback_velocity;
@@ -343,6 +223,160 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
     }
 }
 
+void Enemy::limecat_update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles) {
+     switch (_step) {
+        case 0:
+            _target = player_pos;
+            _step++;
+        break;
+        case 1:
+            if (get_distance(_target) > _max_speed) {
+                move_towards(_target);
+                if (bnd_collide(top_bnd, bottom_bnd, left_bnd, right_bnd)) {
+                    _step++;
+                }
+            } else {
+                _step++;
+            }
+        break;
+        case 2:
+            deaccelerate();
+            bnd_collide(top_bnd, bottom_bnd, left_bnd, right_bnd);
+            if (_velocity == bn::fixed_point(0,0)) {
+                _cooldown = 50;
+                _step++;
+            }
+        break;
+        case 3:
+            _cooldown--;
+            if (_cooldown <= 0) {
+                _step = 0;
+            }
+        break;
+    }
+}
+void Enemy::peppergum_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles) {
+    if(!_dying) {
+        if (_target.x() < _position.x()) {
+            _sprite.set_horizontal_flip(true);
+        } else {
+            _sprite.set_horizontal_flip(false);
+        }
+        switch (_step) {
+        case 0:
+            deaccelerate();
+            if(_cooldown == 0) {
+                _cooldown = 10;
+                _step++;
+            }
+            _cooldown--;
+            break;
+        case 1:
+            _target = player_pos;
+            move_towards(_target);
+            if(_cooldown == 0) {
+                _cooldown=10;
+                _step=0;
+            }
+            _cooldown--;
+            break;
+        }
+        _sprite_anim->update();
+    } else {
+        switch (_step) {
+        case 0:
+            _sprite_anim.emplace(
+                bn::sprite_animate_action<4>::once(
+                    _sprite,
+                    10,
+                    bn::sprite_items::enemy_peppergum.tiles_item(),
+                    bn::array<uint16_t, 3>{3, 4, 5}
+                )
+            );
+            _cooldown = 30;
+            _step++;
+        break;
+        case 1:
+            _cooldown--;
+            if(_cooldown == 0) {
+                _alive = false;
+            }
+        break;
+        }
+        deaccelerate();
+        if (!_sprite_anim->done()) {
+            _sprite_anim->update();
+        }
+    }
+}
+void Enemy::castabell_update(bn::vector<Obstacle, max_obstacles>& obstacles) {
+    if(!_dying) {
+        switch (_step) {
+            case 0:
+                _velocity += bn::fixed_point(_acceleration,0);
+                cap_velocity();
+                for (Obstacle& obstacle : obstacles) {
+                    bn::rect hypo_hitbox = bn::rect(
+                    int(_position.x()-1 + _velocity.x()),
+                    int(_position.y()+1),
+                    8,   // width8
+                    9    // height9
+                    );
+                    if (hypo_hitbox.intersects(obstacle.get_hitbox())) {
+                        _velocity -= bn::fixed_point(_acceleration,0);
+                        _step=1;
+                        _cooldown = 20;
+                        _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 1);
+                    }
+                }
+            break;
+            case 1:
+                deaccelerate();
+                _cooldown--;
+                if (_cooldown == 10) {
+                    _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 2);
+                } else if (_cooldown <= 0) {
+                    _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 0);
+                    _sprite.set_horizontal_flip(true);
+                    _step=2;
+                }
+            break;
+            case 2:
+                _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 0);
+                _sprite.set_horizontal_flip(true);
+                _velocity -= bn::fixed_point(_acceleration,0);
+                cap_velocity();
+                for (Obstacle& obstacle : obstacles) {
+                    bn::rect hypo_hitbox = bn::rect(
+                    int(_position.x()-1 + _velocity.x()),
+                    int(_position.y()+1),
+                    8,   // width8
+                    9    // height9
+                    );
+                    if (hypo_hitbox.intersects(obstacle.get_hitbox())) {
+                        _velocity += bn::fixed_point(_acceleration,0);
+                        _step=3;
+                        _cooldown = 20;
+                        _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 1);
+                    }
+                }
+            break;
+            case 3:
+                deaccelerate();
+                _cooldown--;
+                if (_cooldown == 10) {
+                    _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 2);
+                } else if (_cooldown <= 0) {
+                    _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 0);
+                    _sprite.set_horizontal_flip(false);
+                    _step=0;
+                }
+            break;
+        }
+    } else {
+        _alive = false;
+    }
+}
 
 bool Enemy::bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
     bool collided = false;

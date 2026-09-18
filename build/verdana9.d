@@ -1,2 +1,2 @@
 verdana9.o: \
- C:/butano-master/butano/hw/3rd_party/libtonc/src/font/verdana9.s
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/src/font/verdana9.s

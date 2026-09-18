@@ -37,8 +37,8 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _damage_sprite(bn::sprite_items::visual_damage.create_sprite(x,y)),
     _rnd(rnd)
 {
-    _hp_max = 5; //caps at 20
-    _hp = 5;
+    _hp_max = 10; //caps at 20
+    _hp = 10;
     _damage_sprite.set_visible(false);
 
     _animation_cooldown = 0;
@@ -54,10 +54,10 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     //attack vars
     //_shot_speed = bn::fixed(10);
     _shot_speed = bn::fixed(4);
-    _fire_rate = bn::fixed(6); // 5 - 60, base 6
+    _fire_rate = bn::fixed(7); // 5 - 60, base 7
     _attack_cooldown_counter = 0;
     _damage = bn::fixed(2);
-    _attack_knockback = bn::fixed(0.1); //0.1
+    _attack_knockback = bn::fixed(0.15); //0.1
     _range = bn::fixed(120);   // max 120
     _max_offset = bn::fixed(0.1); //base: 0.1, 0.5 is already punishing
 
@@ -153,7 +153,7 @@ void Player::take_damage(int damage) {
 
 void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
     if (_attack_cooldown_counter <= 0 && projectiles.size() < MAX_PROJECTILES) {
-        int atk_knockback = 1;
+        bn::fixed atk_knockback = 0.5;
         if (_walk_anim) {
             _walk_anim.reset();
         }
