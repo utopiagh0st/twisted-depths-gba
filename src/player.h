@@ -73,7 +73,6 @@ private:
     int _i_frames_counter;
     bn::sprite_ptr _damage_sprite;
     bn::optional<bn::sprite_animate_action<10>> _damage_anim;
-    bn::vector<Item,12> _inventory;
 
     void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles);
 };

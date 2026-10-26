@@ -17,7 +17,7 @@ bn::sprite_ptr Projectile::create_projectile_sprite(ProjectileType type, bn::fix
             _size = 0.1;
             return sprite; 
     }
-    _size = 0.1;
+    _size = 1;
     return bn::sprite_items::projectile.create_sprite(position);
 }
 

@@ -22,6 +22,7 @@
 #include "bn_sprite_font.h"
 #include "bn_sprite_items_common_fixed_8x8_font.h"
 
+
 class Game {
 public:
     Game();

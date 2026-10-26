@@ -101,7 +101,8 @@ void Game::update_playing() {
     if (bn::keypad::a_pressed() && _enemies.size() < max_enemies) {
         _enemies.push_back(Enemy(EnemyType::Castabell, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)), _rnd));
     }
-    if (bn::keypad::b_held() && _projectiles.size() < MAX_PROJECTILES) {
+    //&& _projectiles.size() < MAX_PROJECTILES
+    if (bn::keypad::b_held()) {
         _player->attack(_projectiles);
     }
     if (bn::keypad::start_pressed()) {

@@ -7,7 +7,6 @@
 #include "bn_rect.h"
 #include "bn_sprite_animate_actions.h"
 
-
 static constexpr int MAX_PROJECTILES = 20;
 
 enum class ProjectileType {
@@ -58,4 +57,6 @@ private:
     bn::sprite_ptr create_projectile_sprite(ProjectileType type, bn::fixed_point position);
     void update_movement();
 };
+
+
 #endif
