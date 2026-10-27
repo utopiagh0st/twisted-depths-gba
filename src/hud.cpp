@@ -16,34 +16,46 @@ Hud::Hud(bool visible) :
 {
     _bg_border->set_priority(0);
     _is_visible = visible;
+    _pocket_changes = false;
     //initialization
 }
 
-void Hud::update(int player_hp, int player_hp_max) {
+void Hud::set_pocket_changes(bool changes) {
+    _pocket_changes = changes;
+}
+
+void Hud::update(Player& player, bn::vector<Item, 6>& pocket) {
     if (_is_visible) {
         //HP ZIPPER
-        if (player_hp != _last_hp_checked || player_hp_max != _last_hp_max_checked) {
+        if (player.get_hp() != _last_hp_checked || player.get_hp_max() != _last_hp_max_checked) {
             _hp_gauge.clear(); //resets the gauge to draw it from scratch, there must be a better way to achieve this but I wanna sleep
             int y_offset = -78;
-            for (int i = 0; i < player_hp; i++) {
+            for (int i = 0; i < player.get_hp(); i++) {
                 bn::sprite_ptr hp_open_piece = bn::sprite_items::hp_open.create_sprite(104,y_offset);
                 hp_open_piece.set_bg_priority(0);
                 _hp_gauge.push_back(hp_open_piece);
                 y_offset += 4;
             }
-            int hp_closed_amount = player_hp_max - player_hp + 2;
+            int hp_closed_amount = player.get_hp_max() - player.get_hp() + 2;
             for (int i = 0; i < hp_closed_amount; i++) {
                 bn::sprite_ptr hp_closed_piece = bn::sprite_items::hp_closed.create_sprite(104,y_offset);
                 hp_closed_piece.set_bg_priority(0);
                 _hp_gauge.push_back(hp_closed_piece);
                 y_offset += 4;
             }
-            if (player_hp == 0) {
+            if (player.get_hp() == 0) {
                 _spr_hp_zipper = bn::sprite_items::hp_zipper.create_sprite(105, -64);
             } else {
-                _spr_hp_zipper = bn::sprite_items::hp_zipper.create_sprite(105, (player_hp*4)-58);
+                _spr_hp_zipper = bn::sprite_items::hp_zipper.create_sprite(105, (player.get_hp()*4)-58);
             }
             _spr_hp_zipper.set_bg_priority(0);
+        }
+
+        //POCKET
+        _pocket_changes = false;
+        for (int i = 0; i < pocket.size(); i++) {
+            pocket[i].show_in_pocket(i);
+            pocket[i].update(player);
         }
     }    
 }

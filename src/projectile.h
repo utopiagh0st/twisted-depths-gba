@@ -7,7 +7,7 @@
 #include "bn_rect.h"
 #include "bn_sprite_animate_actions.h"
 
-static constexpr int MAX_PROJECTILES = 20;
+static constexpr int max_projectiles = 40;
 
 enum class ProjectileType {
     Honk,

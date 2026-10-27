@@ -56,6 +56,9 @@ void Game::update_title() { //use this one as a template of a state change
         bn::music_items::de_op.play(0.4);    //banger starts
 
         _state = State::Playing;    //change of state
+        _pocket.push_back(Item(0));
+        _hud->set_pocket_changes(true);
+
     }
 }
 
@@ -71,7 +74,7 @@ void Game::update_playing() {
     _level->update(_obstacles,_enemies);
 
     //Player
-    _player->update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _obstacles);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    _player->update(_obstacles);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     //Room Transition
     
     if (_player->get_position().y() < _bounds[UP]) {
@@ -101,8 +104,8 @@ void Game::update_playing() {
     if (bn::keypad::a_pressed() && _enemies.size() < max_enemies) {
         _enemies.push_back(Enemy(EnemyType::Castabell, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)), _rnd));
     }
-    //&& _projectiles.size() < MAX_PROJECTILES
-    if (bn::keypad::b_held()) {
+    //&& _projectiles.size() < max_projectiles
+    if (bn::keypad::b_held() && _projectiles.size() < max_projectiles) {
         _player->attack(_projectiles);
     }
     if (bn::keypad::start_pressed()) {
@@ -196,10 +199,8 @@ void Game::update_playing() {
         }
     }
 
-    
-
     //HUD
-    _hud->update(_player->get_hp(), _player->get_hp_max());
+    _hud->update(_player.value(), _pocket);
     if (_player->get_hp() <= 0) {
         game_over();
     }

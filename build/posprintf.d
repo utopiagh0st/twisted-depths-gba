@@ -1,2 +1,2 @@
 posprintf.o: \
- /home/Commodore/butano/butano/hw/3rd_party/posprintf/src/posprintf.s
+ C:/butano-master/butano/hw/3rd_party/posprintf/src/posprintf.s

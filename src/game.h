@@ -51,10 +51,12 @@ private:
 
     //entity management
     bn::optional<Player> _player;
-    
+    bn::vector<Item, 6> _pocket;
+
+
     bn::vector<Enemy, max_enemies> _enemies;
     bn::vector<Obstacle, max_obstacles> _obstacles;
-    bn::vector<Projectile, MAX_PROJECTILES> _projectiles;
+    bn::vector<Projectile, max_projectiles> _projectiles;
 
     int _bounds[4];
     int _frame;

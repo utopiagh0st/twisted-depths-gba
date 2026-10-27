@@ -6,12 +6,15 @@
 #include "bn_regular_bg_item.h"
 #include "bn_optional.h"
 #include "bn_vector.h"
+#include "player.h"
 
 class Hud {
 public:
     Hud(bool visible);
-    void update(int player_hp, int player_hp_max);
+    void set_pocket_changes(bool changes);
+    void update(Player& player, bn::vector<Item, 6>& pocket);
 private:
+    bool _pocket_changes;
     int _last_hp_checked = -1;
     int _last_hp_max_checked = -1;
     bool _is_visible = false;

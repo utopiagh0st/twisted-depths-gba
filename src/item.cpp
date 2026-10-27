@@ -1,29 +1,49 @@
 #include "item.h"
+#include "item_data.h"
+#include "player.h"
 #include "bn_fixed_point.h"
 #include "bn_math.h"
 #include "bn_sprite_items_obstacle_trashcan.h"
+#include "bn_sound_items.h"
+#include "bn_sprite_items_item_healdeal.h"
 
-Item::Item(ItemId id)
-{   
+
+Item::Item(int id) {   
     _id = id;
-    _rarity = ItemRarity::Normie;
-    _type = ItemType::Hand;
+    const ItemData& item_data = ITEM_LOOKUP[_id];
+    _rarity = item_data.rarity;
+    _type = item_data.type;
     _position = bn::fixed_point(0,0);
+    _wiggle_counter = 0;
+    _do_wiggle = false;
 }
 
-Item::showInInventory(int inventory_position) {
-    switch (inventory_position) {
-    case 1:
+//getters and setters
+ItemType Item::get_type() {
+    return _type;
+}
+
+
+//functions
+void Item::show_in_pocket(int pocket_position) {
+    const ItemData& item_data = ITEM_LOOKUP[_id];
+    switch (pocket_position) {
+        case 0:
+            if(!_sprite.has_value()) {
+                _position = bn::fixed_point(-107.5, -48);
+                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite->set_bg_priority(0);
+            }
+            _do_wiggle = true;
         break;
-    
-    default:
-        break;
+        default:
+            break;
     }
 }
 
-Item::doItemEffect(Player player) {
+void Item::do_item_effect(Player& player) {
     switch (_id) {
-    case 0:
+    case 0: //HealTest
         player.heal(2);
         break;
     default:
@@ -31,9 +51,22 @@ Item::doItemEffect(Player player) {
     }
 }
 
+void Item::update(Player& player) {
+    if (_type == ItemType::Relic) {
+        do_item_effect(player);
+    }
+    if (_do_wiggle) {
+        if (_wiggle_counter > 360) {
+            _wiggle_counter = 0;
+        }
+        _sprite->set_y(_position.y() + bn::fixed(bn::degrees_sin(_wiggle_counter*4) * bn::fixed(1.2)));
+        _sprite->set_x(_position.x() + bn::fixed(bn::degrees_sin(_wiggle_counter*2) * bn::fixed(0.8)));
 
+        _wiggle_counter++;
+    }
+}
 
-'''
+/*
 smashed pumpkin
 clown spit 
 MSC (m some cartoons)
@@ -145,4 +178,4 @@ adeedas jumper
 videotape 
 UTOPIC TV
 Blackest Wing
-'''
+*/

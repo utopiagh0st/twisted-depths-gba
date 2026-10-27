@@ -46,20 +46,20 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _position = bn::fixed_point(x,y);
     _friction = bn::fixed(0.4);
     _acceleration = bn::fixed(0.3);
-    _max_speed = bn::fixed(1.35); //1.2 low, 1.35 common, 3 max?
+    _max_speed = bn::fixed(1.45); //1.2 low, 1.35 common, 3 max?
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
 
     //attack vars
     //_shot_speed = bn::fixed(10);
-    _shot_speed = bn::fixed(4); // 4?
-    _fire_rate = bn::fixed(5); // 5 - 60, base 7
+    _shot_speed = bn::fixed(1); // 4?
+    _fire_rate = bn::fixed(30); // 5 - 60, base 7
     _attack_cooldown_counter = 0;
     _damage = bn::fixed(2);
     _attack_knockback = bn::fixed(0.15); //0.1
     _range = bn::fixed(120);   // max 120
-    _max_offset = bn::fixed(3); //base: 0.1, 0.5 is already punishing
+    _max_offset = bn::fixed(0.1); //base: 0.1, 0.5 is already punishing
 
     _freeze_movement = false;
     _i_frames = 40;
@@ -127,6 +127,14 @@ void Player::set_freeze_movement(bool freeze_movement) {
 }
 
 //Functions
+
+void Player::heal(int heal_amount) {
+    _hp += heal_amount;
+    if (_hp > _hp_max) {
+        _hp = _hp_max;
+    }
+}
+
 void Player::take_damage(int damage) {
     if (_i_frames_counter <= 0) {
         _hp -= damage;
@@ -151,8 +159,8 @@ void Player::take_damage(int damage) {
     }
 }
 
-void Player::attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles) {
-    //&& projectiles.size() < MAX_PROJECTILES 
+void Player::attack(bn::vector<Projectile, max_projectiles>& projectiles) {
+    //&& projectiles.size() < max_projectiles 
     if (_attack_cooldown_counter <= 0) {
         bn::fixed atk_knockback = 0.5;
         if (_walk_anim) {
@@ -210,7 +218,7 @@ void Player::apply_knockback(bn::fixed_point kb_velocity) {
     }
 }
 
-void Player::update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles) { //player movement
+void Player::update_movement(bn::vector<Obstacle,max_obstacles>& obstacles) { //player movement
     bool moving = false;    //turn this to false before input check
     bn::fixed_point input(0, 0);
 
@@ -262,21 +270,6 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
             _position.set_y(_position.y() - total_velocity.y());
         }
     }
-
-    /*
-    if (_position.y() <top_bound) {    //makin sure nothing goes off the rails but literally
-        _position.set_y(top_bound);
-    } else if (_position.y() > bottom_bound) {
-        _position.set_y(bottom_bound);
-    }
-    if (_position.x() <left_bound) {
-        _position.set_x(left_bound);
-    } else if (_position.x() > right_bound) {
-        _position.set_x(right_bound);
-    }
-    */
-
-
 
     _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
 
@@ -350,7 +343,7 @@ void Player::update_movement(int top_bound, int bottom_bound, int left_bound, in
     _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
 }
 
-void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::vector<Obstacle,max_obstacles>& obstacles) {
+void Player::update(bn::vector<Obstacle,max_obstacles>& obstacles) {
     if (_i_frames_counter > 0) {
         _i_frames_counter--;
     }
@@ -374,6 +367,6 @@ void Player::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn
         _sprite.set_horizontal_flip(false);
     }
     if (!_freeze_movement) {
-        update_movement(top_bnd, bottom_bnd, left_bnd, right_bnd, obstacles);
+        update_movement(obstacles);
     }
 }

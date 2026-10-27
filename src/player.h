@@ -12,6 +12,7 @@
 
 #include "obstacle.h"
 #include "projectile.h"
+#include "item.h"
 
 enum class CharacterName {
     diabolus,
@@ -25,6 +26,8 @@ enum class Direction {
     Right
 };
 
+class Item;
+
 class Player {
 public:
     Player(CharacterName name, int x, int y, bn::random& rnd);
@@ -37,16 +40,24 @@ public:
     bn::rect get_hitbox();
     bn::fixed_point get_shot_velocity();
     int get_attack_cooldown();
+    int get_pocket_size();
+    Item get_pocket_item(int index);
+
     bool is_movement_freezed();
     void set_freeze_movement(bool freeze_movement);
 
-    void attack(bn::vector<Projectile, MAX_PROJECTILES>& projectiles);
+    void add_item(Item item);
+    void attack(bn::vector<Projectile, max_projectiles>& projectiles);
+    void heal(int heal_amount);
     void take_damage(int damage);
     void apply_knockback(bn::fixed_point kb_velocity);
-    void update(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles);  //passing bounds to avoid circle relationships
+    void update(bn::vector<Obstacle,max_obstacles>& obstacles);  //passing bounds to avoid circle relationships
 private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_animate_action<4>> _walk_anim;
+
+    //Item _hand;
+    //bn::vector<Item, 16> _relics;
 
     bn::random _rnd;
 
@@ -74,7 +85,7 @@ private:
     bn::sprite_ptr _damage_sprite;
     bn::optional<bn::sprite_animate_action<10>> _damage_anim;
 
-    void update_movement(int top_bound, int bottom_bound, int left_bound, int right_bound, bn::vector<Obstacle,max_obstacles>& obstacles);
+    void update_movement(bn::vector<Obstacle,max_obstacles>& obstacles);
 };
 
 #endif

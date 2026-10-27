@@ -62,7 +62,6 @@ void Room::generate_border(bn::vector<Obstacle, max_obstacles>& obstacles) {
     if (!has_entries(room_data.room_type, RoomType::R)) {
         obstacles.push_back(Obstacle(ObstacleType::RoomBorderVer, bn::fixed_point(80,0)));
     }
-
     if (has_entries(room_data.room_type, RoomType::U)) {
         obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(-72,-64)));
         obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(72,-64)));

@@ -2,6 +2,8 @@
 #define ITEM_H
 
 #include "bn_sprite_ptr.h"
+#include "bn_sprite_item.h"
+
 #include "bn_fixed_point.h"
 #include "bn_fixed.h"
 #include "bn_rect.h"
@@ -21,12 +23,22 @@ enum class ItemType {
     Relic // "permanent" item that stays w you, what the youngins call a passive effect
 };
 
+class Player;
+
 class Item {
 public:
     Item(int itemId);
+    void show_in_pocket(int pocket_position);
+    void do_item_effect(Player& player);
+    ItemType get_type();
+    void update(Player& player);
 private:
-    bn::fixed_point _position;
+    int _id;
+    int _wiggle_counter;
     ItemRarity _rarity;
+    ItemType _type;
+    bn::fixed_point _position;
+    bool _do_wiggle;
     bn::optional<bn::sprite_ptr> _sprite;
 };
 #endif
