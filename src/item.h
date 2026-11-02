@@ -9,6 +9,7 @@
 #include "bn_rect.h"
 #include "bn_optional.h"
 #include "bn_sprite_animate_actions.h"
+#include "bn_random.h"
 
 enum class ItemRarity {
     Normie,
@@ -27,13 +28,14 @@ class Player;
 
 class Item {
 public:
-    Item(int itemId);
+    Item(int itemId, bn::random& rnd);
     void show_in_pocket(int pocket_position);
     void do_item_effect(Player& player);
     ItemType get_type();
     void update(Player& player);
 private:
     int _id;
+    bn::random& _rnd;
     int _wiggle_counter;
     ItemRarity _rarity;
     ItemType _type;

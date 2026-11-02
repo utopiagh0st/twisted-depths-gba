@@ -6,15 +6,17 @@
 #include "bn_sprite_items_obstacle_trashcan.h"
 #include "bn_sound_items.h"
 #include "bn_sprite_items_item_healdeal.h"
+#include "bn_random.h"
 
 
-Item::Item(int id) {   
+Item::Item(int id, bn::random& rnd) : _rnd(rnd) {   
     _id = id;
     const ItemData& item_data = ITEM_LOOKUP[_id];
     _rarity = item_data.rarity;
     _type = item_data.type;
     _position = bn::fixed_point(0,0);
-    _wiggle_counter = 0;
+
+    _wiggle_counter = _rnd.get_int(360);
     _do_wiggle = false;
 }
 
@@ -31,6 +33,46 @@ void Item::show_in_pocket(int pocket_position) {
         case 0:
             if(!_sprite.has_value()) {
                 _position = bn::fixed_point(-107.5, -48);
+                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite->set_bg_priority(0);
+            }
+            _do_wiggle = true;
+        break;
+        case 1:
+            if(!_sprite.has_value()) {
+                _position = bn::fixed_point(-103.5, -27);
+                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite->set_bg_priority(0);
+            }
+            _do_wiggle = true;
+        break;
+        case 2:
+            if(!_sprite.has_value()) {
+                _position = bn::fixed_point(-102.5, -4);
+                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite->set_bg_priority(0);
+            }
+            _do_wiggle = true;
+        break;
+        case 3:
+            if(!_sprite.has_value()) {
+                _position = bn::fixed_point(-106.5, 18);
+                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite->set_bg_priority(0);
+            }
+            _do_wiggle = true;
+        break;
+        case 4:
+            if(!_sprite.has_value()) {
+                _position = bn::fixed_point(-101.5, 40);
+                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite->set_bg_priority(0);
+            }
+            _do_wiggle = true;
+        break;
+        case 5:
+            if(!_sprite.has_value()) {
+                _position = bn::fixed_point(-105.5, 64);
                 _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
                 _sprite->set_bg_priority(0);
             }

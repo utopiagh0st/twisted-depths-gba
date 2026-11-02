@@ -52,6 +52,7 @@ private:
     //entity management
     bn::optional<Player> _player;
     bn::vector<Item, 6> _pocket;
+    int _selected_pocket_item;
 
 
     bn::vector<Enemy, max_enemies> _enemies;

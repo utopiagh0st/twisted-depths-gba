@@ -40,6 +40,7 @@ Game::Game() :
     _bounds[LEFT] = -80;   //left
     _bounds[RIGHT] = 80;    //right
     _text_generator.generate(-70,0,"presiona start uwu",_text_sprites);
+    _selected_pocket_item = 0;
 }
 
 void Game::update_title() { //use this one as a template of a state change
@@ -56,8 +57,12 @@ void Game::update_title() { //use this one as a template of a state change
         bn::music_items::de_op.play(0.4);    //banger starts
 
         _state = State::Playing;    //change of state
-        _pocket.push_back(Item(0));
-        _hud->set_pocket_changes(true);
+        _pocket.push_back(Item(0, _rnd));
+        _pocket.push_back(Item(0, _rnd));
+        _pocket.push_back(Item(0, _rnd));
+        _pocket.push_back(Item(0, _rnd));
+        _pocket.push_back(Item(0, _rnd));
+        _pocket.push_back(Item(0, _rnd));
 
     }
 }
@@ -114,6 +119,16 @@ void Game::update_playing() {
             _level->toggle_map(true);
         }
         _state = State::Pause;  //pause button just stops running the game logic
+    }
+    if (bn::keypad::l_pressed() && _pocket.size() > 0) {
+        _pocket[_selected_pocket_item].do_item_effect(_player.value());
+    }
+
+    if (bn::keypad::r_pressed() && _pocket.size() > 0) {
+        _selected_pocket_item++;
+        if (_selected_pocket_item >= _pocket.size()) {
+            _selected_pocket_item = 0;
+        }
     }
 
     //Enemies
@@ -200,7 +215,7 @@ void Game::update_playing() {
     }
 
     //HUD
-    _hud->update(_player.value(), _pocket);
+    _hud->update(_player.value(), _pocket, _selected_pocket_item);
     if (_player->get_hp() <= 0) {
         game_over();
     }

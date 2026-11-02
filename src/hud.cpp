@@ -7,6 +7,8 @@
 #include "bn_sprite_items_hp_zipper.h"
 #include "bn_sprite_items_hp_closed.h"
 #include "bn_sprite_items_hp_open.h"
+#include "bn_sprite_items_itemselect.h"
+
 //backgrounds
 #include "bn_regular_bg_items_border_blue.h"
 
@@ -16,15 +18,9 @@ Hud::Hud(bool visible) :
 {
     _bg_border->set_priority(0);
     _is_visible = visible;
-    _pocket_changes = false;
-    //initialization
 }
 
-void Hud::set_pocket_changes(bool changes) {
-    _pocket_changes = changes;
-}
-
-void Hud::update(Player& player, bn::vector<Item, 6>& pocket) {
+void Hud::update(Player& player, bn::vector<Item, 6>& pocket, int selected_pocket_item) {
     if (_is_visible) {
         //HP ZIPPER
         if (player.get_hp() != _last_hp_checked || player.get_hp_max() != _last_hp_max_checked) {
@@ -52,10 +48,42 @@ void Hud::update(Player& player, bn::vector<Item, 6>& pocket) {
         }
 
         //POCKET
-        _pocket_changes = false;
         for (int i = 0; i < pocket.size(); i++) {
             pocket[i].show_in_pocket(i);
             pocket[i].update(player);
+        }
+
+
+        //pocket selection
+        if (pocket.size() == 0) {
+            _spr_itemselect.reset();
+        } else {
+            if (!_spr_itemselect.has_value()) {
+                _spr_itemselect.emplace(bn::sprite_items::itemselect.create_sprite(-107.5, -48));
+                _spr_itemselect->set_bg_priority(0);
+            }
+            switch (selected_pocket_item) {
+                case 0:
+                    _spr_itemselect->set_position(-108, -51);
+                    break;
+                case 1:
+                    _spr_itemselect->set_position(-104, -30);
+                    break;
+                case 2:
+                    _spr_itemselect->set_position(-103, -7);
+                    break;
+                case 3:
+                    _spr_itemselect->set_position(-107, 15);
+                    break;
+                case 4:
+                    _spr_itemselect->set_position(-102, 37);
+                    break;
+                case 5:
+                    _spr_itemselect->set_position(-106, 61);
+                    break;
+                default:
+                    break;
+            }
         }
     }    
 }

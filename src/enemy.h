@@ -16,7 +16,7 @@
 //
 
 
-constexpr int max_enemies = 30;
+constexpr int max_enemies = 25;
 
 enum class EnemyType {
     LimeCat,
