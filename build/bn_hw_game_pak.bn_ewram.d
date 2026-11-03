@@ -1,46 +1,46 @@
 bn_hw_game_pak.bn_ewram.o: \
- /home/Commodore/butano/butano/hw/src/bn_hw_game_pak.bn_ewram.cpp \
- /home/Commodore/butano/butano/hw/src/../include/bn_hw_game_pak.h \
- /home/Commodore/butano/butano/include/bn_config_game_pak.h \
- /home/Commodore/butano/butano/include/bn_game_pak_wait_state.h \
- /home/Commodore/butano/butano/include/bn_common.h \
- /home/Commodore/butano/butano/include/../hw/include/bn_hw_common.h \
- /home/Commodore/butano/butano/hw/src/../include/bn_hw_tonc.h \
- /home/Commodore/butano/butano/include/bn_common.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_types.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memmap.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memdef.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_bios.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_core.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_input.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_irq.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_math.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_oam.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_tte.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_surface.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_video.h \
- /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_nocash.h \
- /home/Commodore/butano/butano/hw/src/../include/bn_hw_tonc.h
-/home/Commodore/butano/butano/hw/src/../include/bn_hw_game_pak.h:
-/home/Commodore/butano/butano/include/bn_config_game_pak.h:
-/home/Commodore/butano/butano/include/bn_game_pak_wait_state.h:
-/home/Commodore/butano/butano/include/bn_common.h:
-/home/Commodore/butano/butano/include/../hw/include/bn_hw_common.h:
-/home/Commodore/butano/butano/hw/src/../include/bn_hw_tonc.h:
-/home/Commodore/butano/butano/include/bn_common.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_types.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memmap.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memdef.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_bios.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_core.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_input.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_irq.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_math.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_oam.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_tte.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_surface.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_video.h:
-/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_nocash.h:
-/home/Commodore/butano/butano/hw/src/../include/bn_hw_tonc.h:
+ C:/butano-master/butano/hw/src/bn_hw_game_pak.bn_ewram.cpp \
+ C:/butano-master/butano/hw/include/bn_hw_game_pak.h \
+ C:/butano-master/butano/include/bn_config_game_pak.h \
+ C:/butano-master/butano/include/bn_game_pak_wait_state.h \
+ C:/butano-master/butano/include/bn_common.h \
+ C:/butano-master/butano/hw/include/bn_hw_common.h \
+ C:/butano-master/butano/hw/include/bn_hw_tonc.h \
+ C:/butano-master/butano/include/bn_common.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_types.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memmap.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memdef.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_bios.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_core.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_input.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_irq.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_math.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_oam.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_tte.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_surface.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_video.h \
+ C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_nocash.h \
+ C:/butano-master/butano/hw/include/bn_hw_tonc.h
+C:/butano-master/butano/hw/include/bn_hw_game_pak.h:
+C:/butano-master/butano/include/bn_config_game_pak.h:
+C:/butano-master/butano/include/bn_game_pak_wait_state.h:
+C:/butano-master/butano/include/bn_common.h:
+C:/butano-master/butano/hw/include/bn_hw_common.h:
+C:/butano-master/butano/hw/include/bn_hw_tonc.h:
+C:/butano-master/butano/include/bn_common.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_types.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memmap.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memdef.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_bios.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_core.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_input.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_irq.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_math.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_oam.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_tte.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_surface.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_video.h:
+C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_nocash.h:
+C:/butano-master/butano/hw/include/bn_hw_tonc.h:

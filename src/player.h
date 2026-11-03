@@ -11,6 +11,8 @@
 #include "bn_vector.h"
 
 #include "obstacle.h"
+#include "enemy.h"
+
 #include "projectile.h"
 #include "item.h"
 
@@ -43,6 +45,7 @@ public:
     int get_pocket_size();
     Item get_pocket_item(int index);
 
+    bool is_doing_burst_attack();
     bool is_movement_freezed();
     void set_freeze_movement(bool freeze_movement);
 
@@ -51,10 +54,14 @@ public:
     void heal(int heal_amount);
     void take_damage(int damage);
     void apply_knockback(bn::fixed_point kb_velocity);
-    void update(bn::vector<Obstacle,max_obstacles>& obstacles);  //passing bounds to avoid circle relationships
+    void update(bn::vector<Obstacle,max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles, bn::vector<Enemy, max_enemies>& enemies);  //passing bounds to avoid circle relationships
+
+    void start_burst_attack();
+
 private:
     bn::sprite_ptr _sprite;
     bn::optional<bn::sprite_animate_action<4>> _walk_anim;
+    bn::optional<bn::sprite_animate_action<2>> _short_anim;
 
     //Item _hand;
     //bn::vector<Item, 16> _relics;
@@ -85,7 +92,14 @@ private:
     bn::sprite_ptr _damage_sprite;
     bn::optional<bn::sprite_animate_action<10>> _damage_anim;
 
-    void update_movement(bn::vector<Obstacle,max_obstacles>& obstacles);
+    int _action_phase;
+
+    bool _doing_burst_attack;
+
+    void update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles, bn::vector<Enemy, max_enemies>& enemies);
+    void finish_burst_attack();
+
+    void update_movement_input(bn::vector<Obstacle,max_obstacles>& obstacles);
 };
 
 #endif

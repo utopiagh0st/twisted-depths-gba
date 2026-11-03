@@ -11,7 +11,8 @@ static constexpr int max_projectiles = 40;
 
 enum class ProjectileType {
     Honk,
-    Bullet
+    Bullet,
+    BurstAttackPlayer
 };
 enum class ProjectileOwner {
     Enemy,
@@ -35,6 +36,8 @@ public:
     bool is_alive();
     void update();
 private:
+    void initial_setup();
+
     bool _debug;
     bn::fixed _size;
     bn::fixed_point _position;
@@ -46,7 +49,7 @@ private:
     bn::fixed _distance_traveled;
     bn::fixed _damage;
     bn::fixed _knockback;
-    bn::sprite_ptr _sprite;
+    bn::optional<bn::sprite_ptr> _sprite;
     bn::optional<bn::sprite_animate_action<2>> _sprite_anim;
 
     bn::optional<bn::sprite_ptr> _spr_hitbox;

@@ -27,6 +27,8 @@
 #include "bn_string.h"
 #include "bn_string_view.h"
 
+#include "bn_blending.h"
+
 
 Game::Game() :
     _state(State::Title),    //starts with title state
@@ -62,8 +64,8 @@ void Game::update_title() { //use this one as a template of a state change
         _pocket.push_back(Item(0, _rnd));
         _pocket.push_back(Item(0, _rnd));
         _pocket.push_back(Item(0, _rnd));
-        _pocket.push_back(Item(0, _rnd));
-
+        _pocket.push_back(Item(1, _rnd));
+        bn::blending::set_transparency_alpha(bn::fixed(0.5));
     }
 }
 
@@ -79,7 +81,7 @@ void Game::update_playing() {
     _level->update(_obstacles,_enemies);
 
     //Player
-    _player->update(_obstacles);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
+    _player->update(_obstacles, _projectiles, _enemies);    //cuz of bn::optional u gotta use the arrow -> to access an object's contents
     //Room Transition
     
     if (_player->get_position().y() < _bounds[UP]) {
@@ -100,10 +102,11 @@ void Game::update_playing() {
         _level->begin_room_transition(RIGHT, _obstacles, _enemies);
     }
 
-    if (_player->is_movement_freezed() && !_level->is_doing_room_transition()) {
+    if (_level->can_unfreeze_movement() && !_level->is_doing_room_transition()) {
         _player->set_freeze_movement(false);
+        _level->set_can_unfreeze_movement(false);
     }
-    /**/
+    
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < max_enemies) {
@@ -136,9 +139,13 @@ void Game::update_playing() {
         enemy.update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _player->get_position(), _obstacles);
         // Colission checks
         if (!enemy.is_dying() && _player->get_hitbox().intersects(enemy.get_hitbox())) {
-            //enemy.set_alive(false);
-            _player->take_damage(1);
-            _player->apply_knockback(enemy.get_velocity());
+            if (_player->is_doing_burst_attack()) {
+                enemy.take_damage(_player->get_damage());
+                enemy.apply_knockback(_player->get_shot_velocity() * _player->get_attack_knockback());
+            } else {
+                _player->take_damage(1);
+                _player->apply_knockback(enemy.get_velocity());
+            }
         }
         for (Projectile& projectile : _projectiles) {
             if (enemy.get_hitbox().intersects(projectile.get_hitbox()) && projectile.get_owner() == ProjectileOwner::Player) {

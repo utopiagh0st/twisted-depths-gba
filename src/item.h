@@ -34,6 +34,7 @@ public:
     ItemType get_type();
     void update(Player& player);
 private:
+    bn::sprite_ptr get_sprite();
     int _id;
     bn::random& _rnd;
     int _wiggle_counter;

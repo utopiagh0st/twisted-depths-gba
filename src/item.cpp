@@ -6,6 +6,8 @@
 #include "bn_sprite_items_obstacle_trashcan.h"
 #include "bn_sound_items.h"
 #include "bn_sprite_items_item_healdeal.h"
+#include "bn_sprite_items_item_wonster.h"
+
 #include "bn_random.h"
 
 
@@ -25,6 +27,19 @@ ItemType Item::get_type() {
     return _type;
 }
 
+bn::sprite_ptr Item::get_sprite() {
+    switch (_id)
+    {
+    case 0: //HealTest
+        return bn::sprite_items::item_healdeal.create_sprite(_position);
+        break;
+    case 1: //WonsterEnergy
+        return bn::sprite_items::item_wonster.create_sprite(_position);
+        break;
+    default:
+        break;
+    };
+}
 
 //functions
 void Item::show_in_pocket(int pocket_position) {
@@ -33,7 +48,7 @@ void Item::show_in_pocket(int pocket_position) {
         case 0:
             if(!_sprite.has_value()) {
                 _position = bn::fixed_point(-107.5, -48);
-                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite.emplace(get_sprite());
                 _sprite->set_bg_priority(0);
             }
             _do_wiggle = true;
@@ -41,7 +56,7 @@ void Item::show_in_pocket(int pocket_position) {
         case 1:
             if(!_sprite.has_value()) {
                 _position = bn::fixed_point(-103.5, -27);
-                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite.emplace(get_sprite());
                 _sprite->set_bg_priority(0);
             }
             _do_wiggle = true;
@@ -49,7 +64,7 @@ void Item::show_in_pocket(int pocket_position) {
         case 2:
             if(!_sprite.has_value()) {
                 _position = bn::fixed_point(-102.5, -4);
-                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite.emplace(get_sprite());
                 _sprite->set_bg_priority(0);
             }
             _do_wiggle = true;
@@ -57,7 +72,7 @@ void Item::show_in_pocket(int pocket_position) {
         case 3:
             if(!_sprite.has_value()) {
                 _position = bn::fixed_point(-106.5, 18);
-                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite.emplace(get_sprite());
                 _sprite->set_bg_priority(0);
             }
             _do_wiggle = true;
@@ -65,7 +80,7 @@ void Item::show_in_pocket(int pocket_position) {
         case 4:
             if(!_sprite.has_value()) {
                 _position = bn::fixed_point(-101.5, 40);
-                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite.emplace(get_sprite());
                 _sprite->set_bg_priority(0);
             }
             _do_wiggle = true;
@@ -73,7 +88,7 @@ void Item::show_in_pocket(int pocket_position) {
         case 5:
             if(!_sprite.has_value()) {
                 _position = bn::fixed_point(-105.5, 64);
-                _sprite.emplace(bn::sprite_items::item_healdeal.create_sprite(_position));
+                _sprite.emplace(get_sprite());
                 _sprite->set_bg_priority(0);
             }
             _do_wiggle = true;
@@ -87,6 +102,9 @@ void Item::do_item_effect(Player& player) {
     switch (_id) {
     case 0: //HealTest
         player.heal(2);
+        break;
+    case 1: //WonsterEnergy
+        player.start_burst_attack();
         break;
     default:
         break;

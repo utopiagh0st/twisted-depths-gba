@@ -9,25 +9,9 @@
 #include "bn_sprite_animate_actions.h"
 
 
-
-bn::sprite_ptr Projectile::create_projectile_sprite(ProjectileType type, bn::fixed_point position) {
-    switch (type){
-        case ProjectileType::Honk:
-            bn::sprite_ptr sprite = bn::sprite_items::projectile_honk.create_sprite(position);
-            _size = 0.1;
-            return sprite; 
-    }
-    _size = 1;
-    return bn::sprite_items::projectile.create_sprite(position);
-}
-
-Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point position, bn::fixed_point velocity, bn::fixed damage, bn::fixed range, bn::fixed knockback) :
-    _sprite(create_projectile_sprite(type, position))
+Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_point position, bn::fixed_point velocity, bn::fixed damage, bn::fixed range, bn::fixed knockback)
 {   
-    _debug = false;
-    _sprite.set_scale(_size);
     _alive = true;
-
     _velocity = velocity;
     _position = position;
     _range = range;
@@ -37,23 +21,35 @@ Projectile::Projectile(ProjectileType type, ProjectileOwner owner, bn::fixed_poi
     _distance_traveled = bn::fixed(0);
     _piercing = false;
     _spectral = false;
-    //_friction = bn::fixed(0.2);
     _friction = bn::fixed(0.2);
     _type = type;
     _owner = owner;
-    _sprite.set_bg_priority(2);
-    _sprite.set_z_order(0);
-    _sprite_anim.emplace(
-        bn::sprite_animate_action<2>::forever(
-            _sprite,
-            5,
-            bn::sprite_items::projectile.tiles_item(),
-            bn::array<uint16_t, 2>{ 0,1 }
-        )
-    );
+    initial_setup();
+}
 
-    if (_debug) {
-        _spr_hitbox.emplace(bn::sprite_items::hitbox.create_sprite(position));
+void Projectile::initial_setup() {
+    switch (_type) {
+        case ProjectileType::Honk:
+            _sprite.emplace(bn::sprite_items::projectile_honk.create_sprite(_position));
+            break;
+        case ProjectileType::Bullet:
+            _sprite.emplace(bn::sprite_items::projectile.create_sprite(_position));
+            _sprite_anim.emplace(
+                bn::sprite_animate_action<2>::forever(
+                    _sprite.value(),
+                    5,
+                    bn::sprite_items::projectile.tiles_item(),
+                    bn::array<uint16_t, 2>{ 0,1 }
+                )
+            );
+            _sprite->set_blending_enabled(true);
+            break;
+        default:
+            break;
+    }
+    if(_sprite) {
+        _sprite->set_bg_priority(2);
+        _sprite->set_z_order(0);
     }
 }
 
@@ -112,7 +108,7 @@ void Projectile::set_alive(bool alive) {
 
 void Projectile::update_movement() {
     _position += _velocity;
-    _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
+    _sprite->set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
 
     if (_debug) {
         bn::rect hitbox = get_hitbox();
@@ -134,14 +130,24 @@ void Projectile::update() {
         case ProjectileType::Honk :
             if (_size < 1) {
                 _size += 0.1;
-                _sprite.set_scale(_size);
+                _sprite->set_scale(_size);
             }
             update_movement();
             break;
         case ProjectileType::Bullet :
+            if (_distance_traveled <= _range) {
+                _position += _velocity;
+                _distance_traveled += get_speed();
+            } else {
+                _velocity *= bn::fixed(1) - _friction;
+                _position += _velocity;
+            }
+            _sprite->set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
+            break;
+        case ProjectileType::BurstAttackPlayer :
             if (_size < 1) {
                 _size += 0.1;
-                _sprite.set_scale(_size);
+                _sprite->set_scale(_size);
             }
             if (_distance_traveled <= _range) {
                 _position += _velocity;
@@ -150,8 +156,7 @@ void Projectile::update() {
                 _velocity *= bn::fixed(1) - _friction;
                 _position += _velocity;
             }
-            _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
-
+            _sprite->set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));
             break;
             
     }

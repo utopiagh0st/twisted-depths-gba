@@ -19,12 +19,18 @@ class Level {
 public:
     Level(LevelType level_type, bn::array<bn::array<int, 10>, 10>& level_map, bn::array<bn::array<bool, 10>, 10>& level_clear_map, bn::point starting_room, bn::random& rnd);
     bn::point get_starting_room_pos();
+
+    bool can_unfreeze_movement();
+    void set_can_unfreeze_movement(bool can_unfreeze);
+
     bool is_doing_room_transition();
     void load_room(bn::point room_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
     void begin_room_transition(int direction, bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies);
     void update(bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies);
     void toggle_map(bool showing);
 private:
+    bool _can_unfreeze_movement;
+
     bn::random _rnd;
     LevelType _level_type;
     bn::array<bn::array<int, 10>, 10> _level_map;

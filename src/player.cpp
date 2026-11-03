@@ -16,6 +16,7 @@
 #include "bn_sprite_items_player_fran_attack_left.h"
 #include "bn_sprite_items_player_fran_attack_up.h"
 #include "bn_sprite_items_player_fran_attack_down.h"
+#include "bn_sprite_items_player_fran_energy_burst_left.h"
 #include "bn_sprite_items_visual_damage.h"
 
 
@@ -53,8 +54,8 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
 
     //attack vars
     //_shot_speed = bn::fixed(10);
-    _shot_speed = bn::fixed(1); // 4?
-    _fire_rate = bn::fixed(30); // 5 - 60, base 7
+    _shot_speed = bn::fixed(3); // 4?
+    _fire_rate = bn::fixed(7); // 5 - 30, base 7
     _attack_cooldown_counter = 0;
     _damage = bn::fixed(2);
     _attack_knockback = bn::fixed(0.15); //0.1
@@ -115,6 +116,10 @@ bn::fixed_point Player::get_shot_velocity() {
 
 bool Player::is_movement_freezed() {
     return _freeze_movement;
+}
+
+bool Player::is_doing_burst_attack() {
+    return _doing_burst_attack;
 }
 
 void Player::set_position(bn::fixed_point new_position) {
@@ -218,7 +223,7 @@ void Player::apply_knockback(bn::fixed_point kb_velocity) {
     }
 }
 
-void Player::update_movement(bn::vector<Obstacle,max_obstacles>& obstacles) { //player movement
+void Player::update_movement_input(bn::vector<Obstacle,max_obstacles>& obstacles) { //player movement
     bool moving = false;    //turn this to false before input check
     bn::fixed_point input(0, 0);
 
@@ -251,27 +256,6 @@ void Player::update_movement(bn::vector<Obstacle,max_obstacles>& obstacles) { //
     } else {
         _velocity *= (bn::fixed(1) - _friction);    //friction when there isn't
     }
-
-    bn::fixed_point total_velocity = _velocity + _knockback_velocity;
-    //_position += total_velocity; //movin
-
-    _position.set_x(_position.x() + total_velocity.x()); //x collision check (FUCK THERE MUST BE A BETTER WAY TO DO THIS)
-    for (Obstacle& obstacle : obstacles) {
-        // Colission checks
-        if (get_hitbox().intersects(obstacle.get_hitbox())) {
-            _position.set_x(_position.x() - total_velocity.x());
-        }
-    }
-
-    _position.set_y(_position.y() + total_velocity.y()); //y collision checkkkkk
-    for (Obstacle& obstacle : obstacles) {
-        // Colission checks
-        if (get_hitbox().intersects(obstacle.get_hitbox())) {
-            _position.set_y(_position.y() - total_velocity.y());
-        }
-    }
-
-    _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
 
     //mark
 
@@ -338,12 +322,185 @@ void Player::update_movement(bn::vector<Obstacle,max_obstacles>& obstacles) { //
         }
     }
 
-    _last_input = input;
-    
-    _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
+    _last_input = input;    
 }
 
-void Player::update(bn::vector<Obstacle,max_obstacles>& obstacles) {
+
+void Player::start_burst_attack() {
+    _velocity = bn::fixed_point(0,0);
+    _knockback_velocity = bn::fixed_point(0,0);
+    _doing_burst_attack = true;
+    switch (_direction)
+    {
+    case Direction::Up:
+        _short_anim.emplace(
+        bn::sprite_animate_action<2>::forever(
+            _sprite,
+            1,
+            bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
+            bn::array<uint16_t, 2>{ 0, 1 }
+        )
+        );
+        _sprite.set_horizontal_flip(false);
+        break;
+    case Direction::Down:
+        _short_anim.emplace(
+        bn::sprite_animate_action<2>::forever(
+            _sprite,
+            1,
+            bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
+            bn::array<uint16_t, 2>{ 0, 1 }
+        )
+        );
+        _sprite.set_horizontal_flip(true);
+
+        break;
+    case Direction::Left:
+        _short_anim.emplace(
+        bn::sprite_animate_action<2>::forever(
+            _sprite,
+            1,
+            bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
+            bn::array<uint16_t, 2>{ 0, 1 }
+        )
+        );
+        _sprite.set_horizontal_flip(false);
+
+        break;
+    case Direction::Right:
+        _short_anim.emplace(
+        bn::sprite_animate_action<2>::forever(
+            _sprite,
+            1,
+            bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
+            bn::array<uint16_t, 2>{ 0, 1 }
+        )
+        );
+        _sprite.set_horizontal_flip(true);
+        break;
+    default:
+        break;
+    }
+    _action_phase = 1;
+}
+
+void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles, bn::vector<Enemy, max_enemies>& enemies) {
+    int burst_speed = 4;
+    
+    switch (_action_phase)
+    {
+    case 1:
+        switch (_direction) {
+            case Direction::Up:
+                _velocity = bn::fixed_point(0,-burst_speed);
+                break;
+            case Direction::Down:
+                _velocity = bn::fixed_point(0,burst_speed);
+                break;
+            case Direction::Left:
+                _velocity = bn::fixed_point(-burst_speed,0);
+                break;
+            case Direction::Right:
+                _velocity = bn::fixed_point(burst_speed,0);
+                break;
+            default:
+                break;
+        }
+        
+        _short_anim->update();
+        for (Obstacle& obstacle : obstacles) {
+            if (bn::rect(
+                int(_position.x() + _velocity.x()),
+                int(_position.y() + _velocity.y() + 3),
+                6,   // width
+                9    // height
+                ).intersects(obstacle.get_hitbox())) {
+                    _velocity = bn::fixed_point(0,0);
+                    _short_anim.reset();
+                    _short_anim.emplace(
+                        bn::sprite_animate_action<2>::forever(
+                            _sprite,
+                            3,
+                            bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
+                            bn::array<uint16_t, 2>{ 2, 3 }
+                        )
+                    );
+                    _sprite.set_horizontal_flip(false);
+
+                    _animation_cooldown = 30;
+                    for (int i = 0; i < 360; i += 15) {
+                        if (projectiles.size() >= max_projectiles) {
+                            break;
+                        }
+                        bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
+                        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage, _range, _attack_knockback));
+                    }
+                    
+                    _action_phase = 2;
+
+                break;
+            }
+        }
+        for (Enemy& enemy : enemies) {
+            if (bn::rect(
+                int(_position.x() + _velocity.x()),
+                int(_position.y() + _velocity.y() + 3),
+                6,   // width
+                9    // height
+                ).intersects(enemy.get_hitbox())) {
+                    _velocity = bn::fixed_point(0,0);
+                    _short_anim.reset();
+                    _short_anim.emplace(
+                        bn::sprite_animate_action<2>::forever(
+                            _sprite,
+                            3,
+                            bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
+                            bn::array<uint16_t, 2>{ 2, 3 }
+                        )
+                    );
+                    _sprite.set_horizontal_flip(false);
+
+                    _animation_cooldown = 30;
+                    for (int i = 0; i < 360; i += 15) {
+                        if (projectiles.size() >= max_projectiles) {
+                            break;
+                        }
+                        bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
+                        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage, _range, _attack_knockback));
+                    }
+                    
+                    _action_phase = 2;
+
+                break;
+            }
+        }
+        break;
+    case 2:
+        if (_animation_cooldown > 0) {
+            _short_anim->update();
+            if (_animation_cooldown % 10 == 0) {
+                for (int i = 0; i < 360; i += 15) {
+                    if (projectiles.size() >= max_projectiles) {
+                        break;
+                    }
+                    bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
+                    projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage, _range, _attack_knockback));
+                }
+            }
+        } else {
+            _doing_burst_attack = false;
+            _action_phase = 0;
+            _short_anim.reset();
+        }
+        break;
+    default:
+        break;
+    }
+    
+}
+
+
+void Player::update(bn::vector<Obstacle,max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles, bn::vector<Enemy, max_enemies>& enemies) {
     if (_i_frames_counter > 0) {
         _i_frames_counter--;
     }
@@ -355,18 +512,57 @@ void Player::update(bn::vector<Obstacle,max_obstacles>& obstacles) {
 
         _damage_sprite.set_position(_position.x(), _position.y());
 
-    if(_damage_anim->done()) {   
-        _damage_sprite.set_visible(false);
-        _damage_anim.reset();
+        if(_damage_anim->done()) {   
+            _damage_sprite.set_visible(false);
+            _damage_anim.reset();
+        }
     }
-}
+
+
     if (_animation_cooldown > 0) {
         _animation_cooldown--;
     }
-    if(_animation_cooldown == 0) {
+
+    if(_animation_cooldown == 0 && !_doing_burst_attack) {
         _sprite.set_horizontal_flip(false);
     }
-    if (!_freeze_movement) {
-        update_movement(obstacles);
+
+
+    if (_doing_burst_attack) {
+        update_burst_attack(obstacles, projectiles, enemies);
     }
+    if (_freeze_movement == false && _doing_burst_attack == false) {
+        update_movement_input(obstacles);
+    }
+
+    
+
+    //general movement updates
+    if (_freeze_movement == false) {
+    bn::fixed_point total_velocity = _velocity + _knockback_velocity;
+    //_position += total_velocity; //movin
+
+    _position.set_x(_position.x() + total_velocity.x()); //x collision check (FUCK THERE MUST BE A BETTER WAY TO DO THIS)
+    for (Obstacle& obstacle : obstacles) {
+        // Colission checks
+        if (get_hitbox().intersects(obstacle.get_hitbox())) {
+            _position.set_x(_position.x() - total_velocity.x());
+            break;
+        }
+    }
+
+    _position.set_y(_position.y() + total_velocity.y()); //y collision checkkkkk
+    for (Obstacle& obstacle : obstacles) {
+        // Colission checks
+        if (get_hitbox().intersects(obstacle.get_hitbox())) {
+            _position.set_y(_position.y() - total_velocity.y());
+            break;
+        }
+    }
+    _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
+    }
+    
+    _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
+    
+    
 }

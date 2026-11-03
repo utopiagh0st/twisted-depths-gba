@@ -15,6 +15,14 @@ Level::Level(LevelType level_type, bn::array<bn::array<int, 10>, 10>& level_map,
     _current_room_pos = starting_room_pos;
 }
 
+bool Level::can_unfreeze_movement() {
+    return _can_unfreeze_movement;
+}
+
+void Level::set_can_unfreeze_movement(bool can_unfreeze) {
+    _can_unfreeze_movement = can_unfreeze;
+}
+
 bn::point Level::get_starting_room_pos() {
     return _starting_room_pos;
 }
@@ -134,6 +142,7 @@ void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles, b
         }
         
         _doing_room_transition = false;
+        _can_unfreeze_movement = true;
     }
 }
 

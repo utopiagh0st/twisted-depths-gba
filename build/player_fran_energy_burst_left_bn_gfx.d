@@ -1,0 +1,2 @@
+player_fran_energy_burst_left_bn_gfx.o: \
+ player_fran_energy_burst_left_bn_gfx.s
