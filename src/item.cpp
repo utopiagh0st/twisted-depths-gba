@@ -102,9 +102,11 @@ void Item::do_item_effect(Player& player) {
     switch (_id) {
     case 0: //HealTest
         player.heal(2);
+        bn::sound_items::healdoo.play(1, _rnd.get_fixed(0.8,1.5), 0);
         break;
     case 1: //WonsterEnergy
         player.start_burst_attack();
+        bn::sound_items::monsterboostdoo.play(1, _rnd.get_fixed(0.5,0.8), 0);
         break;
     default:
         break;

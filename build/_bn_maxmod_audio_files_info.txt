@@ -6,8 +6,12 @@ audio/dark_experience.mod
 1788911327.7780924
 audio/de_op.xm
 1788911327.7898302
+audio/healdoo.wav
+1793691083.291391
 audio/honk.wav
 1788911327.7969542
+audio/monsterboostdoo.wav
+1793691165.3564463
 audio/mute.wav
 1788911327.847423
 audio/player_hurt.wav

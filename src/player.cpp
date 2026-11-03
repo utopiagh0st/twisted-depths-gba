@@ -433,7 +433,7 @@ void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, 
                             break;
                         }
                         bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
-                        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage, _range, _attack_knockback));
+                        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage*2, _range, _attack_knockback));
                     }
                     
                     _action_phase = 2;
@@ -466,7 +466,7 @@ void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, 
                             break;
                         }
                         bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
-                        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage, _range, _attack_knockback));
+                        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage*2, _range, _attack_knockback));
                     }
                     
                     _action_phase = 2;

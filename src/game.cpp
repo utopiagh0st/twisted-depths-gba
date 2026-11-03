@@ -56,7 +56,7 @@ void Game::update_title() { //use this one as a template of a state change
         _player.emplace(CharacterName::diabolus, 0, 0, _rnd);   //replaces the empty player
         _hud.emplace(true);
 
-        bn::music_items::de_op.play(0.4);    //banger starts
+        bn::music_items::dark_experience.play(0.4);    //banger starts
 
         _state = State::Playing;    //change of state
         _pocket.push_back(Item(0, _rnd));
