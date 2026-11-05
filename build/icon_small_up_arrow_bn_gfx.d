@@ -1,0 +1,1 @@
+icon_small_up_arrow_bn_gfx.o: icon_small_up_arrow_bn_gfx.s

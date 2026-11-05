@@ -23,6 +23,10 @@
 #include "bn_sprite_animate_actions.h"
 #include "bn_sound_items.h"
 
+#include "character_data.h"
+#include "bn_sprite_item.h"
+
+
 
 static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) { //Character sprite selector
     switch(name) {
@@ -33,24 +37,30 @@ static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) 
     return bn::sprite_items::player_fran_walk_up.create_sprite(x, y);
 }
 
-Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
-    _sprite(create_character_sprite(name, x, y)),
-    _damage_sprite(bn::sprite_items::visual_damage.create_sprite(x,y)),
-    _rnd(rnd)
-{
-    _hp_max = 10; //caps at 20
-    _hp = 10;
-    _damage_sprite.set_visible(false);
+Player::Player(CharacterName name, int x, int y, bn::random& rnd) {
+    _rnd = rnd;
+    _name = name;
 
     _animation_cooldown = 0;
     _direction = Direction::Down;
-    _position = bn::fixed_point(x,y);
-    _friction = bn::fixed(0.4);
-    _acceleration = bn::fixed(0.3);
-    _max_speed = bn::fixed(1.45); //1.2 low, 1.35 common, 3 max?
+    
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
+    _position = bn::fixed_point(x,y);
+    _freeze_movement = false;
+    _i_frames_counter = 0;
+
+    initial_setup();
+}
+
+void Player::initial_setup() {  //don't forget to set for every type of character
+    _hp_max = 10; //caps at 20
+    _hp = 10;
+    _friction = bn::fixed(0.4);
+    _acceleration = bn::fixed(0.3);
+    _max_speed = bn::fixed(1.45); //1.2 low, 1.35 common, 3 max?
+    _i_frames = 40;
 
     //attack vars
     //_shot_speed = bn::fixed(10);
@@ -62,14 +72,28 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _range = bn::fixed(120);   // max 120
     _max_offset = bn::fixed(0.1); //base: 0.1, 0.5 is already punishing
 
-    _freeze_movement = false;
-    _i_frames = 40;
-    _i_frames_counter = 0;
+    for(const CharacterData& character_data : CHARACTER_LOOKUP) {
+        if(_name == character_data.name) {
+            _character_id = &character_data - CHARACTER_LOOKUP.data();
+            break;
+        }
+    }
+    const CharacterData& character_data = CHARACTER_LOOKUP[_character_id];
 
-    _sprite.set_bg_priority(2); //sprite priority
-    _sprite.set_z_order(2);
+    switch (_name) {
+    case CharacterName::diabolus:
+        _walk_sprite_item.emplace(character_data.walk_sprite);
+        _sprite.emplace(character_data.walk_sprite.create_sprite(_position.x(), _position.y()));
+        break;
+    default:
+        _walk_sprite_item.emplace(character_data.walk_sprite);
+        _sprite.emplace(character_data.walk_sprite.create_sprite(_position.x(), _position.y()));
+        break;
+    }
+
+    _sprite->set_bg_priority(2); //sprite priority
+    _sprite->set_z_order(2);
 }
-
 
 //Getters and Setters
 int Player::get_attack_cooldown() {
@@ -123,7 +147,7 @@ bool Player::is_doing_burst_attack() {
 }
 
 void Player::set_position(bn::fixed_point new_position) {
-    _sprite.set_position(new_position);
+    _sprite->set_position(new_position);
     _position = new_position;
 }
 
@@ -142,17 +166,18 @@ void Player::heal(int heal_amount) {
 
 void Player::take_damage(int damage) {
     if (_i_frames_counter <= 0) {
+        _damage_sprite.emplace(bn::sprite_items::visual_damage.create_sprite(_position.x(), _position.y()));
+        _damage_sprite->set_position(_position.x(), _position.y());
+        _damage_sprite->set_bg_priority(2);
+        _damage_sprite->set_z_order(0);
+
         _hp -= damage;
         _i_frames_counter = _i_frames;
         bn::sound_items::player_hurt.play(1,1,0);
-        _damage_sprite.set_visible(true);
-        _damage_sprite.set_position(_position.x(), _position.y());
-        _damage_sprite.set_bg_priority(2);
-        _damage_sprite.set_z_order(0);
 
         _damage_anim.emplace(
             bn::sprite_animate_action<10>::once(
-                _damage_sprite,
+                _damage_sprite.value(),
                 2,
                 bn::sprite_items::visual_damage.tiles_item(),
                 bn::array<uint16_t, 10>{ 0, 1, 2, 3, 4, 5, 6,6, 7, 7}
@@ -174,31 +199,31 @@ void Player::attack(bn::vector<Projectile, max_projectiles>& projectiles) {
         bn::fixed_point offset;
         switch (_direction) {
             case Direction::Left :
-                _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
-                _sprite.set_horizontal_flip(false);
+                _sprite->set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+                _sprite->set_horizontal_flip(false);
                 _velocity += bn::fixed_point(atk_knockback, 0);
                 offset = bn::fixed_point(0,_rnd.get_fixed(-_max_offset,_max_offset));
                 break;
             case Direction::Right :
-                _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
-                _sprite.set_horizontal_flip(true);
+                _sprite->set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+                _sprite->set_horizontal_flip(true);
                 _velocity -= bn::fixed_point(atk_knockback, 0);
                 offset = bn::fixed_point(0,_rnd.get_fixed(-_max_offset,_max_offset));
                 break;
             case Direction::Up :
-                _sprite.set_tiles(bn::sprite_items::player_fran_attack_up.tiles_item(), 0);
-                _sprite.set_horizontal_flip(false);
+                _sprite->set_tiles(bn::sprite_items::player_fran_attack_up.tiles_item(), 0);
+                _sprite->set_horizontal_flip(false);
                 _velocity += bn::fixed_point(0, atk_knockback);
                 offset = bn::fixed_point(_rnd.get_fixed(-_max_offset,_max_offset), 0);
                 break;
             case Direction::Down :
-                _sprite.set_tiles(bn::sprite_items::player_fran_attack_down.tiles_item(), 0);
-                _sprite.set_horizontal_flip(false);
+                _sprite->set_tiles(bn::sprite_items::player_fran_attack_down.tiles_item(), 0);
+                _sprite->set_horizontal_flip(false);
                 _velocity -= bn::fixed_point(0, atk_knockback);
                 offset = bn::fixed_point(_rnd.get_fixed(-_max_offset,_max_offset), 0);
                 break;
             default:
-                _sprite.set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
+                _sprite->set_tiles(bn::sprite_items::player_fran_attack_left.tiles_item(), 0);
                 break;
         }
         projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, get_shot_velocity() + offset, _damage, _range, _attack_knockback));
@@ -215,7 +240,7 @@ void Player::apply_knockback(bn::fixed_point kb_velocity) {
         bn::fixed_point direction = kb_velocity / speed;
 
         //optional upward bias
-        direction.set_y(direction.y() - 0.3);
+        //direction.set_y(direction.y() - 0.3);
 
         bn::fixed strength = bn::min(speed * 2, bn::fixed(6)); //speed times multiplier OR the threshold
 
@@ -266,37 +291,37 @@ void Player::update_movement_input(bn::vector<Obstacle,max_obstacles>& obstacles
             if (_direction == Direction::Up) {
                 _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
-                        _sprite,
+                        _sprite.value(),
                         walk_animation_speed,
-                        bn::sprite_items::player_fran_walk_up.tiles_item(),
+                        _walk_sprite_item->tiles_item(),
                         bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
                     )
                 );
             } else if (_direction == Direction::Down) {
                 _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
-                        _sprite,
+                        _sprite.value(),
                         walk_animation_speed,
-                        bn::sprite_items::player_fran_walk_down.tiles_item(),
-                        bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
+                        _walk_sprite_item->tiles_item(),
+                        bn::array<uint16_t, 4>{ 4, 5, 6, 7 }
                     )
                 );
             } else if (_direction == Direction::Left) {
                 _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
-                        _sprite,
+                        _sprite.value(),
                         walk_animation_speed,
-                        bn::sprite_items::player_fran_walk_left.tiles_item(),
-                        bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
+                        _walk_sprite_item->tiles_item(),
+                        bn::array<uint16_t, 4>{ 8, 9, 10, 11 }
                     )
                 );
             } else if (_direction == Direction::Right) {
                 _walk_anim.emplace(
                     bn::sprite_animate_action<4>::forever(
-                        _sprite,
+                        _sprite.value(),
                         walk_animation_speed,
-                        bn::sprite_items::player_fran_walk_right.tiles_item(),
-                        bn::array<uint16_t, 4>{ 0, 1, 2, 3 }
+                        _walk_sprite_item->tiles_item(),
+                        bn::array<uint16_t, 4>{ 12, 13, 14, 15 }
                     )
                 );
             }
@@ -310,15 +335,15 @@ void Player::update_movement_input(bn::vector<Obstacle,max_obstacles>& obstacles
         _walk_anim.reset();
         //standing frame
         if (_direction == Direction::Up) {
-            _sprite.set_tiles(bn::sprite_items::player_fran_walk_up.tiles_item(), 1);
+            _sprite->set_tiles(_walk_sprite_item->tiles_item(), 1);
         } else if (_direction == Direction::Down) {
-            _sprite.set_tiles(bn::sprite_items::player_fran_walk_down.tiles_item(), 1);
+            _sprite->set_tiles(_walk_sprite_item->tiles_item(), 5);
         } else if (_direction == Direction::Left) {
-            _sprite.set_tiles(bn::sprite_items::player_fran_walk_left.tiles_item(), 1);
+            _sprite->set_tiles(_walk_sprite_item->tiles_item(), 9);
         } else if (_direction == Direction::Right) {
-            _sprite.set_tiles(bn::sprite_items::player_fran_walk_right.tiles_item(), 1);
+            _sprite->set_tiles(_walk_sprite_item->tiles_item(), 13);
         } else {
-            _sprite.set_tiles(bn::sprite_items::player_fran_walk_down.tiles_item(), 1);
+            _sprite->set_tiles(_walk_sprite_item->tiles_item(), 1);
         }
     }
 
@@ -335,48 +360,48 @@ void Player::start_burst_attack() {
     case Direction::Up:
         _short_anim.emplace(
         bn::sprite_animate_action<2>::forever(
-            _sprite,
+            _sprite.value(),
             1,
             bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
             bn::array<uint16_t, 2>{ 0, 1 }
         )
         );
-        _sprite.set_horizontal_flip(false);
+        _sprite->set_horizontal_flip(false);
         break;
     case Direction::Down:
         _short_anim.emplace(
         bn::sprite_animate_action<2>::forever(
-            _sprite,
+            _sprite.value(),
             1,
             bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
             bn::array<uint16_t, 2>{ 0, 1 }
         )
         );
-        _sprite.set_horizontal_flip(true);
+        _sprite->set_horizontal_flip(true);
 
         break;
     case Direction::Left:
         _short_anim.emplace(
         bn::sprite_animate_action<2>::forever(
-            _sprite,
+            _sprite.value(),
             1,
             bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
             bn::array<uint16_t, 2>{ 0, 1 }
         )
         );
-        _sprite.set_horizontal_flip(false);
+        _sprite->set_horizontal_flip(false);
 
         break;
     case Direction::Right:
         _short_anim.emplace(
         bn::sprite_animate_action<2>::forever(
-            _sprite,
+            _sprite.value(),
             1,
             bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
             bn::array<uint16_t, 2>{ 0, 1 }
         )
         );
-        _sprite.set_horizontal_flip(true);
+        _sprite->set_horizontal_flip(true);
         break;
     default:
         break;
@@ -419,13 +444,13 @@ void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, 
                     _short_anim.reset();
                     _short_anim.emplace(
                         bn::sprite_animate_action<2>::forever(
-                            _sprite,
+                            _sprite.value(),
                             3,
                             bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
                             bn::array<uint16_t, 2>{ 2, 3 }
                         )
                     );
-                    _sprite.set_horizontal_flip(false);
+                    _sprite->set_horizontal_flip(false);
 
                     _animation_cooldown = 30;
                     for (int i = 0; i < 360; i += 15) {
@@ -452,13 +477,13 @@ void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, 
                     _short_anim.reset();
                     _short_anim.emplace(
                         bn::sprite_animate_action<2>::forever(
-                            _sprite,
+                            _sprite.value(),
                             3,
                             bn::sprite_items::player_fran_energy_burst_left.tiles_item(),
                             bn::array<uint16_t, 2>{ 2, 3 }
                         )
                     );
-                    _sprite.set_horizontal_flip(false);
+                    _sprite->set_horizontal_flip(false);
 
                     _animation_cooldown = 30;
                     for (int i = 0; i < 360; i += 15) {
@@ -509,12 +534,11 @@ void Player::update(bn::vector<Obstacle,max_obstacles>& obstacles, bn::vector<Pr
     }
     if(_damage_anim){
         _damage_anim->update();
-
-        _damage_sprite.set_position(_position.x(), _position.y());
+        _damage_sprite->set_position(_position.x(), _position.y());
 
         if(_damage_anim->done()) {   
-            _damage_sprite.set_visible(false);
             _damage_anim.reset();
+            _damage_sprite.reset();
         }
     }
 
@@ -524,7 +548,7 @@ void Player::update(bn::vector<Obstacle,max_obstacles>& obstacles, bn::vector<Pr
     }
 
     if(_animation_cooldown == 0 && !_doing_burst_attack) {
-        _sprite.set_horizontal_flip(false);
+        _sprite->set_horizontal_flip(false);
     }
 
 
@@ -562,7 +586,10 @@ void Player::update(bn::vector<Obstacle,max_obstacles>& obstacles, bn::vector<Pr
     _knockback_velocity *= (bn::fixed(1) - _friction);   //apply friction to the knockback so it doesn't go on forever
     }
     
-    _sprite.set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
+    _sprite->set_position(bn::fixed_point(_position.x().integer(), _position.y().integer()));    //rounding to prevent jitteriness
     
     
 }
+
+
+

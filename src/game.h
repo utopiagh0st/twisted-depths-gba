@@ -65,6 +65,17 @@ private:
     void update_title();
     void update_pause();
     void update_playing();
+
+
+    //player selection (temporal)
+    CharacterName _selected_character;
+    bn::optional<bn::sprite_ptr> _spr_selection_arrow;
+    bn::optional<bn::sprite_ptr> _spr_player_head_1;
+    bn::optional<bn::sprite_animate_action<4>> _spr_player_head_anim_1;
+
+    bn::optional<bn::sprite_ptr> _spr_player_head_2;
+    bn::optional<bn::sprite_animate_action<4>> _spr_player_head_anim_2;
+
 };
 
 #endif

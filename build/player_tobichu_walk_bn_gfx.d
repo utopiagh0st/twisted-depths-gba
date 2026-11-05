@@ -1,0 +1,1 @@
+player_tobichu_walk_bn_gfx.o: player_tobichu_walk_bn_gfx.s

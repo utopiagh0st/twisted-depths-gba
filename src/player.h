@@ -3,6 +3,7 @@
 
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_animate_actions.h"
+#include "bn_sprite_item.h"
 
 #include "bn_fixed.h"
 #include "bn_fixed_point.h"
@@ -16,11 +17,8 @@
 #include "projectile.h"
 #include "item.h"
 
-enum class CharacterName {
-    diabolus,
-    dank,
-    angel
-};
+#include "character_data.h"
+
 enum class Direction {
     Up,
     Down,
@@ -59,12 +57,18 @@ public:
     void start_burst_attack();
 
 private:
-    bn::sprite_ptr _sprite;
+    void initial_setup();
+
+    bn::optional<bn::sprite_item> _walk_sprite_item;
+
+    bn::optional<bn::sprite_ptr> _sprite;
     bn::optional<bn::sprite_animate_action<4>> _walk_anim;
     bn::optional<bn::sprite_animate_action<2>> _short_anim;
 
     //Item _hand;
     //bn::vector<Item, 16> _relics;
+    CharacterName _name;
+    int _character_id;
 
     bn::random _rnd;
 
@@ -89,7 +93,7 @@ private:
     bool _freeze_movement;
     int _i_frames;
     int _i_frames_counter;
-    bn::sprite_ptr _damage_sprite;
+    bn::optional<bn::sprite_ptr> _damage_sprite;
     bn::optional<bn::sprite_animate_action<10>> _damage_anim;
 
     int _action_phase;

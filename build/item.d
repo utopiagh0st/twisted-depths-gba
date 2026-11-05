@@ -59,6 +59,7 @@ item.o: C:/butano-master/games/twisted-depths-gba/src/item.cpp \
  C:/butano-master/games/twisted-depths-gba/src/obstacle.h \
  C:/butano-master/games/twisted-depths-gba/src/enemy.h \
  C:/butano-master/games/twisted-depths-gba/src/projectile.h \
+ C:/butano-master/games/twisted-depths-gba/src/character_data.h \
  C:/butano-master/butano/include/bn_math.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashcan.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sound_items.h \
@@ -126,6 +127,7 @@ C:/butano-master/butano/include/bn_vector.h:
 C:/butano-master/games/twisted-depths-gba/src/obstacle.h:
 C:/butano-master/games/twisted-depths-gba/src/enemy.h:
 C:/butano-master/games/twisted-depths-gba/src/projectile.h:
+C:/butano-master/games/twisted-depths-gba/src/character_data.h:
 C:/butano-master/butano/include/bn_math.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_obstacle_trashcan.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sound_items.h:

@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/build",
+                "${workspaceFolder}/../../butano/include",
+                "${workspaceFolder}/../../butano/hw/include",
+                "${workspaceFolder}/../../butano/hw/3rd_party/agbabi/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.26100.0",
+            "compilerPath": "C:/devkitPro/devkitARM/bin/arm-none-eabi-g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}

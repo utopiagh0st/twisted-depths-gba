@@ -1,8 +1,8 @@
 #ifndef ITEM_DATA_H
 #define ITEM_DATA_H
 
-#include "item.h"
 #include "bn_sprite_item.h"
+#include "item.h"
 
 struct ItemData {
     std::string name;

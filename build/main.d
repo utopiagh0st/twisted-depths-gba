@@ -45,6 +45,10 @@ main.o: C:/butano-master/games/twisted-depths-gba/src/main.cpp \
  C:/butano-master/butano/include/bn_bpp_mode.h \
  C:/butano-master/butano/include/bn_compression_type.h \
  C:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h \
+ C:/butano-master/butano/include/bn_sprite_item.h \
+ C:/butano-master/butano/include/bn_sprite_shape_size.h \
+ C:/butano-master/butano/include/bn_sprite_palette_item.h \
+ C:/butano-master/butano/include/bn_color.h \
  C:/butano-master/butano/include/bn_fixed.h \
  C:/butano-master/butano/include/bn_fixed_point.h \
  C:/butano-master/butano/include/bn_rect.h \
@@ -60,10 +64,7 @@ main.o: C:/butano-master/games/twisted-depths-gba/src/main.cpp \
  C:/butano-master/games/twisted-depths-gba/src/enemy.h \
  C:/butano-master/games/twisted-depths-gba/src/projectile.h \
  C:/butano-master/games/twisted-depths-gba/src/item.h \
- C:/butano-master/butano/include/bn_sprite_item.h \
- C:/butano-master/butano/include/bn_sprite_shape_size.h \
- C:/butano-master/butano/include/bn_sprite_palette_item.h \
- C:/butano-master/butano/include/bn_color.h \
+ C:/butano-master/games/twisted-depths-gba/src/character_data.h \
  C:/butano-master/games/twisted-depths-gba/src/hud.h \
  C:/butano-master/butano/include/bn_regular_bg_item.h \
  C:/butano-master/butano/include/bn_bg_palette_item.h \
@@ -131,6 +132,10 @@ C:/butano-master/butano/include/bn_tile.h:
 C:/butano-master/butano/include/bn_bpp_mode.h:
 C:/butano-master/butano/include/bn_compression_type.h:
 C:/butano-master/butano/include/bn_sprite_animate_actions_fwd.h:
+C:/butano-master/butano/include/bn_sprite_item.h:
+C:/butano-master/butano/include/bn_sprite_shape_size.h:
+C:/butano-master/butano/include/bn_sprite_palette_item.h:
+C:/butano-master/butano/include/bn_color.h:
 C:/butano-master/butano/include/bn_fixed.h:
 C:/butano-master/butano/include/bn_fixed_point.h:
 C:/butano-master/butano/include/bn_rect.h:
@@ -146,10 +151,7 @@ C:/butano-master/butano/include/bn_optional.h:
 C:/butano-master/games/twisted-depths-gba/src/enemy.h:
 C:/butano-master/games/twisted-depths-gba/src/projectile.h:
 C:/butano-master/games/twisted-depths-gba/src/item.h:
-C:/butano-master/butano/include/bn_sprite_item.h:
-C:/butano-master/butano/include/bn_sprite_shape_size.h:
-C:/butano-master/butano/include/bn_sprite_palette_item.h:
-C:/butano-master/butano/include/bn_color.h:
+C:/butano-master/games/twisted-depths-gba/src/character_data.h:
 C:/butano-master/games/twisted-depths-gba/src/hud.h:
 C:/butano-master/butano/include/bn_regular_bg_item.h:
 C:/butano-master/butano/include/bn_bg_palette_item.h:

@@ -28,13 +28,13 @@ ItemType Item::get_type() {
 }
 
 bn::sprite_ptr Item::get_sprite() {
-    switch (_id)
-    {
+    const ItemData& item_data = ITEM_LOOKUP[_id];
+    switch (_id) {
     case 0: //HealTest
-        return bn::sprite_items::item_healdeal.create_sprite(_position);
+        return item_data.sprite.create_sprite(_position);
         break;
     case 1: //WonsterEnergy
-        return bn::sprite_items::item_wonster.create_sprite(_position);
+        return item_data.sprite.create_sprite(_position);
         break;
     default:
         break;
@@ -43,7 +43,6 @@ bn::sprite_ptr Item::get_sprite() {
 
 //functions
 void Item::show_in_pocket(int pocket_position) {
-    const ItemData& item_data = ITEM_LOOKUP[_id];
     switch (pocket_position) {
         case 0:
             if(!_sprite.has_value()) {

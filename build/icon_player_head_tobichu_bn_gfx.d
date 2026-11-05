@@ -1,0 +1,1 @@
+icon_player_head_tobichu_bn_gfx.o: icon_player_head_tobichu_bn_gfx.s
