@@ -3,6 +3,7 @@
 
 //classes
 #include "bn_regular_bg_ptr.h"
+
 #include "player.h"
 #include "enemy.h"
 #include "projectile.h"
@@ -20,8 +21,7 @@
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_text_generator.h"
 #include "bn_sprite_font.h"
-#include "bn_sprite_items_common_fixed_8x8_font.h"
-
+#include "title_screen.h"
 
 class Game {
 public:
@@ -38,7 +38,7 @@ private:
 
     bn::sprite_font _font_sprite;
     bn::sprite_text_generator _text_generator;
-    bn::vector<bn::sprite_ptr,16> _text_sprites;
+    bn::vector<bn::sprite_ptr,20> _text_sprites;
 
 
     bn::random _rnd;
@@ -66,15 +66,7 @@ private:
     void update_pause();
     void update_playing();
 
-
-    //player selection (temporal)
-    CharacterName _selected_character;
-    bn::optional<bn::sprite_ptr> _spr_selection_arrow;
-    bn::optional<bn::sprite_ptr> _spr_player_head_1;
-    bn::optional<bn::sprite_animate_action<4>> _spr_player_head_anim_1;
-
-    bn::optional<bn::sprite_ptr> _spr_player_head_2;
-    bn::optional<bn::sprite_animate_action<4>> _spr_player_head_anim_2;
+    bn::optional<TitleScreen> _title_screen;
 
 };
 

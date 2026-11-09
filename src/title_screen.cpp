@@ -1,0 +1,186 @@
+#include "title_screen.h"
+#include "bn_sprite_items_common_fixed_8x8_font.h"
+#include "bn_sprite_items_icon_player_head_fran.h"
+#include "bn_sprite_items_icon_player_head_tobichu.h"
+#include "bn_sprite_items_icon_small_up_arrow.h"
+#include "bn_regular_bg_items_bg_title_city.h"
+#include "bn_regular_bg_items_bg_title_black_overlay.h"
+
+#include "bn_keypad.h"
+#include "bn_sprite_items_button_new_game.h"
+#include "bn_sprite_items_button_settings.h"
+#include "bn_music.h"
+#include "bn_music_items.h"
+
+
+TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator& text_generator) :
+    _font_sprite(font_sprite),
+    _text_generator(text_generator)
+{   
+    _ready_to_start_game = false;
+    _bg_landscape.emplace(bn::regular_bg_items::bg_title_city.create_bg(0, 0));
+    _bg_black_overlay.emplace(bn::regular_bg_items::bg_title_black_overlay.create_bg(0, 0));
+    _bg_landscape->set_priority(3);
+    _bg_black_overlay->set_priority(2);
+
+    _selected_character = CharacterName::diabolus;  //default character selection
+
+    _text_generator.generate(-122,75,"cf153ebdb93207f606e0",_text_sprites);
+    for (bn::sprite_ptr sprite : _text_sprites) {
+        sprite.set_bg_priority(0);
+    }
+
+    bn::music_items::bloody_tears.play(0.4);
+    load_next_screen(TitleState::Main);
+}
+
+bool TitleScreen::is_ready_to_start_game() {
+    return _ready_to_start_game;
+}
+
+CharacterName TitleScreen::get_selected_character() {
+    return _selected_character;
+}
+
+void TitleScreen::load_next_screen(TitleState next_screen_state) {
+    switch (next_screen_state) {
+        case TitleState::Main:
+            _spr_button_new_game.emplace(bn::sprite_items::button_new_game.create_sprite(-50,0));
+            _spr_button_settings.emplace(bn::sprite_items::button_settings.create_sprite(-50,40));
+            _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 1);
+            _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 0);
+            _spr_button_new_game->set_bg_priority(0);
+            _spr_button_settings->set_bg_priority(0);
+        break;
+
+        case TitleState::CharacterSelect:
+            _spr_selection_arrow.emplace(bn::sprite_items::icon_small_up_arrow.create_sprite(-80, 30));
+            _spr_selection_arrow->set_bg_priority(0);
+            
+            _spr_player_head_1.emplace(bn::sprite_items::icon_player_head_fran.create_sprite(-80, 20));
+            _spr_player_head_anim_1.emplace(
+                bn::sprite_animate_action<4>::forever(
+                    _spr_player_head_1.value(),
+                    10,
+                    bn::sprite_items::icon_player_head_fran.tiles_item(),
+                    bn::array<uint16_t, 4>{ 0, 1, 2, 1 }
+                )
+            );
+            _spr_player_head_1->set_bg_priority(0);
+            
+            
+            _spr_player_head_2.emplace(bn::sprite_items::icon_player_head_tobichu.create_sprite(-40, 20));
+            _spr_player_head_anim_2.emplace(
+                bn::sprite_animate_action<4>::forever(
+                    _spr_player_head_2.value(),
+                    10,
+                    bn::sprite_items::icon_player_head_tobichu.tiles_item(),
+                    bn::array<uint16_t, 4>{ 0, 1, 2, 1 }
+                )
+            );
+            _spr_player_head_2->set_bg_priority(0);
+            break;
+
+        default:
+        break;
+    }
+    _state = next_screen_state;
+    _button_selection = 0;
+}
+
+void TitleScreen::update_main() {
+    if (bn::keypad::a_pressed() || bn::keypad::start_pressed()) {
+        switch (_button_selection) {
+            case (int)MainButtonOptions::NewGame:
+                _spr_button_new_game.reset();
+                _spr_button_settings.reset();
+                load_next_screen(TitleState::CharacterSelect);
+            break;
+            case (int)MainButtonOptions::Settings:
+            break;
+            default:
+            break;
+        }
+    } else if (bn::keypad::up_pressed() && _button_selection > 0) {
+        _button_selection--;
+    } else if (bn::keypad::down_pressed() && _button_selection < (int)MainButtonOptions::Settings) {
+        _button_selection++;
+    }
+    
+    if (bn::keypad::up_pressed() || bn::keypad::down_pressed()) {
+        switch (_button_selection) {
+            case (int)MainButtonOptions::NewGame:
+                _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 1);
+                _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 0);
+                break;
+            case (int)MainButtonOptions::Settings:
+                _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 0);
+                _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 1);
+                break;
+            default:
+            break;
+        }
+    }
+}
+
+void TitleScreen::update_character_select() {
+    _spr_player_head_anim_1->update();
+    _spr_player_head_anim_2->update();
+
+    switch(_selected_character) {
+        case CharacterName::diabolus:
+            _spr_selection_arrow->set_position(-80, 30);
+            break;
+        case CharacterName::tobichu:
+            _spr_selection_arrow->set_position(-40, 30);
+            break;
+        default:
+            _spr_selection_arrow->set_position(0, 30);
+            break;
+    }
+
+    
+    if (bn::keypad::a_pressed() || bn::keypad::start_pressed()) {
+        bn::music::stop();
+        _ready_to_start_game = true;
+    } else if (bn::keypad::select_pressed() || bn::keypad::right_pressed()) {
+        _selected_character = (CharacterName)((int)_selected_character+1); //cast heaven lol
+        if (_selected_character > CharacterName::tobichu) {
+            _selected_character = (CharacterName)0;
+        }
+    } else if (bn::keypad::left_pressed()) {
+        _selected_character = (CharacterName)((int)_selected_character-1); //cast heaven lol
+        if (_selected_character < (CharacterName)0) {
+            _selected_character = CharacterName::tobichu;
+        }
+    } else if (bn::keypad::b_pressed()) {
+        _spr_player_head_1.reset();
+        _spr_player_head_anim_1.reset();
+        _spr_player_head_2.reset();
+        _spr_player_head_anim_2.reset();
+        _spr_selection_arrow.reset();
+        load_next_screen(TitleState::Main);
+    }
+}
+
+void TitleScreen::update() {
+    switch (_state)
+    {
+    case TitleState::Main:
+        update_main();
+        break;
+    case TitleState::CharacterSelect:
+        update_character_select();
+        break;
+    default:
+        break;
+    }
+    _bg_landscape->set_position(bn::fixed_point((_bg_landscape->x() + 0.1), 0));
+    _bg_black_overlay->set_position(bn::fixed_point(0, (_bg_black_overlay->y() + 1)));
+    if (_bg_landscape->x() > 256) {
+        _bg_landscape->set_x(0);
+    }
+    if (_bg_black_overlay->y() > 256) {
+        _bg_black_overlay->set_y(0);
+    }
+}

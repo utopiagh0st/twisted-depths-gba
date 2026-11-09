@@ -1,0 +1,1 @@
+button_settings_bn_gfx.o: button_settings_bn_gfx.s

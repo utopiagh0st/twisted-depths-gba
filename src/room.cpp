@@ -19,6 +19,12 @@ void Room::put_bg_below() {
     _bg->put_below();
 }
 
+void Room::safe_push_back_obstacle(bn::vector<Obstacle, max_obstacles>& obstacles, ObstacleType type, bn::fixed_point position) {
+    if(obstacles.size() < max_obstacles) {
+        obstacles.push_back(Obstacle(type, position));
+    }
+}
+
 void Room::draw_bg(bn::fixed_point position) {
     if(_bg) {
         _bg->set_position(position);
@@ -44,31 +50,31 @@ void Room::generate_obstacles(bn::vector<Obstacle, max_obstacles>& obstacles) {
     const RoomData& room_data = ROOM_LOOKUP[_room_index];
     for(int i = 0; i < room_data.obstacle_count; ++i) {
         const ObstacleSpawnData& obstacle_data = room_data.obstacles_spawn_data[i];
-        obstacles.push_back(Obstacle(obstacle_data.obstacle_type, obstacle_data.position));
+        safe_push_back_obstacle(obstacles, obstacle_data.obstacle_type, obstacle_data.position);
     }
 }
 
 void Room::generate_border(bn::vector<Obstacle, max_obstacles>& obstacles) {
     const RoomData& room_data = ROOM_LOOKUP[_room_index];
     if (!has_entries(room_data.room_type, RoomType::U)) {
-        obstacles.push_back(Obstacle(ObstacleType::RoomBorderHor, bn::fixed_point(0,-64)));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomBorderHor, bn::fixed_point(0,-64));
     }
     if (!has_entries(room_data.room_type, RoomType::D)) {
-        obstacles.push_back(Obstacle(ObstacleType::RoomBorderHor, bn::fixed_point(0,64)));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomBorderHor, bn::fixed_point(0,64));
     }
     if (!has_entries(room_data.room_type, RoomType::L)) {
-        obstacles.push_back(Obstacle(ObstacleType::RoomBorderVer, bn::fixed_point(-80,0)));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomBorderVer, bn::fixed_point(-80,0));
     }
     if (!has_entries(room_data.room_type, RoomType::R)) {
-        obstacles.push_back(Obstacle(ObstacleType::RoomBorderVer, bn::fixed_point(80,0)));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomBorderVer, bn::fixed_point(80,0));
     }
     if (has_entries(room_data.room_type, RoomType::U)) {
-        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(-72,-64)));
-        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(72,-64)));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomCornerHor, bn::fixed_point(-72,-64));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomCornerHor, bn::fixed_point(72,-64));
     }
     if (has_entries(room_data.room_type, RoomType::D)) {
-        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(-72,64)));
-        obstacles.push_back(Obstacle(ObstacleType::RoomCornerHor, bn::fixed_point(72,64)));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomCornerHor, bn::fixed_point(-72,64));
+        safe_push_back_obstacle(obstacles, ObstacleType::RoomCornerHor, bn::fixed_point(72,64));
     }
     
 }
@@ -84,20 +90,20 @@ void Room::generate_enemies(bn::vector<Enemy, max_enemies>& enemies) {
 void Room::close(bn::vector<Obstacle, max_obstacles>& obstacles) {
     const RoomData& room_data = ROOM_LOOKUP[_room_index];
     if (has_entries(room_data.room_type, RoomType::U)) {
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesLeft, bn::fixed_point(-24,-64)));
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesRight, bn::fixed_point(24,-64)));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesLeft, bn::fixed_point(-24,-64));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesRight, bn::fixed_point(24,-64));
     }
     if (has_entries(room_data.room_type, RoomType::D)) {
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesLeft, bn::fixed_point(-24,64)));
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesRight, bn::fixed_point(24,64)));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesLeft, bn::fixed_point(-24,64));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesRight, bn::fixed_point(24,64));
     }
     if (has_entries(room_data.room_type, RoomType::L)) {
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesUp, bn::fixed_point(-80,-24)));
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesDown, bn::fixed_point(-80,24)));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesUp, bn::fixed_point(-80,-24));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesDown, bn::fixed_point(-80,24));
     }
     if (has_entries(room_data.room_type, RoomType::R)) {
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesUp, bn::fixed_point(80,-24)));
-        obstacles.push_back(Obstacle(ObstacleType::StreetConesDown, bn::fixed_point(80,24)));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesUp, bn::fixed_point(80,-24));
+        safe_push_back_obstacle(obstacles, ObstacleType::StreetConesDown, bn::fixed_point(80,24));
     }
 }
 

@@ -1,9 +1,5 @@
-audio/castlevania2.mod
-1788911327.7581818
-audio/corrupt2.mod
-1788911327.7699766
-audio/dark_experience.mod
-1788911327.7780924
+audio/bloody_tears.mod
+1794196062.9542193
 audio/de_op.xm
 1788911327.7898302
 audio/healdoo.wav
@@ -18,7 +14,3 @@ audio/player_hurt.wav
 1788911327.8562956
 audio/popkorn.mod
 1788911329.7865257
-audio/silence.mod
-1788911327.8648663
-audio/stinkbomb.mod
-1788911327.8729022

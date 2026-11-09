@@ -26,6 +26,7 @@ public:
     void open(bn::vector<Obstacle, max_obstacles>& obstacles);
 
 private:
+    void safe_push_back_obstacle(bn::vector<Obstacle, max_obstacles>& obstacles, ObstacleType type, bn::fixed_point position);
     int _room_index;
     bn::random _rnd;
     bn::optional<bn::regular_bg_ptr> _bg;

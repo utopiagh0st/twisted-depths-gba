@@ -22,6 +22,7 @@
 #include "bn_sprite_items_icon_player_head_fran.h"
 #include "bn_sprite_items_icon_player_head_tobichu.h"
 #include "bn_sprite_items_icon_small_up_arrow.h"
+#include "bn_regular_bg_items_bg_title_city.h"
 
 //bgs
 #include "bn_sprite_ptr.h"
@@ -45,80 +46,30 @@ Game::Game() :
     _bounds[DOWN] = 60;    //down
     _bounds[LEFT] = -80;   //left
     _bounds[RIGHT] = 80;    //right
-    _text_generator.generate(-70,0,"presiona start uwu",_text_sprites);
     _selected_pocket_item = 0;
-
-    _selected_character = CharacterName::diabolus;  //default character selection
-    _spr_selection_arrow.emplace(bn::sprite_items::icon_small_up_arrow.create_sprite(-20, 30));
-    _spr_player_head_1.emplace(bn::sprite_items::icon_player_head_fran.create_sprite(-20, 20));
-    _spr_player_head_anim_1.emplace(
-        bn::sprite_animate_action<4>::forever(
-            _spr_player_head_1.value(),
-            10,
-            bn::sprite_items::icon_player_head_fran.tiles_item(),
-            bn::array<uint16_t, 4>{ 0, 1, 2, 1 }
-        )
-    );
-    _spr_player_head_2.emplace(bn::sprite_items::icon_player_head_tobichu.create_sprite(20, 20));
-    _spr_player_head_anim_2.emplace(
-        bn::sprite_animate_action<4>::forever(
-            _spr_player_head_2.value(),
-            10,
-            bn::sprite_items::icon_player_head_tobichu.tiles_item(),
-            bn::array<uint16_t, 4>{ 0, 1, 2, 1 }
-        )
-    );
+    _title_screen.emplace(_font_sprite, _text_generator);
 }
 
 void Game::update_title() { //use this one as a template of a state change
-
-    _spr_player_head_anim_1->update();
-    _spr_player_head_anim_2->update();
-
-    switch(_selected_character) {
-        case CharacterName::diabolus:
-            _spr_selection_arrow->set_position(-20, 30);
-            break;
-        case CharacterName::tobichu:
-            _spr_selection_arrow->set_position(20, 30);
-            break;
-        default:
-            _spr_selection_arrow->set_position(0, 30);
-            break;
-    }
-
-    if (bn::keypad::select_pressed()) {
-        _selected_character = (CharacterName)((int)_selected_character+1); //cast heaven lol
-        if (_selected_character > CharacterName::tobichu) {
-            _selected_character = CharacterName::diabolus;
-        }
-    }
-    
-    if (bn::keypad::start_pressed()) {  //game doesn't start till player presses start
-        _spr_selection_arrow.reset();
-
-        _spr_player_head_anim_1.reset();
-        _spr_player_head_1.reset();
-        _spr_player_head_anim_2.reset();
-        _spr_player_head_2.reset();
-
-        _text_sprites.clear();
+    _title_screen->update();
+    if (_title_screen->is_ready_to_start_game()) {  //game doesn't start till player presses start
+        _player.emplace(_title_screen->get_selected_character(), 0, 0, _rnd);   //replaces the empty player
+        _title_screen.reset();
         _level.emplace(_level_generator.generate_level(LevelType::STREET));
         _level->load_room(_level->get_starting_room_pos(), _obstacles);
-        //_room.emplace(_rnd, RoomType::U);
-        _player.emplace(_selected_character, 0, 0, _rnd);   //replaces the empty player
         _hud.emplace(true);
-
+        
         bn::music_items::popkorn.play(0.4);    //banger starts
-
+        
         _state = State::Playing;    //change of state
-        _pocket.push_back(Item(0, _rnd));
-        _pocket.push_back(Item(0, _rnd));
-        _pocket.push_back(Item(0, _rnd));
-        _pocket.push_back(Item(0, _rnd));
+        bn::blending::set_transparency_alpha(bn::fixed(0.5));
+
+        _pocket.push_back(Item(2, _rnd));
         _pocket.push_back(Item(0, _rnd));
         _pocket.push_back(Item(1, _rnd));
-        bn::blending::set_transparency_alpha(bn::fixed(0.5));
+        _pocket.push_back(Item(1, _rnd));
+        _pocket.push_back(Item(2, _rnd));
+        _pocket.push_back(Item(2, _rnd));
     }
 }
 
@@ -291,28 +242,8 @@ void Game::game_over() {
     _level.reset();
     _hud.reset();
     bn::music::stop();
-    _text_generator.generate(-70,0,"presiona start uwu",_text_sprites);
-
-    _selected_character = CharacterName::diabolus;  //default character selection
-    _spr_selection_arrow.emplace(bn::sprite_items::icon_small_up_arrow.create_sprite(-20, 30));
-    _spr_player_head_1.emplace(bn::sprite_items::icon_player_head_fran.create_sprite(-20, 20));
-    _spr_player_head_anim_1.emplace(
-        bn::sprite_animate_action<4>::forever(
-            _spr_player_head_1.value(),
-            10,
-            bn::sprite_items::icon_player_head_fran.tiles_item(),
-            bn::array<uint16_t, 4>{ 0, 1, 2, 1 }
-        )
-    );
-    _spr_player_head_2.emplace(bn::sprite_items::icon_player_head_tobichu.create_sprite(20, 20));
-    _spr_player_head_anim_2.emplace(
-        bn::sprite_animate_action<4>::forever(
-            _spr_player_head_2.value(),
-            10,
-            bn::sprite_items::icon_player_head_tobichu.tiles_item(),
-            bn::array<uint16_t, 4>{ 0, 1, 2, 1 }
-        )
-    );
+    _selected_pocket_item = 0;
+    _title_screen.emplace(_font_sprite, _text_generator);
 }
 
 void Game::update() {   //main update loop
@@ -326,6 +257,8 @@ void Game::update() {   //main update loop
             break;
         case State::Pause:
             update_pause();
+            break;
+        default:
             break;
     }
     _frame++;

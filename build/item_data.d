@@ -56,7 +56,8 @@ item_data.o: C:/butano-master/games/twisted-depths-gba/src/item_data.cpp \
  C:/butano-master/butano/include/bn_rule_of_three_approximation.h \
  C:/butano-master/butano/include/bn_array.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_item_healdeal.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_item_wonster.h
+ C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_item_wonster.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_bluhemoji.h
 C:/butano-master/games/twisted-depths-gba/src/item_data.h:
 C:/butano-master/butano/include/bn_sprite_item.h:
 C:/butano-master/butano/include/bn_fixed_point.h:
@@ -115,3 +116,4 @@ C:/butano-master/butano/include/bn_rule_of_three_approximation.h:
 C:/butano-master/butano/include/bn_array.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_item_healdeal.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_item_wonster.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_bluhemoji.h:

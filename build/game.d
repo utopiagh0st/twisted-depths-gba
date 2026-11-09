@@ -82,7 +82,7 @@ game.o: C:/butano-master/games/twisted-depths-gba/src/game.cpp \
  C:/butano-master/butano/include/bn_utf8_character.h \
  C:/butano-master/butano/include/bn_string_view.h \
  C:/butano-master/butano/include/bn_sprite_font.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h \
+ C:/butano-master/games/twisted-depths-gba/src/title_screen.h \
  C:/butano-master/butano/include/bn_music.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_music_items.h \
  C:/butano-master/butano/include/bn_music_item.h \
@@ -93,6 +93,8 @@ game.o: C:/butano-master/games/twisted-depths-gba/src/game.cpp \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_fran.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_tobichu.h \
  C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_icon_small_up_arrow.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_city.h \
+ C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h \
  C:/butano-master/butano/include/bn_string.h \
  C:/butano-master/butano/include/bn_string_view.h \
  C:/butano-master/butano/include/bn_blending.h
@@ -179,7 +181,7 @@ C:/butano-master/butano/include/bn_power_of_two.h:
 C:/butano-master/butano/include/bn_utf8_character.h:
 C:/butano-master/butano/include/bn_string_view.h:
 C:/butano-master/butano/include/bn_sprite_font.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h:
+C:/butano-master/games/twisted-depths-gba/src/title_screen.h:
 C:/butano-master/butano/include/bn_music.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_music_items.h:
 C:/butano-master/butano/include/bn_music_item.h:
@@ -190,6 +192,8 @@ C:/butano-master/butano/include/bn_keypad.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_fran.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_tobichu.h:
 C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_icon_small_up_arrow.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_city.h:
+C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h:
 C:/butano-master/butano/include/bn_string.h:
 C:/butano-master/butano/include/bn_string_view.h:
 C:/butano-master/butano/include/bn_blending.h:

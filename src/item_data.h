@@ -11,7 +11,7 @@ struct ItemData {
     bn::sprite_item sprite;
 };
 
-constexpr int ITEM_LOOKUP_SIZE = 2;
+constexpr int ITEM_LOOKUP_SIZE = 3;
 extern const bn::array<ItemData, ITEM_LOOKUP_SIZE> ITEM_LOOKUP;
 
 #endif

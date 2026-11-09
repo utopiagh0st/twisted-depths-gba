@@ -85,7 +85,7 @@ main.o: C:/butano-master/games/twisted-depths-gba/src/main.cpp \
  C:/butano-master/butano/include/bn_power_of_two.h \
  C:/butano-master/butano/include/bn_utf8_character.h \
  C:/butano-master/butano/include/bn_sprite_font.h \
- C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h
+ C:/butano-master/games/twisted-depths-gba/src/title_screen.h
 C:/butano-master/butano/include/bn_core.h:
 C:/butano-master/butano/include/bn_span.h:
 C:/butano-master/butano/include/bn_array.h:
@@ -172,4 +172,4 @@ C:/butano-master/butano/include/bn_utf8_characters_map_ref.h:
 C:/butano-master/butano/include/bn_power_of_two.h:
 C:/butano-master/butano/include/bn_utf8_character.h:
 C:/butano-master/butano/include/bn_sprite_font.h:
-C:/butano-master/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h:
+C:/butano-master/games/twisted-depths-gba/src/title_screen.h:

@@ -127,11 +127,6 @@ void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles, b
         _next_room.reset();
         _current_room_pos = next_room_pos;
         _current_room->draw_bg(bn::fixed_point(0,0));
-        if (_current_room_pos == _starting_room_pos) {
-            _current_room->generate_border(obstacles);
-        } else {
-            _current_room->generate_obstacles(obstacles);
-        }
         if (!_level_clear_map[_current_room_pos.x()][_current_room_pos.y()]) {
             _current_room->generate_enemies(enemies);
             if (enemies.size() > 0) {
@@ -139,6 +134,11 @@ void Level::do_room_transition(bn::vector<Obstacle, max_obstacles>& obstacles, b
             } else {
                 _level_clear_map[_current_room_pos.x()][_current_room_pos.y()] = true;
             }
+        }
+        if (_current_room_pos == _starting_room_pos) {
+            _current_room->generate_border(obstacles);
+        } else {
+            _current_room->generate_obstacles(obstacles);
         }
         
         _doing_room_transition = false;

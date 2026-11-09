@@ -9,7 +9,7 @@
 #include "bn_sprite_animate_actions.h"
 
 
-constexpr int max_obstacles = 40;
+constexpr int max_obstacles = 15;
 
 enum class ObstacleType {
     Trashcan,
