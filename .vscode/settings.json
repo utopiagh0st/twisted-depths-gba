@@ -1,0 +1,15 @@
+{
+  "C_Cpp.default.compilerPath": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-g++",
+  "C_Cpp.default.intelliSenseMode": "gcc-arm",
+  "C_Cpp.default.cStandard": "c17",
+  "C_Cpp.default.cppStandard": "c++23",
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/**",
+    "${workspaceFolder}/include",
+    "${workspaceFolder}/build",
+    "${workspaceFolder}/../../butano/include",
+    "${workspaceFolder}/../../butano/hw/include",
+    "${workspaceFolder}/../../butano/hw/3rd_party/agbabi/include"
+  ],
+  "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
+}

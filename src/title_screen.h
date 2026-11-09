@@ -20,7 +20,8 @@ private:
     enum class TitleState {
         Main,
         Settings,
-        CharacterSelect
+        CharacterSelect,
+        Starting
     };
 
     enum class MainButtonOptions {
@@ -30,12 +31,16 @@ private:
 
     void update_main();
     void update_character_select();
+    void update_starting();
+
     void load_next_screen(TitleState next_screen_state);
 
     bool _ready_to_start_game;
 
     TitleState _state;
     int _button_selection;
+
+    int _counter;
 
     //main
     bn::optional<bn::sprite_ptr> _spr_button_new_game;

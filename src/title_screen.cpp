@@ -17,6 +17,7 @@ TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator
     _font_sprite(font_sprite),
     _text_generator(text_generator)
 {   
+    _counter = 0;
     _ready_to_start_game = false;
     _bg_landscape.emplace(bn::regular_bg_items::bg_title_city.create_bg(0, 0));
     _bg_black_overlay.emplace(bn::regular_bg_items::bg_title_black_overlay.create_bg(0, 0));
@@ -30,8 +31,8 @@ TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator
         sprite.set_bg_priority(0);
     }
 
-    bn::music_items::bloody_tears.play(0.4);
     load_next_screen(TitleState::Main);
+    bn::music_items::bloody_tears.play(0.4);
 }
 
 bool TitleScreen::is_ready_to_start_game() {
@@ -80,7 +81,9 @@ void TitleScreen::load_next_screen(TitleState next_screen_state) {
             );
             _spr_player_head_2->set_bg_priority(0);
             break;
-
+        case TitleState::Starting:
+            _text_generator.generate(-20,0,"generating...",_text_sprites);
+            break;
         default:
         break;
     }
@@ -161,6 +164,10 @@ void TitleScreen::update_character_select() {
         _spr_selection_arrow.reset();
         load_next_screen(TitleState::Main);
     }
+}
+
+void TitleScreen::update_starting() {
+
 }
 
 void TitleScreen::update() {
