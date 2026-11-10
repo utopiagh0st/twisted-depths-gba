@@ -98,9 +98,8 @@ void Item::do_item_effect(Player& player) {
         player.start_burst_attack();
         bn::sound_items::monsterboostdoo.play(1, _rnd.get_fixed(0.5,0.8), 0);
         break;
-    case 2: //HealTest
-        player.heal(2);
-        bn::sound_items::healdoo.play(1, _rnd.get_fixed(0.8,1.5), 0);
+    case 2: //HurtTest
+        player.take_damage(2);
         break;
     default:
         break;

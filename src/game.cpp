@@ -22,7 +22,9 @@
 #include "bn_sprite_items_icon_player_head_fran.h"
 #include "bn_sprite_items_icon_player_head_tobichu.h"
 #include "bn_sprite_items_icon_small_up_arrow.h"
-#include "bn_regular_bg_items_bg_title_city.h"
+#include "bn_sprite_items_its_over.h"
+
+#include "bn_regular_bg_items_bg_fallen_sunset.h"
 
 //bgs
 #include "bn_sprite_ptr.h"
@@ -233,7 +235,7 @@ void Game::update_playing() {
 }
 
 void Game::game_over() {
-    _state = State::Title;
+    _state = State::GameOver;
     _projectiles.clear();
     _enemies.clear();
     _obstacles.clear();
@@ -241,9 +243,28 @@ void Game::game_over() {
     _player.reset();
     _level.reset();
     _hud.reset();
-    bn::music::stop();
     _selected_pocket_item = 0;
-    _title_screen.emplace(_font_sprite, _text_generator);
+    bn::music::stop();
+    bn::music_items::lamour_toujours_remix.play();
+    _bg_fallen_sunset.emplace(bn::regular_bg_items::bg_fallen_sunset.create_bg(0,0));
+    _bg_fallen_sunset->set_priority(3);
+    _text_generator.generate(-35,0, "it's over", _text_sprites);
+    _spr_its_over.emplace(bn::sprite_items::its_over.create_sprite(-88,48));
+}
+
+void Game::update_game_over() {
+    _bg_fallen_sunset->set_x(_bg_fallen_sunset->x() + 0.1);
+    if (_bg_fallen_sunset->x() > 256) {
+        _bg_fallen_sunset->set_x(1);
+    }
+    if (bn::keypad::start_pressed()) {
+        _text_sprites.clear();
+        _bg_fallen_sunset.reset();
+        _spr_its_over.reset();
+        bn::music::stop();
+        _title_screen.emplace(_font_sprite, _text_generator);
+        _state = State::Title;
+    }
 }
 
 void Game::update() {   //main update loop
@@ -257,6 +278,9 @@ void Game::update() {   //main update loop
             break;
         case State::Pause:
             update_pause();
+            break;
+        case State::GameOver:
+            update_game_over();
             break;
         default:
             break;

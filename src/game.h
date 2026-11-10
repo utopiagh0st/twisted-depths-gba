@@ -32,7 +32,8 @@ private:
     enum class State {
         Title,
         Pause,
-        Playing
+        Playing,
+        GameOver
     };
     State _state;
 
@@ -65,6 +66,10 @@ private:
     void update_title();
     void update_pause();
     void update_playing();
+    void update_game_over();
+
+    bn::optional<bn::sprite_ptr> _spr_its_over;
+    bn::optional<bn::regular_bg_ptr> _bg_fallen_sunset;
 
     bn::optional<TitleScreen> _title_screen;
 

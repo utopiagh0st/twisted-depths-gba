@@ -11,6 +11,8 @@
 #include "bn_sprite_items_button_settings.h"
 #include "bn_music.h"
 #include "bn_music_items.h"
+#include "bn_sound_items.h"
+
 
 
 TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator& text_generator) :
@@ -26,13 +28,13 @@ TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator
 
     _selected_character = CharacterName::diabolus;  //default character selection
 
-    _text_generator.generate(-122,75,"cf153ebdb93207f606e0",_text_sprites);
+    _text_generator.generate(-120,75,"dev-9.11.26",_text_sprites);
     for (bn::sprite_ptr sprite : _text_sprites) {
         sprite.set_bg_priority(0);
     }
 
     load_next_screen(TitleState::Main);
-    bn::music_items::bloody_tears.play(0.4);
+    bn::music_items::bloody_tears.play(0.9);
 }
 
 bool TitleScreen::is_ready_to_start_game() {
@@ -82,7 +84,8 @@ void TitleScreen::load_next_screen(TitleState next_screen_state) {
             _spr_player_head_2->set_bg_priority(0);
             break;
         case TitleState::Starting:
-            _text_generator.generate(-20,0,"generating...",_text_sprites);
+            _text_sprites.clear();
+            _text_generator.generate(-30,0,"bello...",_text_sprites);
             break;
         default:
         break;
@@ -93,6 +96,7 @@ void TitleScreen::load_next_screen(TitleState next_screen_state) {
 
 void TitleScreen::update_main() {
     if (bn::keypad::a_pressed() || bn::keypad::start_pressed()) {
+        bn::sound_items::select.play(1, 1, 0);
         switch (_button_selection) {
             case (int)MainButtonOptions::NewGame:
                 _spr_button_new_game.reset();
@@ -100,7 +104,7 @@ void TitleScreen::update_main() {
                 load_next_screen(TitleState::CharacterSelect);
             break;
             case (int)MainButtonOptions::Settings:
-            break;
+                break;
             default:
             break;
         }
@@ -111,6 +115,7 @@ void TitleScreen::update_main() {
     }
     
     if (bn::keypad::up_pressed() || bn::keypad::down_pressed()) {
+        bn::sound_items::change_selection.play(1, 1, 0);
         switch (_button_selection) {
             case (int)MainButtonOptions::NewGame:
                 _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 1);
@@ -144,19 +149,30 @@ void TitleScreen::update_character_select() {
 
     
     if (bn::keypad::a_pressed() || bn::keypad::start_pressed()) {
+        bn::sound_items::select.play(1, 1, 0);
         bn::music::stop();
-        _ready_to_start_game = true;
+        _spr_player_head_1.reset();
+        _spr_player_head_anim_1.reset();
+        _spr_player_head_2.reset();
+        _spr_player_head_anim_2.reset();
+        _spr_selection_arrow.reset();
+        _bg_black_overlay.reset();
+        _bg_landscape.reset();
+        load_next_screen(TitleState::Starting);
     } else if (bn::keypad::select_pressed() || bn::keypad::right_pressed()) {
+        bn::sound_items::change_selection.play(1, 1, 0);
         _selected_character = (CharacterName)((int)_selected_character+1); //cast heaven lol
         if (_selected_character > CharacterName::tobichu) {
             _selected_character = (CharacterName)0;
         }
     } else if (bn::keypad::left_pressed()) {
+        bn::sound_items::change_selection.play(1, 1, 0);
         _selected_character = (CharacterName)((int)_selected_character-1); //cast heaven lol
         if (_selected_character < (CharacterName)0) {
             _selected_character = CharacterName::tobichu;
         }
     } else if (bn::keypad::b_pressed()) {
+        bn::sound_items::change_selection.play(1, 1, 0);
         _spr_player_head_1.reset();
         _spr_player_head_anim_1.reset();
         _spr_player_head_2.reset();
@@ -167,7 +183,11 @@ void TitleScreen::update_character_select() {
 }
 
 void TitleScreen::update_starting() {
-
+    _counter++;
+    if(_counter >= 240) {
+        _counter = 0;
+        _ready_to_start_game = true;
+    }
 }
 
 void TitleScreen::update() {
@@ -179,15 +199,22 @@ void TitleScreen::update() {
     case TitleState::CharacterSelect:
         update_character_select();
         break;
+    case TitleState::Starting:
+        update_starting();
+        break;
     default:
         break;
     }
-    _bg_landscape->set_position(bn::fixed_point((_bg_landscape->x() + 0.1), 0));
-    _bg_black_overlay->set_position(bn::fixed_point(0, (_bg_black_overlay->y() + 1)));
-    if (_bg_landscape->x() > 256) {
-        _bg_landscape->set_x(0);
+    if (_bg_landscape) {
+        _bg_landscape->set_position(bn::fixed_point((_bg_landscape->x() + 0.1), 0));
+        if (_bg_landscape->x() > 256) {
+            _bg_landscape->set_x(0);
+        }
     }
-    if (_bg_black_overlay->y() > 256) {
-        _bg_black_overlay->set_y(0);
+    if (_bg_black_overlay) {
+        _bg_black_overlay->set_position(bn::fixed_point(0, (_bg_black_overlay->y() + 1)));
+        if (_bg_black_overlay->y() > 256) {
+            _bg_black_overlay->set_y(0);
+        }
     }
 }

@@ -9,7 +9,8 @@ namespace bn::music_items
     constexpr inline music_item bloody_tears(1);
     constexpr inline music_item btears(2);
     constexpr inline music_item dark_experience(3);
-    constexpr inline music_item popkorn(4);
+    constexpr inline music_item lamour_toujours_remix(4);
+    constexpr inline music_item popkorn(5);
 }
 
 #endif
