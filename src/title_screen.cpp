@@ -9,6 +9,7 @@
 #include "bn_keypad.h"
 #include "bn_sprite_items_button_new_game.h"
 #include "bn_sprite_items_button_settings.h"
+#include "bn_sprite_items_icon_settings_various.h"
 #include "bn_music.h"
 #include "bn_music_items.h"
 #include "bn_sound_items.h"
@@ -20,6 +21,7 @@ TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator
     _text_generator(text_generator)
 {   
     _counter = 0;
+    _music_vol = 5;
     _ready_to_start_game = false;
     _bg_landscape.emplace(bn::regular_bg_items::bg_title_city.create_bg(0, 0));
     _bg_black_overlay.emplace(bn::regular_bg_items::bg_title_black_overlay.create_bg(0, 0));
@@ -48,14 +50,20 @@ CharacterName TitleScreen::get_selected_character() {
 void TitleScreen::load_next_screen(TitleState next_screen_state) {
     switch (next_screen_state) {
         case TitleState::Main:
-            _spr_button_new_game.emplace(bn::sprite_items::button_new_game.create_sprite(-50,0));
-            _spr_button_settings.emplace(bn::sprite_items::button_settings.create_sprite(-50,40));
-            _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 1);
-            _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 0);
+            _spr_button_new_game.emplace(bn::sprite_items::button_new_game.create_sprite(-50,0,1));
+            _spr_button_settings.emplace(bn::sprite_items::button_settings.create_sprite(-50,40,0));
             _spr_button_new_game->set_bg_priority(0);
             _spr_button_settings->set_bg_priority(0);
         break;
+        case TitleState::Settings:
+            _spr_brightness_icon.emplace(bn::sprite_items::icon_settings_various.create_sprite(-103,-50,2));
+            _spr_brightness_icon->set_bg_priority(0);
 
+            for (int i = 0; i < 10; i++) {
+                _music_vol_bar.push_back(bn::sprite_items::icon_settings_various.create_sprite(-80 + (i*8), -50, 1));
+                _music_vol_bar[i].set_bg_priority(0);
+            }
+        break;
         case TitleState::CharacterSelect:
             _spr_selection_arrow.emplace(bn::sprite_items::icon_small_up_arrow.create_sprite(-80, 30));
             _spr_selection_arrow->set_bg_priority(0);
@@ -91,32 +99,33 @@ void TitleScreen::load_next_screen(TitleState next_screen_state) {
         break;
     }
     _state = next_screen_state;
-    _button_selection = 0;
+    _selection = 0;
 }
 
 void TitleScreen::update_main() {
     if (bn::keypad::a_pressed() || bn::keypad::start_pressed()) {
         bn::sound_items::select.play(1, 1, 0);
-        switch (_button_selection) {
+        _spr_button_new_game.reset();
+        _spr_button_settings.reset();
+        switch (_selection) {
             case (int)MainButtonOptions::NewGame:
-                _spr_button_new_game.reset();
-                _spr_button_settings.reset();
                 load_next_screen(TitleState::CharacterSelect);
             break;
             case (int)MainButtonOptions::Settings:
+                load_next_screen(TitleState::Settings);
                 break;
             default:
             break;
         }
-    } else if (bn::keypad::up_pressed() && _button_selection > 0) {
-        _button_selection--;
-    } else if (bn::keypad::down_pressed() && _button_selection < (int)MainButtonOptions::Settings) {
-        _button_selection++;
+    } else if (bn::keypad::up_pressed() && _selection > 0) {
+        _selection--;
+    } else if (bn::keypad::down_pressed() && _selection < (int)MainButtonOptions::Settings) {
+        _selection++;
     }
     
     if (bn::keypad::up_pressed() || bn::keypad::down_pressed()) {
         bn::sound_items::change_selection.play(1, 1, 0);
-        switch (_button_selection) {
+        switch (_selection) {
             case (int)MainButtonOptions::NewGame:
                 _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 1);
                 _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 0);
@@ -129,6 +138,10 @@ void TitleScreen::update_main() {
             break;
         }
     }
+}
+
+void TitleScreen::update_settings() {
+
 }
 
 void TitleScreen::update_character_select() {

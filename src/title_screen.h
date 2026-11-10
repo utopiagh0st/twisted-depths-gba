@@ -30,6 +30,7 @@ private:
     };
 
     void update_main();
+    void update_settings();
     void update_character_select();
     void update_starting();
 
@@ -38,13 +39,24 @@ private:
     bool _ready_to_start_game;
 
     TitleState _state;
-    int _button_selection;
+    int _selection;
 
     int _counter;
 
     //main
     bn::optional<bn::sprite_ptr> _spr_button_new_game;
     bn::optional<bn::sprite_ptr> _spr_button_settings;
+
+    //settings
+    bn::optional<bn::sprite_ptr> _spr_brightness_icon;
+    bn::optional<bn::sprite_ptr> _spr_music_vol_icon;
+    bn::optional<bn::sprite_ptr> _spr_sfx_vol_icon;
+    bn::vector<bn::sprite_ptr, 10> _brightness__bar;
+    bn::vector<bn::sprite_ptr, 10> _music_vol_bar;
+    bn::vector<bn::sprite_ptr, 10> _sfx_vol_bar;
+    int _brightness;
+    int _music_vol;
+    int _sfx_vol;
 
     //otherss ig im tired rn
     bn::sprite_font _font_sprite;

@@ -1,18 +1,18 @@
 bmp16_drawg_b1cs.o: \
- C:/butano-master/butano/hw/3rd_party/libtonc/src/tte/bmp16_drawg_b1cs.c \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memdef.h \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_tte.h \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memmap.h \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_types.h \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_surface.h \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_core.h \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memdef.h \
- C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_warn.h
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memdef.h:
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_tte.h:
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memmap.h:
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_types.h:
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_surface.h:
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_core.h:
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_memdef.h:
-C:/butano-master/butano/hw/3rd_party/libtonc/include/tonc_warn.h:
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/src/tte/bmp16_drawg_b1cs.c \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memdef.h \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_tte.h \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memmap.h \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_types.h \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_surface.h \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_core.h \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memdef.h \
+ /home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_warn.h
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memdef.h:
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_tte.h:
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memmap.h:
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_types.h:
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_surface.h:
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_core.h:
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_memdef.h:
+/home/Commodore/butano/butano/hw/3rd_party/libtonc/include/tonc_warn.h:

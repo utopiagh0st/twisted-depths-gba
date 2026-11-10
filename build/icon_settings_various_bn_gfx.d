@@ -1,0 +1,1 @@
+icon_settings_various_bn_gfx.o: icon_settings_various_bn_gfx.s
