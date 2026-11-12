@@ -37,8 +37,9 @@ static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) 
     return bn::sprite_items::player_fran_walk_up.create_sprite(x, y);
 }
 
-Player::Player(CharacterName name, int x, int y, bn::random& rnd) {
-    _rnd = rnd;
+Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
+    _rnd(rnd)
+{
     _name = name;
 
     _animation_cooldown = 0;

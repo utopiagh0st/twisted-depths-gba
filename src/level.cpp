@@ -5,12 +5,19 @@
 #include "bn_sprite_items_icon_small_current_room.h"
 
 
-Level::Level(LevelType level_type, bn::array<bn::array<int, 10>, 10>& level_map, bn::array<bn::array<bool, 10>, 10>& level_clear_map, bn::point starting_room_pos, bn::random& rnd) {
-    _rnd = rnd;
+Level::Level(
+    LevelType level_type,
+    bn::array<bn::array<int, 10>, 10>& level_map,
+    bn::array<bn::array<bool, 10>, 10>& level_clear_map,
+    bn::point starting_room_pos,
+    bn::random& rnd
+):
+    _level_map(level_map),
+    _level_clear_map(level_clear_map),
+    _rnd(rnd)
+{
     _doing_room_transition = false;
     _level_type = level_type;
-    _level_map = level_map;
-    _level_clear_map = level_clear_map;
     _starting_room_pos = starting_room_pos;
     _current_room_pos = starting_room_pos;
 }

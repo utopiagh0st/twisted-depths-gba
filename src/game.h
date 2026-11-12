@@ -22,13 +22,15 @@
 #include "bn_sprite_text_generator.h"
 #include "bn_sprite_font.h"
 #include "title_screen.h"
+#include "save_data_struct.h"
 
 class Game {
 public:
     Game();
     void update();
-
 private:
+    SRAMSaveData _save_data;
+
     enum class State {
         Title,
         Pause,
@@ -72,7 +74,6 @@ private:
     bn::optional<bn::regular_bg_ptr> _bg_fallen_sunset;
 
     bn::optional<TitleScreen> _title_screen;
-
 };
 
 #endif

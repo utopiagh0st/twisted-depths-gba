@@ -35,7 +35,8 @@
 #include "bn_string_view.h"
 
 #include "bn_blending.h"
-
+#include "bn_sram.h"
+#include "save_data_struct.h"
 
 Game::Game() :
     _state(State::Title),    //starts with title state
@@ -43,13 +44,26 @@ Game::Game() :
     _font_sprite(bn::sprite_items::common_fixed_8x8_font),
     _text_generator(_font_sprite)
 {   
+    SRAMSaveData cart_sram_data;
+    bn::sram::read(cart_sram_data);
+    bn::array<char, 32> expected_format_tag;
+    bn::istring_base expected_format_tag_istring(expected_format_tag._data);
+    bn::ostringstream expected_format_tag_stream(expected_format_tag_istring);
+    expected_format_tag_stream.append("SRAM check");
+    if(cart_sram_data.format_tag != expected_format_tag) {
+        cart_sram_data.format_tag = expected_format_tag;
+        cart_sram_data.music_volume = 1;
+        bn::sram::clear(bn::sram::size());
+        bn::sram::write(_save_data);
+    }
+    _save_data = cart_sram_data;
     _frame = 0;
     _bounds[UP] = -60;   //up
     _bounds[DOWN] = 60;    //down
     _bounds[LEFT] = -80;   //left
     _bounds[RIGHT] = 80;    //right
     _selected_pocket_item = 0;
-    _title_screen.emplace(_font_sprite, _text_generator);
+    _title_screen.emplace(_font_sprite, _text_generator, _save_data);
 }
 
 void Game::update_title() { //use this one as a template of a state change
@@ -61,7 +75,7 @@ void Game::update_title() { //use this one as a template of a state change
         _level->load_room(_level->get_starting_room_pos(), _obstacles);
         _hud.emplace(true);
         
-        bn::music_items::popkorn.play(0.4);    //banger starts
+        bn::music_items::popkorn.play(_save_data.music_volume);    //banger starts
         
         _state = State::Playing;    //change of state
         bn::blending::set_transparency_alpha(bn::fixed(0.5));
@@ -245,7 +259,7 @@ void Game::game_over() {
     _hud.reset();
     _selected_pocket_item = 0;
     bn::music::stop();
-    bn::music_items::lamour_toujours_remix.play();
+    bn::music_items::lamour_toujours_remix.play(_save_data.music_volume);
     _bg_fallen_sunset.emplace(bn::regular_bg_items::bg_fallen_sunset.create_bg(0,0));
     _bg_fallen_sunset->set_priority(3);
     _text_generator.generate(-35,0, "it's over", _text_sprites);
@@ -262,7 +276,7 @@ void Game::update_game_over() {
         _bg_fallen_sunset.reset();
         _spr_its_over.reset();
         bn::music::stop();
-        _title_screen.emplace(_font_sprite, _text_generator);
+        _title_screen.emplace(_font_sprite, _text_generator, _save_data);
         _state = State::Title;
     }
 }

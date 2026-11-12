@@ -70,7 +70,7 @@ private:
     CharacterName _name;
     int _character_id;
 
-    bn::random _rnd;
+    bn::random& _rnd;
 
     int _animation_cooldown;
     int _hp;

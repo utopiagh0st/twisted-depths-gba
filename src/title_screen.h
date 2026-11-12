@@ -10,9 +10,16 @@
 #include "bn_sprite_text_generator.h"
 #include "bn_sprite_font.h"
 
+#include "bn_sram.h"
+#include "save_data_struct.h"
+
 class TitleScreen {
 public:
-    TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator& text_generator);
+    TitleScreen(
+        bn::sprite_font& font_sprite,
+        bn::sprite_text_generator& text_generator,
+        SRAMSaveData& current_sesion_save_data
+    );
     CharacterName get_selected_character();
     bool is_ready_to_start_game();
     void update();
@@ -54,9 +61,10 @@ private:
     bn::vector<bn::sprite_ptr, 10> _brightness__bar;
     bn::vector<bn::sprite_ptr, 10> _music_vol_bar;
     bn::vector<bn::sprite_ptr, 10> _sfx_vol_bar;
-    int _brightness;
-    int _music_vol;
-    int _sfx_vol;
+
+    SRAMSaveData& _save_data;
+    bn::fixed _brightness;
+    bn::fixed _sfx_vol;
 
     //otherss ig im tired rn
     bn::sprite_font _font_sprite;

@@ -15,9 +15,26 @@ constexpr int LEFT = 2;
 constexpr int RIGHT = 3;
 constexpr int map_size = 10;
 
+struct LevelInfo {
+    bn::array<bn::array<int, 10>, 10>& level_map;
+    bn::array<bn::array<int, 10>, 10>& level_clear_map;
+    bn::point current_room_pos;
+    bn::point starting_room_pos;
+};
+
 class Level {
 public:
-    Level(LevelType level_type, bn::array<bn::array<int, 10>, 10>& level_map, bn::array<bn::array<bool, 10>, 10>& level_clear_map, bn::point starting_room, bn::random& rnd);
+    Level(LevelType level_type,
+        bn::array<bn::array<int, 10>, 10>& level_map,
+        bn::array<bn::array<bool, 10>, 10>& level_clear_map,
+        bn::point starting_room,
+        bn::random& rnd);
+    Level(LevelType level_type,
+        bn::array<bn::array<int, 10>, 10>& level_map,
+        bn::array<bn::array<bool, 10>, 10>& level_clear_map,
+        bn::point starting_room,
+        bn::point current_room,
+        bn::random& rnd);  
     bn::point get_starting_room_pos();
 
     bool can_unfreeze_movement();
@@ -30,8 +47,11 @@ public:
     void toggle_map(bool showing);
 private:
     bool _can_unfreeze_movement;
-
-    bn::random _rnd;
+    /*
+    TO SAVE ON SRAM:
+    
+    */
+    bn::random& _rnd;
     LevelType _level_type;
     bn::array<bn::array<int, 10>, 10> _level_map;
     bn::array<bn::array<bool, 10>, 10> _level_clear_map;

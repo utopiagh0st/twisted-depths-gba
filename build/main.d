@@ -85,7 +85,11 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
  /home/Commodore/butano/butano/include/bn_power_of_two.h \
  /home/Commodore/butano/butano/include/bn_utf8_character.h \
  /home/Commodore/butano/butano/include/bn_sprite_font.h \
- /home/Commodore/butano/games/twisted-depths-gba/src/title_screen.h
+ /home/Commodore/butano/games/twisted-depths-gba/src/title_screen.h \
+ /home/Commodore/butano/butano/include/bn_sram.h \
+ /home/Commodore/butano/butano/include/../hw/include/bn_hw_sram_constants.h \
+ /home/Commodore/butano/butano/include/bn_common.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/save_data_struct.h
 /home/Commodore/butano/butano/include/bn_core.h:
 /home/Commodore/butano/butano/include/bn_span.h:
 /home/Commodore/butano/butano/include/bn_array.h:
@@ -173,3 +177,7 @@ main.o: /home/Commodore/butano/games/twisted-depths-gba/src/main.cpp \
 /home/Commodore/butano/butano/include/bn_utf8_character.h:
 /home/Commodore/butano/butano/include/bn_sprite_font.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/title_screen.h:
+/home/Commodore/butano/butano/include/bn_sram.h:
+/home/Commodore/butano/butano/include/../hw/include/bn_hw_sram_constants.h:
+/home/Commodore/butano/butano/include/bn_common.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/save_data_struct.h:

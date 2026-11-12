@@ -11,17 +11,23 @@
 #include "bn_sprite_items_button_settings.h"
 #include "bn_sprite_items_icon_settings_various.h"
 #include "bn_music.h"
+#include "bn_sound.h"
 #include "bn_music_items.h"
 #include "bn_sound_items.h"
+#include "bn_optional.h"
+#include "bn_sram.h"
 
 
-
-TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator& text_generator) :
+TitleScreen::TitleScreen(
+    bn::sprite_font& font_sprite,
+    bn::sprite_text_generator& text_generator,
+    SRAMSaveData& save_data
+):
     _font_sprite(font_sprite),
-    _text_generator(text_generator)
+    _text_generator(text_generator),
+    _save_data(save_data)
 {   
     _counter = 0;
-    _music_vol = 5;
     _ready_to_start_game = false;
     _bg_landscape.emplace(bn::regular_bg_items::bg_title_city.create_bg(0, 0));
     _bg_black_overlay.emplace(bn::regular_bg_items::bg_title_black_overlay.create_bg(0, 0));
@@ -36,7 +42,7 @@ TitleScreen::TitleScreen(bn::sprite_font& font_sprite, bn::sprite_text_generator
     }
 
     load_next_screen(TitleState::Main);
-    bn::music_items::bloody_tears.play(0.9);
+    bn::music_items::bloody_tears.play(_save_data.music_volume);
 }
 
 bool TitleScreen::is_ready_to_start_game() {
@@ -56,13 +62,18 @@ void TitleScreen::load_next_screen(TitleState next_screen_state) {
             _spr_button_settings->set_bg_priority(0);
         break;
         case TitleState::Settings:
-            _spr_brightness_icon.emplace(bn::sprite_items::icon_settings_various.create_sprite(-103,-50,2));
-            _spr_brightness_icon->set_bg_priority(0);
+            _spr_music_vol_icon.emplace(bn::sprite_items::icon_settings_various.create_sprite(-103,-50,2));
+            _spr_music_vol_icon->set_bg_priority(0);
 
-            for (int i = 0; i < 10; i++) {
-                _music_vol_bar.push_back(bn::sprite_items::icon_settings_various.create_sprite(-80 + (i*8), -50, 1));
-                _music_vol_bar[i].set_bg_priority(0);
+            for (int i = 1; i <= 10; i++) {
+                if (i <= (int)(bn::music::volume()*10)) {
+                    _music_vol_bar.push_back(bn::sprite_items::icon_settings_various.create_sprite(-80 + (i*8), -50, 0));
+                } else {
+                    _music_vol_bar.push_back(bn::sprite_items::icon_settings_various.create_sprite(-80 + (i*8), -50, 1));
+                }
+                _music_vol_bar[i-1].set_bg_priority(0);
             }
+
         break;
         case TitleState::CharacterSelect:
             _spr_selection_arrow.emplace(bn::sprite_items::icon_small_up_arrow.create_sprite(-80, 30));
@@ -141,6 +152,32 @@ void TitleScreen::update_main() {
 }
 
 void TitleScreen::update_settings() {
+    if (bn::keypad::left_pressed() && bn::music::volume() > 0) {
+        bn::fixed new_volume = bn::music::volume() - 0.1;
+        if (new_volume < 0) {
+            new_volume = 0;
+        }
+        bn::music::set_volume(new_volume);
+        bn::sound_items::change_selection.play(new_volume);
+        _music_vol_bar[(int)(new_volume*10)].set_tiles(bn::sprite_items::icon_settings_various.tiles_item(),1);
+        _save_data.music_volume = new_volume;
+    } else if (bn::keypad::right_pressed() && bn::music::volume() < 1) {
+        bn::fixed new_volume = bn::music::volume() + 0.1;
+        if (new_volume > 1) {
+            new_volume = 1;
+        }
+        bn::music::set_volume(new_volume);
+        bn::sound_items::change_selection.play(new_volume);
+        _music_vol_bar[(int)((new_volume*10)-1)].set_tiles(bn::sprite_items::icon_settings_various.tiles_item(),0);
+        _save_data.music_volume = new_volume;
+    }  
+    if (bn::keypad::b_pressed()) {
+        bn::sound_items::select.play(1, 1, 0);
+        _spr_music_vol_icon.reset();
+        _music_vol_bar.clear();
+        bn::sram::write(_save_data);
+        load_next_screen(TitleState::Main);
+    }
 
 }
 
@@ -211,6 +248,9 @@ void TitleScreen::update() {
         break;
     case TitleState::CharacterSelect:
         update_character_select();
+        break;
+    case TitleState::Settings:
+        update_settings();
         break;
     case TitleState::Starting:
         update_starting();
