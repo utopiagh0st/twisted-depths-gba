@@ -8,6 +8,7 @@
 
 #include "bn_keypad.h"
 #include "bn_sprite_items_button_new_game.h"
+#include "bn_sprite_items_button_continue.h"
 #include "bn_sprite_items_button_settings.h"
 #include "bn_sprite_items_icon_settings_various.h"
 #include "bn_music.h"
@@ -28,7 +29,8 @@ TitleScreen::TitleScreen(
     _save_data(save_data)
 {   
     _counter = 0;
-    _ready_to_start_game = false;
+    _ready_to_start_new_game = false;
+    _ready_to_continue_game = false;
     _bg_landscape.emplace(bn::regular_bg_items::bg_title_city.create_bg(0, 0));
     _bg_black_overlay.emplace(bn::regular_bg_items::bg_title_black_overlay.create_bg(0, 0));
     _bg_landscape->set_priority(3);
@@ -45,8 +47,12 @@ TitleScreen::TitleScreen(
     bn::music_items::bloody_tears.play(_save_data.music_volume);
 }
 
-bool TitleScreen::is_ready_to_start_game() {
-    return _ready_to_start_game;
+bool TitleScreen::is_ready_to_start_new_game() {
+    return _ready_to_start_new_game;
+}
+
+bool TitleScreen::is_ready_to_continue_game() {
+    return _ready_to_continue_game;
 }
 
 CharacterName TitleScreen::get_selected_character() {
@@ -56,9 +62,11 @@ CharacterName TitleScreen::get_selected_character() {
 void TitleScreen::load_next_screen(TitleState next_screen_state) {
     switch (next_screen_state) {
         case TitleState::Main:
-            _spr_button_new_game.emplace(bn::sprite_items::button_new_game.create_sprite(-50,0,1));
+            _spr_button_new_game.emplace(bn::sprite_items::button_new_game.create_sprite(-50,-40,1));
+            _spr_button_continue.emplace(bn::sprite_items::button_continue.create_sprite(-50,0,0));
             _spr_button_settings.emplace(bn::sprite_items::button_settings.create_sprite(-50,40,0));
             _spr_button_new_game->set_bg_priority(0);
+            _spr_button_continue->set_bg_priority(0);
             _spr_button_settings->set_bg_priority(0);
         break;
         case TitleState::Settings:
@@ -102,7 +110,11 @@ void TitleScreen::load_next_screen(TitleState next_screen_state) {
             );
             _spr_player_head_2->set_bg_priority(0);
             break;
-        case TitleState::Starting:
+        case TitleState::StartingNewGame:
+            _text_sprites.clear();
+            _text_generator.generate(-30,0,"bello..?",_text_sprites);
+            break;
+        case TitleState::StartingContinue:
             _text_sprites.clear();
             _text_generator.generate(-30,0,"bello...",_text_sprites);
             break;
@@ -116,13 +128,29 @@ void TitleScreen::load_next_screen(TitleState next_screen_state) {
 void TitleScreen::update_main() {
     if (bn::keypad::a_pressed() || bn::keypad::start_pressed()) {
         bn::sound_items::select.play(1, 1, 0);
-        _spr_button_new_game.reset();
-        _spr_button_settings.reset();
+        
+        
         switch (_selection) {
             case (int)MainButtonOptions::NewGame:
+                _spr_button_new_game.reset();
+                _spr_button_continue.reset();
+                _spr_button_settings.reset();
                 load_next_screen(TitleState::CharacterSelect);
             break;
+            case (int)MainButtonOptions::Continue:
+                if (_save_data.has_run_save) {
+                    _bg_black_overlay.reset();
+                    _bg_landscape.reset();
+                    _spr_button_new_game.reset();
+                    _spr_button_continue.reset();
+                    _spr_button_settings.reset();
+                    load_next_screen(TitleState::StartingContinue);
+                }
+            break;
             case (int)MainButtonOptions::Settings:
+                _spr_button_new_game.reset();
+                _spr_button_continue.reset();
+                _spr_button_settings.reset();
                 load_next_screen(TitleState::Settings);
                 break;
             default:
@@ -139,10 +167,17 @@ void TitleScreen::update_main() {
         switch (_selection) {
             case (int)MainButtonOptions::NewGame:
                 _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 1);
+                _spr_button_continue->set_tiles(bn::sprite_items::button_continue.tiles_item(), 0);
+                _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 0);
+                break;
+            case (int)MainButtonOptions::Continue:
+                _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 0);
+                _spr_button_continue->set_tiles(bn::sprite_items::button_continue.tiles_item(), 1);
                 _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 0);
                 break;
             case (int)MainButtonOptions::Settings:
                 _spr_button_new_game->set_tiles(bn::sprite_items::button_new_game.tiles_item(), 0);
+                _spr_button_continue->set_tiles(bn::sprite_items::button_continue.tiles_item(), 0);
                 _spr_button_settings->set_tiles(bn::sprite_items::button_settings.tiles_item(), 1);
                 break;
             default:
@@ -208,7 +243,8 @@ void TitleScreen::update_character_select() {
         _spr_selection_arrow.reset();
         _bg_black_overlay.reset();
         _bg_landscape.reset();
-        load_next_screen(TitleState::Starting);
+        _save_data.has_run_save = false;
+        load_next_screen(TitleState::StartingNewGame);
     } else if (bn::keypad::select_pressed() || bn::keypad::right_pressed()) {
         bn::sound_items::change_selection.play(1, 1, 0);
         _selected_character = (CharacterName)((int)_selected_character+1); //cast heaven lol
@@ -232,11 +268,18 @@ void TitleScreen::update_character_select() {
     }
 }
 
-void TitleScreen::update_starting() {
+void TitleScreen::update_starting_new_game() {
     _counter++;
-    if(_counter >= 240) {
+    if(_counter >= 120) {
         _counter = 0;
-        _ready_to_start_game = true;
+        _ready_to_start_new_game = true;
+    }
+}
+void TitleScreen::update_starting_continue() {
+    _counter++;
+    if(_counter >= 120) {
+        _counter = 0;
+        _ready_to_continue_game = true;
     }
 }
 
@@ -252,8 +295,11 @@ void TitleScreen::update() {
     case TitleState::Settings:
         update_settings();
         break;
-    case TitleState::Starting:
-        update_starting();
+    case TitleState::StartingNewGame:
+        update_starting_new_game();
+        break;
+    case TitleState::StartingContinue:
+        update_starting_continue();
         break;
     default:
         break;

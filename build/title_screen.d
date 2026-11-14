@@ -76,19 +76,24 @@ title_screen.o: \
  /home/Commodore/butano/butano/include/bn_common.h \
  /home/Commodore/butano/games/twisted-depths-gba/src/save_data_struct.h \
  /home/Commodore/butano/butano/include/bn_array.h \
- /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h \
- /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_fran.h \
- /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_tobichu.h \
- /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_small_up_arrow.h \
- /home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_city.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/level.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/room_data.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_item.h \
  /home/Commodore/butano/butano/include/bn_bg_palette_item.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_item.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h \
  /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h \
+ /home/Commodore/butano/games/twisted-depths-gba/src/room.h \
+ /home/Commodore/butano/butano/include/bn_point.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_fran.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_tobichu.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_small_up_arrow.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_city.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_black_overlay.h \
  /home/Commodore/butano/butano/include/bn_keypad.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_button_new_game.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_button_continue.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_button_settings.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_settings_various.h \
  /home/Commodore/butano/butano/include/bn_music.h \
@@ -174,19 +179,24 @@ title_screen.o: \
 /home/Commodore/butano/butano/include/bn_common.h:
 /home/Commodore/butano/games/twisted-depths-gba/src/save_data_struct.h:
 /home/Commodore/butano/butano/include/bn_array.h:
-/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h:
-/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_fran.h:
-/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_tobichu.h:
-/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_small_up_arrow.h:
-/home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_city.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/level.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/room_data.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_item.h:
 /home/Commodore/butano/butano/include/bn_bg_palette_item.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_map_item.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_map_cell.h:
 /home/Commodore/butano/butano/include/bn_regular_bg_tiles_item.h:
+/home/Commodore/butano/games/twisted-depths-gba/src/room.h:
+/home/Commodore/butano/butano/include/bn_point.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_common_fixed_8x8_font.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_fran.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_player_head_tobichu.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_small_up_arrow.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_city.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_regular_bg_items_bg_title_black_overlay.h:
 /home/Commodore/butano/butano/include/bn_keypad.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_button_new_game.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_button_continue.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_button_settings.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_icon_settings_various.h:
 /home/Commodore/butano/butano/include/bn_music.h:

@@ -37,7 +37,7 @@ static bn::sprite_ptr create_character_sprite(CharacterName name, int x, int y) 
     return bn::sprite_items::player_fran_walk_up.create_sprite(x, y);
 }
 
-Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
+Player::Player(CharacterName name, bn::fixed_point position, bn::random& rnd) :
     _rnd(rnd)
 {
     _name = name;
@@ -48,7 +48,7 @@ Player::Player(CharacterName name, int x, int y, bn::random& rnd) :
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
-    _position = bn::fixed_point(x,y);
+    _position = position;
     _freeze_movement = false;
     _i_frames_counter = 0;
 
@@ -97,6 +97,10 @@ void Player::initial_setup() {  //don't forget to set for every type of characte
 }
 
 //Getters and Setters
+CharacterName Player::get_character_name() {
+    return _name;
+}
+
 int Player::get_attack_cooldown() {
     return int(180/_fire_rate);
 }
@@ -154,6 +158,10 @@ void Player::set_position(bn::fixed_point new_position) {
 
 void Player::set_freeze_movement(bool freeze_movement) {
     _freeze_movement = freeze_movement;
+}
+
+void Player::set_hp(int new_hp) {
+    _hp = new_hp;
 }
 
 //Functions

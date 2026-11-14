@@ -26,16 +26,29 @@ enum class Direction {
     Right
 };
 
+struct PlayerData {
+    CharacterName character_name;
+    int hp;
+};
+
 class Item;
 
 class Player {
 public:
-    Player(CharacterName name, int x, int y, bn::random& rnd);
+    Player(CharacterName name, bn::fixed_point position, bn::random& rnd);
+    Player(CharacterName name,
+        bn::fixed_point position,
+        bn::random& rnd,
+        int hp
+    );
+    
+    CharacterName get_character_name();
     bn::fixed get_attack_knockback();
     bn::fixed get_damage();
     bn::fixed_point get_position();
     void set_position(bn::fixed_point new_position);
     int get_hp();
+    void set_hp(int new_hp);
     int get_hp_max();
     bn::rect get_hitbox();
     bn::fixed_point get_shot_velocity();

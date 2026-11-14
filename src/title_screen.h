@@ -21,29 +21,35 @@ public:
         SRAMSaveData& current_sesion_save_data
     );
     CharacterName get_selected_character();
-    bool is_ready_to_start_game();
+    bool is_ready_to_start_new_game();
+    bool is_ready_to_continue_game();
+
     void update();
 private:
     enum class TitleState {
         Main,
         Settings,
         CharacterSelect,
-        Starting
+        StartingNewGame,
+        StartingContinue
     };
 
     enum class MainButtonOptions {
         NewGame,
+        Continue,
         Settings
     };
 
     void update_main();
     void update_settings();
     void update_character_select();
-    void update_starting();
+    void update_starting_new_game();
+    void update_starting_continue();
 
     void load_next_screen(TitleState next_screen_state);
 
-    bool _ready_to_start_game;
+    bool _ready_to_start_new_game;
+    bool _ready_to_continue_game;
 
     TitleState _state;
     int _selection;
@@ -52,6 +58,7 @@ private:
 
     //main
     bn::optional<bn::sprite_ptr> _spr_button_new_game;
+    bn::optional<bn::sprite_ptr> _spr_button_continue;
     bn::optional<bn::sprite_ptr> _spr_button_settings;
 
     //settings

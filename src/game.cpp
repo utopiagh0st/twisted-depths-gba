@@ -53,6 +53,7 @@ Game::Game() :
     if(cart_sram_data.format_tag != expected_format_tag) {
         cart_sram_data.format_tag = expected_format_tag;
         cart_sram_data.music_volume = 1;
+        cart_sram_data.has_run_save = false;
         bn::sram::clear(bn::sram::size());
         bn::sram::write(_save_data);
     }
@@ -68,8 +69,27 @@ Game::Game() :
 
 void Game::update_title() { //use this one as a template of a state change
     _title_screen->update();
-    if (_title_screen->is_ready_to_start_game()) {  //game doesn't start till player presses start
-        _player.emplace(_title_screen->get_selected_character(), 0, 0, _rnd);   //replaces the empty player
+    if (_title_screen->is_ready_to_start_new_game()) {  //game doesn't start till player presses start
+        _player.emplace(_title_screen->get_selected_character(), bn::fixed_point(0,0), _rnd);   //replaces the empty player
+        _title_screen.reset();
+        _level.emplace(_level_generator.generate_level(LevelType::STREET));
+        _level->load_room(_level->get_starting_room_pos(), _obstacles);
+        _hud.emplace(true);
+        
+        bn::music_items::popkorn.play(_save_data.music_volume);    //banger starts
+        
+        _state = State::Playing;    //change of state
+        bn::blending::set_transparency_alpha(bn::fixed(0.5));
+
+        _pocket.push_back(Item(2, _rnd));
+        _pocket.push_back(Item(0, _rnd));
+        _pocket.push_back(Item(1, _rnd));
+        _pocket.push_back(Item(1, _rnd));
+        _pocket.push_back(Item(2, _rnd));
+        _pocket.push_back(Item(2, _rnd));
+    } else if (_title_screen->is_ready_to_continue_game()) {
+        _player.emplace(_save_data.player_data.character_name, bn::fixed_point(0,0), _rnd);   //replaces the empty player
+        _player->set_hp(_save_data.player_data.hp);
         _title_screen.reset();
         _level.emplace(_level_generator.generate_level(LevelType::STREET));
         _level->load_room(_level->get_starting_room_pos(), _obstacles);
@@ -94,7 +114,25 @@ void Game::update_pause() {
         _level->toggle_map(false);
         bn::music::resume();
         _state = State::Playing;  //pause button just stops running the game logic
-    }  
+    } else if (bn::keypad::b_pressed()) {
+        _state = State::Title;
+
+        _save_data.has_run_save = true;
+        _save_data.player_data.hp = _player->get_hp();
+        _save_data.player_data.character_name = _player->get_character_name();
+        bn::sram::write(_save_data);
+
+        _projectiles.clear();
+        _enemies.clear();
+        _obstacles.clear();
+        _pocket.clear();
+        _player.reset();
+        _level.reset();
+        _hud.reset();
+        _selected_pocket_item = 0;
+        bn::music::stop();
+        _title_screen.emplace(_font_sprite, _text_generator, _save_data);
+    }
 }
 
 void Game::update_playing() {
@@ -250,6 +288,10 @@ void Game::update_playing() {
 
 void Game::game_over() {
     _state = State::GameOver;
+
+    _save_data.has_run_save = false;
+    bn::sram::write(_save_data);
+
     _projectiles.clear();
     _enemies.clear();
     _obstacles.clear();
