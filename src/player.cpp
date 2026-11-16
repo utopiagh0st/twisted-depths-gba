@@ -51,27 +51,30 @@ Player::Player(CharacterName name, bn::fixed_point position, bn::random& rnd) :
     _position = position;
     _freeze_movement = false;
     _i_frames_counter = 0;
+    _attack_cooldown_counter = 0;
+    _friction = bn::fixed(0.4);
+    _acceleration = bn::fixed(0.3);
 
     initial_setup();
 }
 
-void Player::initial_setup() {  //don't forget to set for every type of character
-    _hp_max = 10; //caps at 20
-    _hp = 10;
+Player::Player(PlayerData player_data, bn::fixed_point position, bn::random& rnd) :
+    _rnd(rnd)
+{
+    _name = player_data.name;
+
+    _animation_cooldown = 0;
+    _direction = Direction::Down;
+    
+    _velocity = bn::fixed_point(0,0);
+    _knockback_velocity = bn::fixed_point(0,0);
+    _last_input = bn::fixed_point(0,0);
+    _position = position;
+    _freeze_movement = false;
+    _i_frames_counter = 0;
+    _attack_cooldown_counter = 0;
     _friction = bn::fixed(0.4);
     _acceleration = bn::fixed(0.3);
-    _max_speed = bn::fixed(1.45); //1.2 low, 1.35 common, 3 max?
-    _i_frames = 40;
-
-    //attack vars
-    //_shot_speed = bn::fixed(10);
-    _shot_speed = bn::fixed(3); // 4?
-    _fire_rate = bn::fixed(7); // 5 - 30, base 7
-    _attack_cooldown_counter = 0;
-    _damage = bn::fixed(2);
-    _attack_knockback = bn::fixed(0.15); //0.1
-    _range = bn::fixed(120);   // max 120
-    _max_offset = bn::fixed(0.1); //base: 0.1, 0.5 is already punishing
 
     for(const CharacterData& character_data : CHARACTER_LOOKUP) {
         if(_name == character_data.name) {
@@ -80,20 +83,57 @@ void Player::initial_setup() {  //don't forget to set for every type of characte
         }
     }
     const CharacterData& character_data = CHARACTER_LOOKUP[_character_id];
-
-    switch (_name) {
-    case CharacterName::diabolus:
-        _walk_sprite_item.emplace(character_data.walk_sprite);
-        _sprite.emplace(character_data.walk_sprite.create_sprite(_position.x(), _position.y()));
-        break;
-    default:
-        _walk_sprite_item.emplace(character_data.walk_sprite);
-        _sprite.emplace(character_data.walk_sprite.create_sprite(_position.x(), _position.y()));
-        break;
-    }
-
+    
+    _walk_sprite_item.emplace(character_data.walk_sprite);
+    _sprite.emplace(character_data.walk_sprite.create_sprite(_position));
     _sprite->set_bg_priority(2); //sprite priority
     _sprite->set_z_order(2);
+    
+    _hp_max = player_data.hp_max; //caps at 20
+    _hp = player_data.hp;
+    _max_speed = player_data.max_speed; //1.2 low, 1.35 common, 3 max?
+    _i_frames = player_data.i_frames;
+
+    //attack vars
+    //_attack_speed = bn::fixed(10);
+    _attack_speed = player_data.attack_speed; // 4?
+    _attack_rate = player_data.attack_rate; // 5 - 30, base 7
+    _damage = player_data.damage;
+    _attack_knockback = player_data.attack_knockback; //0.1
+    _range = player_data.range;   // max 120
+    _max_offset = player_data.max_offset; //base: 0.1, 0.5 is already punishing
+
+}
+
+void Player::initial_setup() { 
+    
+    for(const CharacterData& character_data : CHARACTER_LOOKUP) {
+        if(_name == character_data.name) {
+            _character_id = &character_data - CHARACTER_LOOKUP.data();
+            break;
+        }
+    }
+    const CharacterData& character_data = CHARACTER_LOOKUP[_character_id];
+    
+    _walk_sprite_item.emplace(character_data.walk_sprite);
+    _sprite.emplace(character_data.walk_sprite.create_sprite(_position));
+    _sprite->set_bg_priority(2); //sprite priority
+    _sprite->set_z_order(2);
+    
+    _hp_max = character_data.hp_max; //caps at 20
+    _hp = character_data.hp;
+    _max_speed = character_data.max_speed; //1.2 low, 1.35 common, 3 max?
+    _i_frames = character_data.i_frames;
+
+    //attack vars
+    //_attack_speed = bn::fixed(10);
+    _attack_speed = character_data.attack_speed; // 4?
+    _attack_rate = character_data.attack_rate; // 5 - 30, base 7
+    _damage = character_data.damage;
+    _attack_knockback = character_data.attack_knockback; //0.1
+    _range = character_data.range;   // max 120
+    _max_offset = character_data.max_offset; //base: 0.1, 0.5 is already punishing
+    
 }
 
 //Getters and Setters
@@ -101,8 +141,13 @@ CharacterName Player::get_character_name() {
     return _name;
 }
 
+PlayerData Player::get_player_data() {
+    return {_name, _hp_max, _hp, _max_speed, _i_frames,
+    _attack_speed, _attack_rate, _damage, _attack_knockback, _range, _max_offset};
+}
+
 int Player::get_attack_cooldown() {
-    return int(180/_fire_rate);
+    return int(180/_attack_rate);
 }
 bn::fixed Player::get_attack_knockback() {
     return _attack_knockback;
@@ -132,15 +177,15 @@ bn::fixed_point Player::get_shot_velocity() {
     bn::fixed_point shot_velocity_modifier = _velocity*0.1;
     switch (_direction) {
         case Direction::Up:
-            return bn::fixed_point(0, _shot_speed * -1) + shot_velocity_modifier;
+            return bn::fixed_point(0, _attack_speed * -1) + shot_velocity_modifier;
         case Direction::Down:
-            return bn::fixed_point(0, _shot_speed) + shot_velocity_modifier;
+            return bn::fixed_point(0, _attack_speed) + shot_velocity_modifier;
         case Direction::Left:
-            return bn::fixed_point(_shot_speed * -1, 0) + shot_velocity_modifier;
+            return bn::fixed_point(_attack_speed * -1, 0) + shot_velocity_modifier;
         case Direction::Right:
-            return bn::fixed_point(_shot_speed, 0) + shot_velocity_modifier;
+            return bn::fixed_point(_attack_speed, 0) + shot_velocity_modifier;
     }
-    return bn::fixed_point(0, _shot_speed * -1);
+    return bn::fixed_point(0, _attack_speed * -1);
 }
 
 bool Player::is_movement_freezed() {
@@ -466,7 +511,7 @@ void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, 
                         if (projectiles.size() >= max_projectiles) {
                             break;
                         }
-                        bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
+                        bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _attack_speed, bn::fixed(bn::degrees_sin(i)) * _attack_speed);
                         projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage*2, _range, _attack_knockback));
                     }
                     
@@ -499,7 +544,7 @@ void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, 
                         if (projectiles.size() >= max_projectiles) {
                             break;
                         }
-                        bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
+                        bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _attack_speed, bn::fixed(bn::degrees_sin(i)) * _attack_speed);
                         projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage*2, _range, _attack_knockback));
                     }
                     
@@ -517,7 +562,7 @@ void Player::update_burst_attack(bn::vector<Obstacle,max_obstacles>& obstacles, 
                     if (projectiles.size() >= max_projectiles) {
                         break;
                     }
-                    bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _shot_speed, bn::fixed(bn::degrees_sin(i)) * _shot_speed);
+                    bn::fixed_point projectile_velocity = bn::fixed_point(bn::fixed(bn::degrees_cos(i)) * _attack_speed, bn::fixed(bn::degrees_sin(i)) * _attack_speed);
                     projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Player, _position, projectile_velocity, _damage, _range, _attack_knockback));
                 }
             }

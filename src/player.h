@@ -27,8 +27,17 @@ enum class Direction {
 };
 
 struct PlayerData {
-    CharacterName character_name;
+    CharacterName name;
+    int hp_max;
     int hp;
+    bn::fixed max_speed; //1.2 low, 1.35 common, 3 max?
+    int i_frames;
+    bn::fixed attack_speed; // 4?
+    bn::fixed attack_rate; // 5 - 30, base 7
+    bn::fixed damage;
+    bn::fixed attack_knockback; //0.1
+    bn::fixed range;   // max 120
+    bn::fixed max_offset; //base: 0.1, 0.5 is already punishing
 };
 
 class Item;
@@ -36,12 +45,11 @@ class Item;
 class Player {
 public:
     Player(CharacterName name, bn::fixed_point position, bn::random& rnd);
-    Player(CharacterName name,
+    Player(PlayerData player_data,
         bn::fixed_point position,
-        bn::random& rnd,
-        int hp
+        bn::random& rnd
     );
-    
+    PlayerData get_player_data();
     CharacterName get_character_name();
     bn::fixed get_attack_knockback();
     bn::fixed get_damage();
@@ -96,10 +104,10 @@ private:
     bn::fixed_point _velocity;
     bn::fixed_point _knockback_velocity;
     bn::fixed_point _last_input;
-    bn::fixed _shot_speed;
+    bn::fixed _attack_speed;
     bn::fixed _attack_knockback;
     bn::fixed _damage;
-    bn::fixed _fire_rate;
+    bn::fixed _attack_rate;
     bn::fixed _range;
     bn::fixed _max_offset;
     int _attack_cooldown_counter;

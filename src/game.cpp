@@ -88,8 +88,7 @@ void Game::update_title() { //use this one as a template of a state change
         _pocket.push_back(Item(2, _rnd));
         _pocket.push_back(Item(2, _rnd));
     } else if (_title_screen->is_ready_to_continue_game()) {
-        _player.emplace(_save_data.player_data.character_name, bn::fixed_point(0,0), _rnd);   //replaces the empty player
-        _player->set_hp(_save_data.player_data.hp);
+        _player.emplace(_save_data.player_data, bn::fixed_point(0,0), _rnd);   //replaces the empty player
         _title_screen.reset();
         _level.emplace(_level_generator.generate_level(LevelType::STREET));
         _level->load_room(_level->get_starting_room_pos(), _obstacles);
@@ -118,8 +117,8 @@ void Game::update_pause() {
         _state = State::Title;
 
         _save_data.has_run_save = true;
-        _save_data.player_data.hp = _player->get_hp();
-        _save_data.player_data.character_name = _player->get_character_name();
+        _save_data.player_data = _player->get_player_data();
+        
         bn::sram::write(_save_data);
 
         _projectiles.clear();
