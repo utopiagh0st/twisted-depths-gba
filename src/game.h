@@ -50,7 +50,6 @@ private:
 
     //interface management
     bn::optional<Hud> _hud;
-    bn::optional<Room> _room;
 
     //entity management
     bn::optional<Player> _player;

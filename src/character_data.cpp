@@ -13,11 +13,11 @@ const bn::array<CharacterData, CHARACTER_DATA_LOOKUP_SIZE> CHARACTER_LOOKUP = {{
         5, //hp (1 - hpmax)
         bn::fixed(1.45), //maxspeed (1.2 - 3)
         20, //iframes (how much u wanna suffer)
-        bn::fixed(0.5), //attackspeed (0.1- 4)
+        bn::fixed(0.9), //attackspeed (0.1- 4)
         bn::fixed(6), //attackrate (5-30) *7
         bn::fixed(4), //damage (whatever) *2
         bn::fixed(0.15), //attackknockback *0.15
-        bn::fixed(20), //range (20 - 120)
+        bn::fixed(30), //range (20 - 120)
         bn::fixed(0.1), //max offset (0.1, 0.5 hell > why)
         bn::sprite_items::player_fran_walk
     },

@@ -11,6 +11,7 @@ struct SRAMSaveData {
     bn::fixed music_volume;
     bool has_run_save;
     PlayerData player_data;
+    LevelData level_data;
 };
 
 #endif

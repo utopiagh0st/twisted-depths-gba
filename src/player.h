@@ -28,6 +28,7 @@ enum class Direction {
 
 struct PlayerData {
     CharacterName name;
+    bn::fixed_point position;
     int hp_max;
     int hp;
     bn::fixed max_speed; //1.2 low, 1.35 common, 3 max?
@@ -46,9 +47,9 @@ class Player {
 public:
     Player(CharacterName name, bn::fixed_point position, bn::random& rnd);
     Player(PlayerData player_data,
-        bn::fixed_point position,
         bn::random& rnd
     );
+    void safe_reset();
     PlayerData get_player_data();
     CharacterName get_character_name();
     bn::fixed get_attack_knockback();

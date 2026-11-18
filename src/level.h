@@ -15,9 +15,10 @@ constexpr int LEFT = 2;
 constexpr int RIGHT = 3;
 constexpr int map_size = 10;
 
-struct LevelInfo {
-    bn::array<bn::array<int, 10>, 10>& level_map;
-    bn::array<bn::array<int, 10>, 10>& level_clear_map;
+struct LevelData {
+    LevelType level_type;
+    bn::array<bn::array<int, 10>, 10> level_map;
+    bn::array<bn::array<bool, 10>, 10> level_clear_map;
     bn::point current_room_pos;
     bn::point starting_room_pos;
 };
@@ -29,19 +30,16 @@ public:
         bn::array<bn::array<bool, 10>, 10>& level_clear_map,
         bn::point starting_room,
         bn::random& rnd);
-    Level(LevelType level_type,
-        bn::array<bn::array<int, 10>, 10>& level_map,
-        bn::array<bn::array<bool, 10>, 10>& level_clear_map,
-        bn::point starting_room,
-        bn::point current_room,
-        bn::random& rnd);  
+    Level(LevelData level_data, bn::random& rnd);  
+
+    LevelData get_level_data();
     bn::point get_starting_room_pos();
 
     bool can_unfreeze_movement();
     void set_can_unfreeze_movement(bool can_unfreeze);
 
     bool is_doing_room_transition();
-    void load_room(bn::point room_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
+    void load_room(bn::point room_pos, bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies);
     void begin_room_transition(int direction, bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies);
     void update(bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Enemy, max_enemies>& enemies);
     void toggle_map(bool showing);

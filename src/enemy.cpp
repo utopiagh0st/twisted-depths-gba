@@ -12,6 +12,7 @@
 #include "bn_sprite_items_enemy.h"
 #include "bn_sprite_items_enemy_peppergum.h"
 #include "bn_sprite_items_enemy_castabell.h"
+#include "bn_sprite_items_enemy_plug.h"
 #include "bn_sprite_items_visual_enemy_damage.h"
 
 
@@ -26,6 +27,8 @@ static bn::sprite_ptr create_character_sprite(EnemyType type, bn::fixed_point po
             return bn::sprite_items::enemy_peppergum.create_sprite(position);
         case EnemyType::Castabell:
             return bn::sprite_items::enemy_castabell.create_sprite(position);
+        case EnemyType::Plug:
+            return bn::sprite_items::enemy_plug.create_sprite(position);
     }
 
     return bn::sprite_items::enemy.create_sprite(position);
@@ -74,13 +77,27 @@ void Enemy::initial_setup() {
                 bn::array<uint16_t, 3>{ 0, 1, 2 }
             )
         );
-    break;
+        break;
     case EnemyType::Castabell:
         _friction = bn::fixed(0.2);
         _acceleration = bn::fixed(0.3);
         _max_speed = bn::fixed(3);
         _hp = bn::fixed(10);
         _sprite.set_tiles(bn::sprite_items::enemy_castabell.tiles_item(), 0);
+        break;
+    case EnemyType::Plug:
+        _friction = bn::fixed(0.2);
+        _acceleration = bn::fixed(0.3);
+        _max_speed = bn::fixed(0.4);
+        _hp = bn::fixed(10);
+        _sprite_anim.emplace(
+            bn::sprite_animate_action<4>::forever(
+                _sprite,
+                10,
+                bn::sprite_items::enemy_plug.tiles_item(),
+                bn::array<uint16_t, 4>{ 0, 1, 0, 1 }
+            )
+        );
     break;
     default:
         _friction = bn::fixed(0.07);
@@ -167,6 +184,9 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
     break;
     case EnemyType::Castabell:
         castabell_update(obstacles);
+    break;
+    case EnemyType::Plug:
+        plug_update(player_pos, obstacles);
     break;
     default:
     break;
@@ -377,6 +397,35 @@ void Enemy::castabell_update(bn::vector<Obstacle, max_obstacles>& obstacles) {
         _alive = false;
     }
 }
+void Enemy::plug_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles) {
+    if(!_dying) {
+        switch (_step)
+        {
+        case 0:
+            deaccelerate();
+            if(_cooldown == 0) {
+                _cooldown = 40;
+                _step++;
+            }
+            _cooldown--;
+            break;
+        case 1:
+            _target = player_pos;
+            move_towards(_target);
+            _sprite_anim->update();
+            if(_cooldown == 0) {
+                _cooldown = 20;
+                _step=0;
+            }
+            _cooldown--;
+            break;
+        default:
+            break;
+        }
+    } else {
+        _alive = false;
+    }
+}
 
 bool Enemy::bnd_collide(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd) {
     bool collided = false;
@@ -410,6 +459,9 @@ void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns t
         _velocity += direction * _acceleration;
     }   
     cap_velocity();
+}
+void Enemy::spawn_projectile(bn::fixed_point target) {
+
 }
 
 void Enemy::deaccelerate() {

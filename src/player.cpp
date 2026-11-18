@@ -54,11 +54,12 @@ Player::Player(CharacterName name, bn::fixed_point position, bn::random& rnd) :
     _attack_cooldown_counter = 0;
     _friction = bn::fixed(0.4);
     _acceleration = bn::fixed(0.3);
-
+    _doing_burst_attack = false;
+    _action_phase = 0;
     initial_setup();
 }
 
-Player::Player(PlayerData player_data, bn::fixed_point position, bn::random& rnd) :
+Player::Player(PlayerData player_data, bn::random& rnd) :
     _rnd(rnd)
 {
     _name = player_data.name;
@@ -69,12 +70,14 @@ Player::Player(PlayerData player_data, bn::fixed_point position, bn::random& rnd
     _velocity = bn::fixed_point(0,0);
     _knockback_velocity = bn::fixed_point(0,0);
     _last_input = bn::fixed_point(0,0);
-    _position = position;
+    _position = player_data.position;
     _freeze_movement = false;
     _i_frames_counter = 0;
     _attack_cooldown_counter = 0;
     _friction = bn::fixed(0.4);
     _acceleration = bn::fixed(0.3);
+    _doing_burst_attack = false;
+    _action_phase = 0;
 
     for(const CharacterData& character_data : CHARACTER_LOOKUP) {
         if(_name == character_data.name) {
@@ -142,7 +145,7 @@ CharacterName Player::get_character_name() {
 }
 
 PlayerData Player::get_player_data() {
-    return {_name, _hp_max, _hp, _max_speed, _i_frames,
+    return {_name, _position, _hp_max, _hp, _max_speed, _i_frames,
     _attack_speed, _attack_rate, _damage, _attack_knockback, _range, _max_offset};
 }
 
@@ -209,6 +212,9 @@ void Player::set_hp(int new_hp) {
     _hp = new_hp;
 }
 
+void Player::safe_reset() {
+
+}
 //Functions
 
 void Player::heal(int heal_amount) {

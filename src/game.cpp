@@ -73,7 +73,7 @@ void Game::update_title() { //use this one as a template of a state change
         _player.emplace(_title_screen->get_selected_character(), bn::fixed_point(0,0), _rnd);   //replaces the empty player
         _title_screen.reset();
         _level.emplace(_level_generator.generate_level(LevelType::STREET));
-        _level->load_room(_level->get_starting_room_pos(), _obstacles);
+        _level->load_room(_level->get_starting_room_pos(), _obstacles, _enemies);
         _hud.emplace(true);
         
         bn::music_items::popkorn.play(_save_data.music_volume);    //banger starts
@@ -88,10 +88,10 @@ void Game::update_title() { //use this one as a template of a state change
         _pocket.push_back(Item(2, _rnd));
         _pocket.push_back(Item(2, _rnd));
     } else if (_title_screen->is_ready_to_continue_game()) {
-        _player.emplace(_save_data.player_data, bn::fixed_point(0,0), _rnd);   //replaces the empty player
+        _player.emplace(_save_data.player_data, _rnd);   //replaces the empty player
         _title_screen.reset();
-        _level.emplace(_level_generator.generate_level(LevelType::STREET));
-        _level->load_room(_level->get_starting_room_pos(), _obstacles);
+        _level.emplace(_save_data.level_data, _rnd);
+        _level->load_room(_save_data.level_data.current_room_pos, _obstacles, _enemies);
         _hud.emplace(true);
         
         bn::music_items::popkorn.play(_save_data.music_volume);    //banger starts
@@ -118,6 +118,7 @@ void Game::update_pause() {
 
         _save_data.has_run_save = true;
         _save_data.player_data = _player->get_player_data();
+        _save_data.level_data = _level->get_level_data();
         
         bn::sram::write(_save_data);
 
@@ -167,7 +168,7 @@ void Game::update_playing() {
 
     //Miscelaneous inputs
     if (bn::keypad::a_pressed() && _enemies.size() < max_enemies) {
-        _enemies.push_back(Enemy(EnemyType::Castabell, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)), _rnd));
+        _enemies.push_back(Enemy(EnemyType::Plug, bn::fixed_point(_rnd.get_int(-66,66), _rnd.get_int(-50,48)), _rnd));
     }
     //&& _projectiles.size() < max_projectiles
     if (bn::keypad::b_held() && _projectiles.size() < max_projectiles) {

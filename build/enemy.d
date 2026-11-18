@@ -59,6 +59,7 @@ enemy.o: /home/Commodore/butano/games/twisted-depths-gba/src/enemy.cpp \
  /home/Commodore/butano/butano/include/bn_color.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_enemy_peppergum.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_enemy_castabell.h \
+ /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_enemy_plug.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_visual_enemy_damage.h \
  /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hitbox.h
 /home/Commodore/butano/games/twisted-depths-gba/src/enemy.h:
@@ -121,5 +122,6 @@ enemy.o: /home/Commodore/butano/games/twisted-depths-gba/src/enemy.cpp \
 /home/Commodore/butano/butano/include/bn_color.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_enemy_peppergum.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_enemy_castabell.h:
+/home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_enemy_plug.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_visual_enemy_damage.h:
 /home/Commodore/butano/games/twisted-depths-gba/build/bn_sprite_items_hitbox.h:

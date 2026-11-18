@@ -7,12 +7,12 @@
 
 //======================================================================
 //
-//	enemy_plug_bn_gfx, 32x32@4, 
+//	enemy_plug_bn_gfx, 64x96@4, 
 //	+ palette 16 entries, not compressed
-//	+ 16 tiles Metatiled by 4x4 not compressed
-//	Total size: 32 + 512 = 544
+//	+ 96 tiles Metatiled by 4x4 not compressed
+//	Total size: 32 + 3072 = 3104
 //
-//	Time-stamp: 2026-11-10, 08:01:44
+//	Time-stamp: 2026-11-17, 11:01:37
 //	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #ifndef GRIT_ENEMY_PLUG_BN_GFX_H
 #define GRIT_ENEMY_PLUG_BN_GFX_H
 
-#define enemy_plug_bn_gfxTilesLen 512
-extern const bn::tile enemy_plug_bn_gfxTiles[16];
+#define enemy_plug_bn_gfxTilesLen 3072
+extern const bn::tile enemy_plug_bn_gfxTiles[96];
 
 #define enemy_plug_bn_gfxPalLen 32
 extern const bn::color enemy_plug_bn_gfxPal[16];
@@ -34,7 +34,7 @@ extern const bn::color enemy_plug_bn_gfxPal[16];
 namespace bn::sprite_items
 {
     constexpr inline sprite_item enemy_plug(sprite_shape_size(sprite_shape::SQUARE, sprite_size::BIG), 
-            sprite_tiles_item(span<const tile>(enemy_plug_bn_gfxTiles, 16), bpp_mode::BPP_4, compression_type::NONE, 1), 
+            sprite_tiles_item(span<const tile>(enemy_plug_bn_gfxTiles, 96), bpp_mode::BPP_4, compression_type::NONE, 6), 
             sprite_palette_item(span<const color>(enemy_plug_bn_gfxPal, 16), bpp_mode::BPP_4, compression_type::NONE));
 }
 

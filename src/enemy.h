@@ -21,7 +21,8 @@ constexpr int max_enemies = 20;
 enum class EnemyType {
     LimeCat,
     PepperGum,
-    Castabell
+    Castabell,
+    Plug
 };
 
 class Enemy {
@@ -74,6 +75,7 @@ private:
     void limecat_update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
     void peppergum_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
     void castabell_update(bn::vector<Obstacle, max_obstacles>& obstacles);
+    void plug_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
 
 };
 
