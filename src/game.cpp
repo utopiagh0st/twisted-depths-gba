@@ -194,7 +194,7 @@ void Game::update_playing() {
 
     //Enemies
     for (Enemy& enemy : _enemies) {
-        enemy.update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _player->get_position(), _obstacles);
+        enemy.update(_bounds[UP], _bounds[DOWN], _bounds[LEFT], _bounds[RIGHT], _player->get_position(), _obstacles, _projectiles);
         // Colission checks
         if (!enemy.is_dying() && _player->get_hitbox().intersects(enemy.get_hitbox())) {
             if (_player->is_doing_burst_attack()) {
@@ -212,7 +212,13 @@ void Game::update_playing() {
                 }
                 enemy.take_damage(projectile.get_damage());
                 enemy.apply_knockback(projectile.get_unit_velocity_vector() * projectile.get_knockback());
-            }
+            } else if (_player->get_hitbox().intersects(projectile.get_hitbox()) && projectile.get_owner() == ProjectileOwner::Enemy) {
+                if (!projectile.is_piercing()) {
+                    projectile.set_alive(false);
+                }
+                _player->take_damage(projectile.get_damage().ceil_integer());
+                _player->apply_knockback(projectile.get_unit_velocity_vector() * projectile.get_knockback());
+            }   
             
         }
     }

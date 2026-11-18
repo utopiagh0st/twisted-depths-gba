@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include "obstacle.h"
+#include "projectile.h"
 
 #include "bn_vector.h"
 
@@ -46,6 +47,7 @@ Enemy::Enemy(EnemyType type, bn::fixed_point position, bn::random& rnd) :
     _alive = true;
     _position = position;
     _velocity = bn::fixed_point(0,0);
+    _facing_direction = 1;
     
     _cooldown = 0;
     _step = 0;
@@ -174,7 +176,8 @@ void Enemy::apply_knockback(bn::fixed_point kb_velocity) {
     }
 }
 
-void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles) {
+void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle,
+    max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles) {
     switch (_type) {
     case EnemyType::LimeCat:
         limecat_update(top_bnd, bottom_bnd, left_bnd, right_bnd, player_pos, obstacles);
@@ -186,7 +189,7 @@ void Enemy::update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn:
         castabell_update(obstacles);
     break;
     case EnemyType::Plug:
-        plug_update(player_pos, obstacles);
+        plug_update(player_pos, obstacles, projectiles);
     break;
     default:
     break;
@@ -397,25 +400,74 @@ void Enemy::castabell_update(bn::vector<Obstacle, max_obstacles>& obstacles) {
         _alive = false;
     }
 }
-void Enemy::plug_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles) {
+void Enemy::plug_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles) {
     if(!_dying) {
+        if (_facing_direction != 0 && _step < 6 && player_pos.y() < _position.y()) {
+            _sprite_anim.reset();
+            _sprite_anim.emplace(
+                bn::sprite_animate_action<4>::forever(
+                _sprite,
+                10,
+                bn::sprite_items::enemy_plug.tiles_item(),
+                bn::array<uint16_t, 4>{ 2, 3, 2, 3 }
+                )
+            );
+            _facing_direction = 0;
+        } else if (_facing_direction != 1 && _step < 6 && player_pos.y() > _position.y()) {
+            _sprite_anim.reset();
+            _sprite_anim.emplace(
+                bn::sprite_animate_action<4>::forever(
+                _sprite,
+                10,
+                bn::sprite_items::enemy_plug.tiles_item(),
+                bn::array<uint16_t, 4>{ 0, 1, 0, 1 }
+                )
+            );
+            _facing_direction = 1;
+        }
         switch (_step)
         {
-        case 0:
-            deaccelerate();
-            if(_cooldown == 0) {
-                _cooldown = 40;
-                _step++;
-            }
-            _cooldown--;
-            break;
-        case 1:
+        case 0: case 2: case 4:
             _target = player_pos;
             move_towards(_target);
             _sprite_anim->update();
             if(_cooldown == 0) {
                 _cooldown = 20;
-                _step=0;
+                _step++;
+            }
+            _cooldown--;
+            break;
+        case 1: case 3: case 5: //pause
+            deaccelerate();
+            if(_cooldown == 0) {
+                if (_step == 5) {
+                    _cooldown = 0;
+                } else {
+                    _cooldown = 40;
+                }
+                _step++;
+            }
+            _cooldown--;
+            break;
+        case 6: case 8: case 10:
+            deaccelerate();
+            _target = player_pos;
+            spawn_projectile(_target, projectiles);
+            _step++;
+            _cooldown = 15;
+            break;
+        case 7: case 9:
+            deaccelerate();
+            if(_cooldown == 0) {
+                _step++;
+            }
+            _cooldown--;
+            break;
+        case 11:
+            deaccelerate();
+            if(_cooldown == 0) {
+                _step = 0;
+                _cooldown = 1;
             }
             _cooldown--;
             break;
@@ -460,8 +512,12 @@ void Enemy::move_towards(bn::fixed_point final_pos) {   //if it's done returns t
     }   
     cap_velocity();
 }
-void Enemy::spawn_projectile(bn::fixed_point target) {
-
+void Enemy::spawn_projectile(bn::fixed_point target, bn::vector<Projectile, max_projectiles>& projectiles) {
+    if (projectiles.size() < max_projectiles) {
+        bn::fixed_point direction = (target - _position)/get_distance(target);
+        bn::fixed_point velocity = direction * 3;
+        projectiles.push_back(Projectile(ProjectileType::Bullet, ProjectileOwner::Enemy, _position, velocity, 1, 60, 3));
+    }
 }
 
 void Enemy::deaccelerate() {

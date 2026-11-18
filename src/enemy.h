@@ -10,6 +10,7 @@
 #include "obstacle.h"
 #include "bn_vector.h"
 #include "bn_random.h"
+#include "projectile.h"
 
 //6 +
 //25*2 50
@@ -37,9 +38,10 @@ public:
     bn::fixed get_distance(bn::fixed_point final_pos);
     void apply_knockback(bn::fixed_point kb_velocity);
     void take_damage(bn::fixed damage);
-    void update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
+    void update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles);
 private:
     //debug
+    int _facing_direction;
     bn::optional<bn::sprite_ptr> _spr_hitbox;
     bool _debug;
     EnemyType _type;
@@ -70,12 +72,13 @@ private:
     void move_towards(bn::fixed_point final_pos);
     void deaccelerate();
     void cap_velocity();
+    void spawn_projectile(bn::fixed_point target, bn::vector<Projectile, max_projectiles>& projectiles);
 
     //updates
     void limecat_update(int top_bnd, int bottom_bnd, int left_bnd, int right_bnd, bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
     void peppergum_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
     void castabell_update(bn::vector<Obstacle, max_obstacles>& obstacles);
-    void plug_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles);
+    void plug_update(bn::fixed_point player_pos, bn::vector<Obstacle, max_obstacles>& obstacles, bn::vector<Projectile, max_projectiles>& projectiles);
 
 };
 
